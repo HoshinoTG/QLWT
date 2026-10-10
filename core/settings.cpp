@@ -22,6 +22,8 @@ void Settings::load(const std::string& path)
         else if (key == "uiAccent") uiAccent = static_cast<unsigned int>(std::strtoul(raw.c_str(), nullptr, 16)) & 0xFFFFFFu;
         else if (key == "uiCorner") uiCorner = clampCorner(value);
         else if (key == "uiButtonStyle") uiButtonStyle = clampStyle(value);
+        else if (key == "fxQuality") fxQuality = clampFx(value);
+        else if (key == "aaMode") aaMode = clampAa(value);
     }
 }
 
@@ -36,4 +38,6 @@ void Settings::save(const std::string& path) const
     out << "uiAccent=" << std::hex << (uiAccent & 0xFFFFFFu) << std::dec << "\n";
     out << "uiCorner=" << uiCorner << "\n";
     out << "uiButtonStyle=" << uiButtonStyle << "\n";
+    out << "fxQuality=" << fxQuality << "\n";
+    out << "aaMode=" << aaMode << "\n";
 }

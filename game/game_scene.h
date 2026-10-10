@@ -4,7 +4,9 @@
 #include <string>
 #include <vector>
 
-#include <raylib.h>
+#include "gfx/gfx.h"
+
+#include "../renderer/renderer.h"
 
 #include "../core/save.h"
 #include "../core/script.h"
@@ -31,8 +33,6 @@ public:
 
     void update(float dt) override;
     void draw() override;
-    bool needsBackdrop() const override;
-    void drawBackdropOnly() override;
     void debugAuto(int frame) override;
     void afterDraw() override;
 
@@ -67,7 +67,8 @@ private:
     float chapterAdvanceFade_ = 0.0f;
     bool chapterSwitchSent_ = false;
     bool chapterPrompt_ = false;   // 章节结束询问面板
-    float chapterPromptT_ = 0.0f;  // 该面板的入场动画进度 0..1
+    float chapterPromptT_ = 0.0f;
+    renderer::Spring chapterPromptSpring_{0.0f, 0.0f, 520.0f, 34.0f};   // 章节提示弹入  // 该面板的入场动画进度 0..1
     float promptHover_[2] = {0.0f, 0.0f};
     VM vm_;
     Game game_{true};
@@ -82,7 +83,13 @@ private:
     float autoTimer_ = 0.0f;
     float inputCooldown_ = 0.35f;  // 开场输入冷却，防止启动点击误跳对话
     float fadeAlpha_ = 1.0f;
+    // 观测战的进出场过渡：黑场 → 战斗 → 结算停留 → 黑场 → 剧情
+    bool battleWasActive_ = false;
+    bool battleExiting_ = false;
+    float battleCurtain_ = 0.0f;   // 0 = 全亮，1 = 全黑
+    float battleEndT_ = 0.0f;      // 结算画面已经停了多久
     bool prevCgShown_ = false;
+    bool prevBattleActive_ = false;   // 用来捕捉刚进战斗的那一帧（触发白闪）
     int cgShot_ = 0;
     int dlgShotCount_ = 0;
     std::string pendingShot_;
@@ -98,6 +105,7 @@ private:
     // 章节 / 地点卡片
     std::string cardText_;
     float cardT_ = 0.0f;
+    renderer::Spring cardSpring_{0.0f, 0.0f, 400.0f, 30.0f};            // 卡片文字弹入
     bool cardActive_ = false;
     bool cardClosing_ = false;
     float cardCloseT_ = 0.0f;

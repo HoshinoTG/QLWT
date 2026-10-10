@@ -3,7 +3,7 @@
 #include "../core/gif.h"
 #include "../core/save.h"
 #include "../core/video.h"
-#include <raylib.h>
+#include "gfx/gfx.h"
 
 #include <memory>
 #include <string>
@@ -62,7 +62,7 @@ public:
     bool battleFinished() const { return battle_ && battle_->finished(); }
     bool battleWon() const { return battle_ && battle_->won(); }
     void updateBattle(float dt);
-    void drawBattle(const FontManager& fonts);
+    void drawBattle(const FontManager& fonts, float renderScale);
     void battleDebugAuto(int frame);
     void endBattle() { battle_.reset(); }
 

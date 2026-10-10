@@ -1,4 +1,4 @@
-build/obj/core/time.o: core/time.cpp core/time.h \
- build/raylib-wayland/src/raylib.h
+build/obj/core/time.o: core/time.cpp core/time.h gfx/gfx.h gfx/types.h
 core/time.h:
-build/raylib-wayland/src/raylib.h:
+gfx/gfx.h:
+gfx/types.h:

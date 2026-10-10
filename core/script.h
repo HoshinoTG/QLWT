@@ -84,6 +84,7 @@ struct EnemyDef
     int hp = 100;
     int atk = 12;
     int spd = 8;
+    std::string image;      // 可选：敌人立绘（ASCII 路径）；留空则按类别找 assets/enemy/*.png
 };
 
 struct BattleDef

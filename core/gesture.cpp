@@ -12,6 +12,20 @@
 #include <linux/input.h>
 #include <sys/ioctl.h>
 #include <unistd.h>
+#else
+// 非 Linux 平台没有 <linux/input.h>：补上解析器用到的那几个 input 常量，
+// 让自检的合成事件路径在任何平台都能编译（真机手势仍然只在 Linux 下启用）。
+namespace
+{
+constexpr unsigned short EV_SYN = 0x00;
+constexpr unsigned short EV_ABS = 0x03;
+constexpr unsigned short SYN_REPORT = 0;
+constexpr unsigned short SYN_MT_REPORT = 2;
+constexpr unsigned short ABS_MT_SLOT = 0x2f;
+constexpr unsigned short ABS_MT_POSITION_X = 0x35;
+constexpr unsigned short ABS_MT_POSITION_Y = 0x36;
+constexpr unsigned short ABS_MT_TRACKING_ID = 0x39;
+}
 #endif
 
 namespace

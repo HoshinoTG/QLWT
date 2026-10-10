@@ -3,9 +3,10 @@
 #include <memory>
 #include <string>
 
-#include <raylib.h>
+#include "gfx/gfx.h"
 
 #include "../core/script.h"
+#include "../renderer/renderer.h"
 #include "scene.h"
 
 // 开始菜单：左侧按钮 + 静态背景 + 从右侧滑出的设置抽屉
@@ -20,7 +21,9 @@ public:
     void draw() override;
     void debugAuto(int frame) override;
 
+
 private:
+    void drawBackground();
     float menuX() const;
     float menuY() const;
     void updateDrawer(float dt);
@@ -35,11 +38,13 @@ private:
     std::shared_ptr<Script> script_;
     bool direct_ = false;          // --direct：开始游戏直接进第一段剧情，跳过章节选择
     ::Texture2D bg_{};
-    float hoverAnim_[3] = {0.0f, 0.0f, 0.0f};
+    float hoverAnim_[4] = {0.0f, 0.0f, 0.0f, 0.0f};
 
     // 设置抽屉
     bool settingsOpen_ = false;
-    float drawerT_ = 0.0f;          // 0..1 开合进度
+    float drawerT_ = 0.0f;          // 0..1 开合进度（由弹簧驱动，收尾会吸附到 0/1）
+    // 抽屉的弹簧：ω≈21.4、ζ≈0.75 —— 约 3% 过冲、0.25s 走完主要位移
+    renderer::Spring drawerSpring_{0.0f, 0.0f, 460.0f, 32.0f};
     int dragSlider_ = -1;           // 0..2 速度/音量，3..5 主题色 RGB，6 圆角
     float backHover_ = 0.0f;
     // 抽屉内容滚动
@@ -48,4 +53,6 @@ private:
     // 外观控件
     float presetHover_[8] = {0, 0, 0, 0, 0, 0, 0, 0};
     float styleHover_[3] = {0, 0, 0};
+    float fxHover_[3] = {0.0f, 0.0f, 0.0f};   // 画面特效档位
+    float aaHover_[3] = {0.0f, 0.0f, 0.0f};   // 抗锯齿档位
 };

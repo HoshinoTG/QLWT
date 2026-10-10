@@ -1,0 +1,1 @@
+-I/home/hoshino/project/GalgameScriptEngine/third_party/glfw/include -I/home/hoshino/project/GalgameScriptEngine/third_party/glfw/src -I"/home/hoshino/project/GalgameScriptEngine/build/glfw-win/src"

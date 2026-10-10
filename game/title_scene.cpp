@@ -5,13 +5,15 @@
 #include <cmath>
 #include <cstdio>
 
-#include <raylib.h>
+#include "gfx/gfx.h"
 
 #include "../core/engine.h"
+#include "../gfx/post.h"
 #include "../core/gesture.h"
 #include "../core/lang.h"
 #include "../renderer/renderer.h"
 #include "chapter_select.h"
+#include "gallery_scene.h"
 #include "game_scene.h"
 
 namespace
@@ -40,8 +42,12 @@ constexpr float kStyleLabelY     = 900.0f;
 constexpr float kStyleY          = 934.0f;
 constexpr float kFullLabelY      = 1030.0f;
 constexpr float kFullToggleY     = 1064.0f;
-constexpr float kBackY           = 1148.0f;
-constexpr float kDrawerContentH  = 1230.0f;
+constexpr float kFxLabelY        = 1110.0f;
+constexpr float kFxY             = 1144.0f;
+constexpr float kAaLabelY        = 1214.0f;
+constexpr float kAaY             = 1248.0f;
+constexpr float kBackY           = 1320.0f;
+constexpr float kDrawerContentH  = 1404.0f;
 
 constexpr float kSwatchSize = 42.0f;
 constexpr float kSwatchPitch = 48.0f;   // 48*7+42 = 378，右端 x=面板左+428，不碰滚动条
@@ -59,6 +65,9 @@ const unsigned int kPresets[8] = {
 const char* kSliderKeys[7] = {"settings.text_speed", "settings.bgm_volume", "settings.sfx_volume",
                               "settings.rgb_r", "settings.rgb_g", "settings.rgb_b",
                               "settings.corner"};
+const char* kFxKeys[3] = {"settings.fx_off", "settings.fx_low", "settings.fx_high"};
+const char* kAaKeys[3] = {"settings.aa_off", "settings.aa_fxaa", "settings.aa_msaa"};
+
 const char* kStyleKeys[3] = {"settings.style_dark", "settings.style_light", "settings.style_outline"};
 
 float easeOutCubic(float t)
@@ -166,21 +175,11 @@ float TitleScene::drawerMaxScroll() const
 
 void TitleScene::update(float dt)
 {
-    updateEntryFade(dt);
 
     // 抽屉开合动画
-    float target = settingsOpen_ ? 1.0f : 0.0f;
-    float step = 5.0f * dt;
-    if (target > drawerT_)
-    {
-        drawerT_ += step;
-        if (drawerT_ >= target) drawerT_ = target;     // 吸附到目标，避免遮罩抖动
-    }
-    else
-    {
-        drawerT_ -= step;
-        if (drawerT_ <= target) drawerT_ = target;
-    }
+    // 弹簧驱动：起步快、收尾带一点过冲再收住（过冲靠面板加宽兜住，见 drawDrawer）
+    drawerSpring_.update(settingsOpen_ ? 1.0f : 0.0f, dt);
+    drawerT_ = drawerSpring_.value;
 
     Vector2 mouse = GetMousePosition();
     bool pressed = IsMouseButtonPressed(MOUSE_BUTTON_LEFT);
@@ -197,17 +196,34 @@ void TitleScene::update(float dt)
     bool enter = IsKeyPressed(KEY_ENTER) || IsKeyPressed(KEY_SPACE);
 
     Rectangle startRect{cx, y, kBtnW, kBtnH};
-    Rectangle setRect{cx, y + kBtnGap, kBtnW, kBtnH};
-    Rectangle quitRect{cx, y + kBtnGap * 2, kBtnW, kBtnH};
+    Rectangle galleryRect{cx, y + kBtnGap, kBtnW, kBtnH};
+    Rectangle setRect{cx, y + kBtnGap * 2, kBtnW, kBtnH};
+    Rectangle quitRect{cx, y + kBtnGap * 3, kBtnW, kBtnH};
+
+    // 按钮悬停动画（之前 hoverAnim_ 一直没被更新，等于没有）
+    const Rectangle menuRects[4] = {startRect, galleryRect, setRect, quitRect};
+    for (int i = 0; i < 4; ++i)
+        hoverAnim_[i] = renderer::approach(
+            hoverAnim_[i], CheckCollisionPointRec(mouse, menuRects[i]) ? 1.0f : 0.0f, 14.0f, dt);
 
     if ((CheckCollisionPointRec(mouse, startRect) && pressed) || enter)
     {
+        // 从按钮中心径向擦除过去，像"按下去把画面推开"
+        engine()->setTransition(postfx::TransitionWipe,
+                                (startRect.x + startRect.width*0.5f)/static_cast<float>(canvas::width()),
+                                (startRect.y + startRect.height*0.5f)/static_cast<float>(canvas::height()));
         // --direct：跳过章节选择，直接进默认脚本的第一章（调试某一段剧情用）
         if (direct_ && script_)
             engine()->switchScene(std::make_shared<GameScene>(engine(), scriptPath_, script_,
                                                               parseError_, 0));
         else
             engine()->switchScene(std::make_shared<ChapterSelectScene>(engine(), scriptPath_, parseError_));
+    }
+    else if (CheckCollisionPointRec(mouse, galleryRect) && pressed)
+    {
+        engine()->setTransition(postfx::TransitionFade);
+        engine()->switchScene(
+            std::make_shared<GalleryScene>(engine(), scriptPath_, script_, parseError_));
     }
     else if (CheckCollisionPointRec(mouse, setRect) && pressed)
         settingsOpen_ = true;
@@ -224,7 +240,7 @@ void TitleScene::updateDrawer(float dt)
     bool released = IsMouseButtonReleased(MOUSE_BUTTON_LEFT);
     float wheel = GetMouseWheelMove();
 
-    float px = w - kPanelW * easeOutCubic(drawerT_);
+    float px = w - kPanelW * drawerT_;
     float viewTop = drawerViewTop();
     float viewH = drawerViewH();
     float maxScroll = drawerMaxScroll();
@@ -316,6 +332,40 @@ void TitleScene::updateDrawer(float dt)
         }
     }
 
+    // ---- 画面特效档位 ----
+    {
+        float fxw = (kPanelW - kPad * 2.0f - 24.0f) / 3.0f;
+        for (int i = 0; i < 3; ++i)
+        {
+            Rectangle r{px + kPad + i * (fxw + 12.0f), toScreenY(kFxY), fxw, 46.0f};
+            bool hov = inViewport && CheckCollisionPointRec(mouse, r);
+            fxHover_[i] = renderer::approach(fxHover_[i], hov ? 1.0f : 0.0f, 16.0f,
+                                             renderer::frameDelta());
+            if (pressed && inViewport && hov)
+            {
+                engine()->settings.fxQuality = i;
+                changed = true;
+            }
+        }
+    }
+
+    // ---- 抗锯齿档位 ----
+    {
+        float aaw = (kPanelW - kPad * 2.0f - 24.0f) / 3.0f;
+        for (int i = 0; i < 3; ++i)
+        {
+            Rectangle r{px + kPad + i * (aaw + 12.0f), toScreenY(kAaY), aaw, 46.0f};
+            bool hov = inViewport && CheckCollisionPointRec(mouse, r);
+            aaHover_[i] = renderer::approach(aaHover_[i], hov ? 1.0f : 0.0f, 16.0f,
+                                             renderer::frameDelta());
+            if (pressed && inViewport && hov)
+            {
+                engine()->settings.aaMode = i;
+                changed = true;
+            }
+        }
+    }
+
     // ---- 全屏开关 ----
     Rectangle toggle{px + 70.0f, toScreenY(kFullToggleY), 92.0f, 40.0f};
     if (pressed && inViewport && CheckCollisionPointRec(mouse, toggle))
@@ -341,7 +391,7 @@ void TitleScene::updateDrawer(float dt)
                                        renderer::frameDelta());
 }
 
-void TitleScene::draw()
+void TitleScene::drawBackground()
 {
     float w = static_cast<float>(canvas::width());
     float h = static_cast<float>(canvas::height());
@@ -365,6 +415,14 @@ void TitleScene::draw()
     // （之前末端是 alpha=20，剩下的 8% 不透明度在截断处形成可见的竖线）
     renderer::drawGradientH({0, 0, w * 0.62f, h},
                             Color{10, 14, 28, 185}, Color{10, 14, 28, 0}, 128);
+}
+
+void TitleScene::draw()
+{
+    float w = static_cast<float>(canvas::width());
+    float h = static_cast<float>(canvas::height());
+
+    drawBackground();
 
     const Font& font = engine()->fonts.font();
     float cx = menuX();
@@ -395,16 +453,25 @@ void TitleScene::draw()
         bool interactive = menuA > 0.9f;
         bool h0 = interactive && CheckCollisionPointRec(mouse, {cx, y, kBtnW, kBtnH});
         bool h1 = interactive && CheckCollisionPointRec(mouse, {cx, y + kBtnGap, kBtnW, kBtnH});
-        bool h2 = interactive && CheckCollisionPointRec(mouse, {cx, y + kBtnGap * 2, kBtnW, kBtnH});
+        bool h2 = interactive && CheckCollisionPointRec(mouse,
+                                                        {cx, y + kBtnGap * 2, kBtnW, kBtnH});
+        bool h3 = interactive && CheckCollisionPointRec(mouse,
+                                                        {cx, y + kBtnGap * 3, kBtnW, kBtnH});
 
         renderer::drawButton({cx, y, kBtnW, kBtnH}, lang::tr("title.start"), font, 28.0f,
                              hoverAnim_[0], h0, IsMouseButtonDown(MOUSE_BUTTON_LEFT) && h0,
                              parseError_.empty(), Color{0, 0, 0, 0}, menuA);
-        renderer::drawButton({cx, y + kBtnGap, kBtnW, kBtnH}, lang::tr("title.settings"), font, 28.0f,
-                             hoverAnim_[1], h1, IsMouseButtonDown(MOUSE_BUTTON_LEFT) && h1,
+        renderer::drawButton({cx, y + kBtnGap, kBtnW, kBtnH}, lang::tr("title.gallery"),
+                             font, 28.0f, hoverAnim_[1], h1,
+                             IsMouseButtonDown(MOUSE_BUTTON_LEFT) && h1,
                              true, Color{0, 0, 0, 0}, menuA);
-        renderer::drawButton({cx, y + kBtnGap * 2, kBtnW, kBtnH}, lang::tr("title.quit"), font, 28.0f,
-                             hoverAnim_[2], h2, IsMouseButtonDown(MOUSE_BUTTON_LEFT) && h2,
+        renderer::drawButton({cx, y + kBtnGap * 2, kBtnW, kBtnH}, lang::tr("title.settings"),
+                             font, 28.0f, hoverAnim_[2], h2,
+                             IsMouseButtonDown(MOUSE_BUTTON_LEFT) && h2,
+                             true, Color{0, 0, 0, 0}, menuA);
+        renderer::drawButton({cx, y + kBtnGap * 3, kBtnW, kBtnH}, lang::tr("title.quit"),
+                             font, 28.0f, hoverAnim_[3], h3,
+                             IsMouseButtonDown(MOUSE_BUTTON_LEFT) && h3,
                              true, Color{0, 0, 0, 0}, menuA);
     }
 
@@ -422,11 +489,7 @@ void TitleScene::draw()
     // 设置抽屉（从右侧滑出）
     if (drawerT_ > 0.001f) drawDrawer();
 
-    // 入场淡入遮罩（最后绘制，盖在一切之上）
-    float fadeA = entryFadeAlpha();
-    if (fadeA > 1.0f)
-        DrawRectangle(0, 0, static_cast<int>(w), static_cast<int>(h),
-                      Color{0, 0, 0, static_cast<unsigned char>(fadeA)});
+    // 入场淡入现在由引擎的转场统一负责（见 Engine::switchScene / gfx/post.cpp）
 }
 
 void TitleScene::drawDrawer()
@@ -437,7 +500,7 @@ void TitleScene::drawDrawer()
     const Settings& st = engine()->settings;
     const Color acc = renderer::accent();
 
-    float px = w - kPanelW * easeOutCubic(drawerT_);
+    float px = w - kPanelW * drawerT_;
     float viewTop = drawerViewTop();
     float viewH = drawerViewH();
     float maxScroll = drawerMaxScroll();
@@ -447,13 +510,39 @@ void TitleScene::drawDrawer()
     DrawRectangle(0, 0, static_cast<int>(w), static_cast<int>(h),
                   Color{8, 12, 24, static_cast<unsigned char>(70 * renderer::easeInOut(drawerT_))});
 
-    // 面板：右缘延伸出屏幕，左缘圆角与按钮一致
+    // 面板：液态玻璃（背后是做背景快照 + 边缘折射/高光；右缘延伸出屏幕，左缘圆角与按钮一致）
+    // 宽度多给 32px：弹簧过冲（约 +3.5% = 17px）时右缘也不会露出缝（多出来的在屏幕外）
     Rectangle panelRect{px - renderer::kCornerRadius, 0,
-                        kPanelW + renderer::kCornerRadius, h};
-    float rad = renderer::roundness(renderer::kCornerRadius, panelRect);
-    DrawRectangleRounded(panelRect, rad, 12, renderer::palette().surface);
-    renderer::drawRoundedBorder(panelRect, renderer::kCornerRadius, 2.0f,
-                                renderer::palette().line);
+                        kPanelW + renderer::kCornerRadius + 32.0f, h};
+
+    // 形变：抽屉在滑动时像一块被拖动的软玻璃 —— 沿运动方向拉伸、垂直方向压扁。
+    // 以右缘为不动点（它"贴着"屏幕边缘），内容不动、只有玻璃底板形变。
+    {
+        const float vx = -kPanelW * drawerSpring_.velocity;    // 设计像素/秒
+        const renderer::Deform d = renderer::deformFromVelocity(vx, 0.0f);
+        panelRect = renderer::deformRect(panelRect, d, 1.0f, 0.5f);
+    }
+
+    if (renderer::blurBackdropReady())
+    {
+        // 玻璃底色：面板色压到 205 左右，背后画面才透得出来
+        Color glassTint = renderer::palette().surface;
+        glassTint.a = 172;   // 比对话框再透一点：抽屉背后是整幅背景，通透些折射才看得出来
+        // 描边直接交给玻璃着色器（内部按距离场画，边缘更干净），颜色比 palette().line 亮得多，
+        // 否则深色面板上等于没有边框
+        Color glassEdge = renderer::mix(renderer::palette().line,
+                                        Color{255, 255, 255, 255}, 0.55f);
+        glassEdge.a = 120;
+        renderer::drawBlurPanel(panelRect, glassTint, renderer::kCornerRadius, 18.0f,
+                                glassEdge, 2.0f);
+    }
+    else
+    {
+        float rad = renderer::roundness(renderer::kCornerRadius, panelRect);
+        DrawRectangleRounded(panelRect, rad, 12, renderer::palette().surface);
+        renderer::drawRoundedBorder(panelRect, renderer::kCornerRadius, 2.0f,
+                                    renderer::palette().line);
+    }
 
     // ---- 固定表头 ----
     engine()->fonts.draw(lang::tr("settings.title"), px + kPad, 42.0f, 38.0f,
@@ -539,6 +628,56 @@ void TitleScene::drawDrawer()
                    21.0f, 2.1f, renderer::palette().text);
     }
 
+    // 抗锯齿
+    engine()->fonts.draw(lang::tr("settings.aa_mode"), px + kPad, toScreenY(kAaLabelY), 25.0f,
+                         renderer::palette().text, 2.5f);
+    {
+        float aaw = (kPanelW - kPad * 2.0f - 24.0f) / 3.0f;
+        for (int i = 0; i < 3; ++i)
+        {
+            Rectangle r{px + kPad + i * (aaw + 12.0f), toScreenY(kAaY), aaw, 46.0f};
+            bool on = (st.aaMode == i);
+            float e3 = renderer::easeInOut(std::max(aaHover_[i], on ? 1.0f : 0.0f));
+            float rr = renderer::roundness(std::min(renderer::cornerRadius(), 11.0f), r);
+            Color fill = on ? Color{acc.r, acc.g, acc.b, 210}
+                            : renderer::mix(renderer::palette().surfaceAlt,
+                                            renderer::palette().surfaceHot, e3);
+            DrawRectangleRounded(r, rr, 16, fill);
+            renderer::drawRoundedBorder(r, std::min(renderer::cornerRadius(), 11.0f), 1.5f,
+                                        on ? Color{255, 255, 255, 120}
+                                           : Color{255, 255, 255, static_cast<unsigned char>(40 + 80 * e3)});
+            Vector2 m = MeasureTextEx(font, lang::tr(kAaKeys[i]), 20.0f, 2.0f);
+            DrawTextEx(font, lang::tr(kAaKeys[i]),
+                       {r.x + (r.width - m.x) * 0.5f, r.y + (r.height - m.y) * 0.5f - 1.0f},
+                       20.0f, 2.0f, renderer::palette().text);
+        }
+    }
+
+    // 画面特效
+    engine()->fonts.draw(lang::tr("settings.fx_quality"), px + kPad, toScreenY(kFxLabelY), 25.0f,
+                         renderer::palette().text, 2.5f);
+    {
+        float fxw = (kPanelW - kPad * 2.0f - 24.0f) / 3.0f;
+        for (int i = 0; i < 3; ++i)
+        {
+            Rectangle r{px + kPad + i * (fxw + 12.0f), toScreenY(kFxY), fxw, 46.0f};
+            bool on = (st.fxQuality == i);
+            float e2 = renderer::easeInOut(std::max(fxHover_[i], on ? 1.0f : 0.0f));
+            float rr = renderer::roundness(std::min(renderer::cornerRadius(), 11.0f), r);
+            Color fill = on ? Color{acc.r, acc.g, acc.b, 210}
+                            : renderer::mix(renderer::palette().surfaceAlt,
+                                            renderer::palette().surfaceHot, e2);
+            DrawRectangleRounded(r, rr, 16, fill);
+            renderer::drawRoundedBorder(r, std::min(renderer::cornerRadius(), 11.0f), 1.5f,
+                                        on ? Color{255, 255, 255, 120}
+                                           : Color{255, 255, 255, static_cast<unsigned char>(40 + 80 * e2)});
+            Vector2 m = MeasureTextEx(font, lang::tr(kFxKeys[i]), 21.0f, 2.1f);
+            DrawTextEx(font, lang::tr(kFxKeys[i]),
+                       {r.x + (r.width - m.x) * 0.5f, r.y + (r.height - m.y) * 0.5f - 1.0f},
+                       21.0f, 2.1f, renderer::palette().text);
+        }
+    }
+
     // 全屏
     engine()->fonts.draw(lang::tr("settings.fullscreen"), px + kPad, toScreenY(kFullLabelY), 25.0f,
                          renderer::palette().text, 2.5f);
@@ -579,8 +718,13 @@ void TitleScene::debugAuto(int frame)
     else if (frame == 97) drawerScrollTarget_ = drawerMaxScroll();
     else if (frame == 108) engine()->selftestShot("settings_bottom");    // 底部：样式/全屏/返回
     else if (frame == 118) settingsOpen_ = false;
+    else if (frame == 135) engine()->selftestShot("transition");          // 径向擦除进行中
     else if (frame == 130)
     {
+        // 和真实按钮一样：从"开始游戏"按钮中心径向擦除（自检也顺便验转场）
+        engine()->setTransition(postfx::TransitionWipe,
+                                (kBtnX + kBtnW*0.5f)/static_cast<float>(canvas::width()),
+                                (kBtnY + kBtnH*0.5f)/static_cast<float>(canvas::height()));
         // --direct：自检也走"直接进剧情"，方便单独看某一段（比如观测战）
         if (direct_ && script_)
             engine()->switchScene(std::make_shared<GameScene>(engine(), scriptPath_, script_,

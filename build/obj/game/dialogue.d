@@ -1,5 +1,6 @@
-build/obj/game/dialogue.o: game/dialogue.cpp game/dialogue.h \
- build/raylib-wayland/src/raylib.h game/../renderer/renderer.h
+build/obj/game/dialogue.o: game/dialogue.cpp game/dialogue.h gfx/gfx.h \
+ gfx/types.h game/../renderer/renderer.h
 game/dialogue.h:
-build/raylib-wayland/src/raylib.h:
+gfx/gfx.h:
+gfx/types.h:
 game/../renderer/renderer.h:

@@ -59,6 +59,23 @@ void Character::draw(float screenW, float screenH, bool speaking) const
     float cx = anchorX * screenW + speakOffset;
     float bottomY = screenH + 4.0f;
 
+    // 脚下的柔和投影：几层椭圆叠出渐变，让立绘"站住"而不是浮在背景上
+    {
+        const float shadowW = drawW * 0.34f;
+        const float shadowH = 10.0f + drawW * 0.030f;
+        const float a0 = alpha / 255.0f;
+        for (int i = 6; i >= 1; --i)
+        {
+            const float k = static_cast<float>(i) / 6.0f;      // 1 = 最大最淡
+            const float w = shadowW * (0.45f + 0.85f*k);
+            const float h = shadowH * (0.45f + 0.85f*k);
+            const unsigned char sa = static_cast<unsigned char>(52.0f*(1.0f - k)*a0);
+            if (sa == 0) continue;
+            DrawEllipse(static_cast<int>(cx), static_cast<int>(bottomY - 8.0f),
+                        w, h, Color{0, 0, 0, sa});
+        }
+    }
+
     Color tint{255, 255, 255, static_cast<unsigned char>(alpha)};
     if (bodyTex.id)
     {

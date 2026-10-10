@@ -24,6 +24,7 @@
 #include "core/vm.h"
 #include "game/battle.h"
 #include "game/game.h"
+#include "game/gallery_scene.h"
 #include "game/title_scene.h"
 
 namespace
@@ -810,6 +811,7 @@ void printUsage()
     printf("  --script <文件>       指定 .gal 脚本（默认 assets/scripts/star_festival.gal）\n");
     printf("  --tree                无窗口打印剧情树（主线 / 支线 / 解锁状态）\n");
     printf("  --direct              开始游戏直接进默认脚本第一章（跳过章节选择，调试用）\n");
+    printf("  --gallery             直接进角色图集（看已登场角色，调试用）\n");
     printf("  --check-assets        无窗口自检素材：存在性 + 图片/音频可解码\n");
     printf("  --check-battle        无窗口自检观测战：每场战斗都能正常打完\n");
     printf("  --check-gesture       无窗口自检触摸板手势（合成事件，不需要真设备）\n");
@@ -834,6 +836,7 @@ int main(int argc, char** argv)
     bool tree = false;
     bool checkAssetsFlag = false;
     bool direct = false;
+    bool galleryFlag = false;
     bool checkBattleFlag = false;
     bool checkGestureFlag = false;
     bool gestureMonitorFlag = false;
@@ -848,6 +851,7 @@ int main(int argc, char** argv)
         else if (a == "--tree") tree = true;
         else if (a == "--check-assets") checkAssetsFlag = true;
         else if (a == "--direct") direct = true;
+        else if (a == "--gallery") galleryFlag = true;
         else if (a == "--check-battle") checkBattleFlag = true;
         else if (a == "--check-gesture") checkGestureFlag = true;
         else if (a == "--gesture-monitor") gestureMonitorFlag = true;
@@ -938,7 +942,12 @@ int main(int argc, char** argv)
         return 1;
     }
     progressEnsureCreated();   // 开始游戏时确保章节进度文件存在
-    engine.switchScene(std::make_shared<TitleScene>(&engine, scriptPath, script, parseError, direct));
+    if (galleryFlag)
+        engine.switchScene(
+            std::make_shared<GalleryScene>(&engine, scriptPath, script, parseError));
+    else
+        engine.switchScene(
+            std::make_shared<TitleScene>(&engine, scriptPath, script, parseError, direct));
     engine.run();
 
     return selftest ? (engine.selftestPassed ? 0 : 2) : 0;

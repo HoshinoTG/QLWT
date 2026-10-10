@@ -1,0 +1,8 @@
+{
+	"InstallScripts" : 
+	[
+		"/home/hoshino/project/GalgameScriptEngine/build/glfw-win/cmake_install.cmake",
+		"/home/hoshino/project/GalgameScriptEngine/build/glfw-win/src/cmake_install.cmake"
+	],
+	"Parallel" : false
+}

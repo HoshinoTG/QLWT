@@ -46,7 +46,7 @@ const char* kFontCandidates[] = {
     // Medium 优先：小字号下笔画比 Regular 更实，抗锯齿后不会灰成一片
     "assets/fonts/NotoSansSC-Medium.ttf",
     // 项目内自备字体（优先）。Linux/macOS 上的中文字体普遍是 .ttc，
-    // 而 raylib 只认 .ttf/.otf，所以先用 tools/ttc2ttf.py 抽一个放到这里：
+    // 而字形光栅化只认 .ttf/.otf，所以先用 tools/ttc2ttf.py 抽一个放到这里：
     //   python3 tools/ttc2ttf.py "$(fc-match -f '%{file}' :lang=zh-cn)"
     //       assets/fonts/NotoSansSC-Regular.ttf SC        （或直接 make font）
     "assets/fonts/NotoSansSC-Regular.ttf",
@@ -57,7 +57,7 @@ const char* kFontCandidates[] = {
     "C:/Windows/Fonts/msyh.ttc",
     "C:/Windows/Fonts/Deng.ttf",
     "C:/Windows/Fonts/NotoSansSC-VF.ttf",
-    // Linux / macOS（只列 .ttf / .otf：raylib 不支持 .ttc / .otc）
+    // Linux / macOS（只列 .ttf / .otf：stb_truetype 不支持 .ttc / .otc）
     "/usr/share/fonts/opentype/noto/NotoSansSC-Regular.otf",
     "/usr/share/fonts/opentype/noto/NotoSerifSC-Regular.otf",
     "/usr/share/fonts/opentype/source-han-sans/SourceHanSansSC-Regular.otf",
@@ -138,7 +138,7 @@ bool FontManager::init(const std::vector<std::string>& texts)
             return true;
         }
     }
-    // 全部失败则退回 raylib 默认字体（不支持中文）
+    // 全部失败则退回引擎的兜底字体（系统 TTF，通常不含中文）
     font_ = GetFontDefault();
     ok_ = false;
     printf("[font] WARNING: no CJK font found, falling back to default font\n");

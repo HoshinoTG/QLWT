@@ -2,7 +2,7 @@
 
 #include <algorithm>
 
-#include <raylib.h>
+#include "gfx/gfx.h"
 
 void Time::update()
 {

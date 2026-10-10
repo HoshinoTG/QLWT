@@ -3,7 +3,7 @@
 
 #include <algorithm>
 
-#include <raylib.h>
+#include "gfx/gfx.h"
 
 #include "../renderer/renderer.h"
 

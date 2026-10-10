@@ -225,6 +225,9 @@ private:
             e.hp = std::atoi(takeWord("enemy hp").c_str());
             e.atk = std::atoi(takeWord("enemy atk").c_str());
             e.spd = std::atoi(takeWord("enemy spd").c_str());
+            // 可选第 6 项：敌人贴图路径（ASCII），不写就按类别自动找
+            if (cur().kind != TokKind::EOL && !atEnd())
+                e.image = cur().kind == TokKind::String ? next().text : takeWord("enemy image");
             auto& def = script.battles[id];
             def.id = id;
             def.enemies.push_back(e);

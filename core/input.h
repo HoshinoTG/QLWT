@@ -1,6 +1,6 @@
 #pragma once
 
-#include <raylib.h>
+#include "gfx/gfx.h"
 
 // 输入封装：键盘 / 鼠标的按下、刚按下、刚松开与位置查询
 class Input

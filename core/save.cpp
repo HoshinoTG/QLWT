@@ -196,3 +196,15 @@ void progressEnsureCreated()
 {
     if (!std::filesystem::exists(progressPath())) progressWrite({});
 }
+
+bool galleryIsSeen(const std::string& name)
+{
+    return progressRead().count("char|" + name) != 0;
+}
+
+void galleryMarkSeen(const std::string& name)
+{
+    if (name.empty()) return;
+    auto data = progressRead();
+    if (data.insert("char|" + name).second) progressWrite(data);
+}

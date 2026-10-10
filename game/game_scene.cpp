@@ -7,6 +7,7 @@
 #include <ctime>
 
 #include "../core/engine.h"
+#include "../gfx/post.h"
 #include "../core/lang.h"
 #include "../renderer/renderer.h"
 #include "chapter_select.h"
@@ -59,6 +60,7 @@ void GameScene::start()
 
 void GameScene::backToTitle()
 {
+    engine()->setTransition(postfx::TransitionFade);
     engine()->switchScene(std::make_shared<TitleScene>(
         engine(), scriptPath_, script_, parseError_));
 }
@@ -166,12 +168,50 @@ void GameScene::addLog(const std::string& name, const std::string& text)
 
 void GameScene::update(float dt)
 {
-    // 观测战：战斗期间不响应剧情推进，只跑战斗；每帧顺便问一次 VM 有没有打完
+    // 观测战：进场 / 离场都走一段黑场过渡，别硬切
     if (game_.battleActive())
     {
+        if (!battleWasActive_)
+        {
+            battleWasActive_ = true;
+            battleExiting_ = false;
+            battleCurtain_ = 1.0f;     // 从全黑淡入战斗
+            battleEndT_ = 0.0f;
+        }
         game_.updateBattle(dt);
-        vm_.step(game_);       // 打完这一帧 VM 会跳 win/lose 标签并结束战斗
+
+        if (!game_.battleFinished())
+        {
+            battleCurtain_ = std::max(0.0f, battleCurtain_ - dt / 0.35f);
+            vm_.step(game_);
+            return;
+        }
+
+        // 结算画面：至少停 0.9 秒让人看清胜负，也可以点一下提前继续
+        battleEndT_ += dt;
+        const bool skip = battleEndT_ > 0.45f && engine()->input.advancePressed();
+        if (battleEndT_ > 0.9f || skip) battleExiting_ = true;
+        if (battleExiting_)
+        {
+            battleCurtain_ = std::min(1.0f, battleCurtain_ + dt / 0.28f);
+            if (battleCurtain_ >= 1.0f)
+            {
+                vm_.step(game_);        // 到这里才真正结束战斗、跳 win / lose 标签
+                inputCooldown_ = 0.3f;  // 别让"继续"这一下顺手把后面的对话也翻过去
+            }
+        }
         return;
+    }
+
+    // 战斗结束：把黑场淡开，露出接下来的剧情
+    if (battleWasActive_)
+    {
+        battleCurtain_ = std::max(0.0f, battleCurtain_ - dt / 0.35f);
+        if (battleCurtain_ <= 0.0f)
+        {
+            battleWasActive_ = false;
+            battleExiting_ = false;
+        }
     }
 
     // 章节结束：自动淡出并进入下一章
@@ -194,7 +234,8 @@ void GameScene::update(float dt)
     if (chapterPrompt_)
     {
         // 入场动画：未播完之前不响应点击/按键，避免手快误触
-        chapterPromptT_ = std::min(1.0f, chapterPromptT_ + dt / 0.22f);
+        chapterPromptSpring_.update(1.0f, dt);
+        chapterPromptT_ = chapterPromptSpring_.value;
         bool ready = chapterPromptT_ > 0.85f;
         float w = static_cast<float>(canvas::width());
         float h = static_cast<float>(canvas::height());
@@ -230,6 +271,7 @@ void GameScene::update(float dt)
             else if (h2)
             {
                 chapterPrompt_ = false;
+                engine()->setTransition(postfx::TransitionDissolve);   // 噪点溶解：像"散场"
                 engine()->switchScene(std::make_shared<ChapterSelectScene>(
                     engine(), scriptPath_, parseError_));
             }
@@ -243,6 +285,7 @@ void GameScene::update(float dt)
         if (ready && IsKeyPressed(KEY_ESCAPE))
         {
             chapterPrompt_ = false;
+            engine()->setTransition(postfx::TransitionDissolve);
             engine()->switchScene(std::make_shared<ChapterSelectScene>(
                 engine(), scriptPath_, parseError_));
         }
@@ -251,6 +294,15 @@ void GameScene::update(float dt)
 
     inputCooldown_ = std::max(0.0f, inputCooldown_ - dt);
     game_.update(dt);
+
+    // 进入观测战：轻微白闪，切换感更利落
+    const bool inBattle = game_.battleActive();
+    if (inBattle && !prevBattleActive_ && engine()->settings.fxQuality > 0)
+        engine()->flash(0.45f, 0.30f);
+    prevBattleActive_ = inBattle;
+    // CG 从黑场里"亮"出来的一瞬间来一记白闪（曝光感）
+    if (game_.cgFullyShown() && !prevCgShown_ && engine()->settings.fxQuality > 0)
+        engine()->flash(0.75f, 0.40f);
     if (engine()->selftest && game_.cgFullyShown() && !prevCgShown_)
         if (pendingShot_.empty()) queueShot("cg" + std::to_string(++cgShot_));
     prevCgShown_ = game_.cgFullyShown();
@@ -356,6 +408,8 @@ void GameScene::update(float dt)
         }
         if (cardActive_)
         {
+            // 弹入/收起走弹簧（cardT_ 仍是"秒"计时，用来做输入判定）
+            cardSpring_.update(cardClosing_ ? 0.0f : 1.0f, dt);
             if (cardClosing_)
             {
                 cardCloseT_ += dt;
@@ -503,6 +557,7 @@ void GameScene::update(float dt)
             {
                 chapterPrompt_ = true;
                 chapterPromptT_ = 0.0f;      // 从头播入场动画
+            chapterPromptSpring_.reset(0.0f);
                 printf("[scene] chapter %d end -> prompt\n", currentChapter_ + 1);
                 if (engine()->selftest && pendingShot_.empty())
                 {
@@ -521,15 +576,6 @@ void GameScene::update(float dt)
 }
 
 // 对话框用毛玻璃：只在对话框可见时让引擎多渲染一遍「背景 + 立绘」快照
-bool GameScene::needsBackdrop() const
-{
-    return dlg_.active() && !ended_;
-}
-
-void GameScene::drawBackdropOnly()
-{
-    game_.draw();
-}
 
 void GameScene::draw()
 {
@@ -540,7 +586,11 @@ void GameScene::draw()
     game_.draw();
     if (game_.battleActive())
     {
-        game_.drawBattle(engine()->fonts);
+        game_.drawBattle(engine()->fonts, engine()->renderScale());
+        if (battleCurtain_ > 0.0f)
+            DrawRectangle(0, 0, static_cast<int>(w), static_cast<int>(h),
+                          Color{0, 0, 0,
+                                static_cast<unsigned char>(battleCurtain_ * 255.0f)});
         return;
     }
     if (narrateActive_) drawNarrate();
@@ -587,13 +637,21 @@ void GameScene::draw()
         float py = (h - ph) * 0.5f;
         const Font& font = engine()->fonts.font();
         // 入场动画：遮罩淡入 + 面板轻微上浮，避免"啪"地弹出来
-        float t = renderer::easeOutCubic(std::min(1.0f, chapterPromptT_));
+        float t = std::clamp(chapterPromptT_, 0.0f, 1.0f);
+        // 弹入：0.94 -> 1.0，配合弹簧过冲轻微"胀"一下
+        const float pop = 0.94f + 0.06f*chapterPromptT_;
         auto fade = [&](Color c, float k) {
             c.a = static_cast<unsigned char>(c.a * k);
             return c;
         };
         float rise = (1.0f - t) * 24.0f;
         py += rise;
+        const Rectangle promptRect =
+            renderer::deformRect({px, py, pw, ph}, {pop, pop}, 0.5f, 0.5f);
+        px = promptRect.x;
+        py = promptRect.y;
+        pw = promptRect.width;
+        ph = promptRect.height;
 
         DrawRectangle(0, 0, static_cast<int>(w), static_cast<int>(h),
                       Color{0, 0, 0, static_cast<unsigned char>(150 * t)});
@@ -627,6 +685,12 @@ void GameScene::draw()
         DrawRectangle(0, 0, static_cast<int>(w), static_cast<int>(h),
                       Color{0, 0, 0,
                             static_cast<unsigned char>(chapterAdvanceFade_ * 255.0f)});
+
+    // 观测战结束后黑场淡开（露出接下来的剧情）
+    if (battleCurtain_ > 0.0f)
+        DrawRectangle(0, 0, static_cast<int>(w), static_cast<int>(h),
+                      Color{0, 0, 0,
+                            static_cast<unsigned char>(battleCurtain_ * 255.0f)});
 }
 
 void GameScene::afterDraw()
@@ -727,12 +791,13 @@ void GameScene::drawCard() const
         a = renderer::easeInOut(1.0f - std::min(1.0f, cardCloseT_ / 0.25f));
     else
         a = renderer::easeInOut(std::min(1.0f, cardT_ / 0.35f));
+    const float pop = 0.94f + 0.06f*cardSpring_.value;
 
     DrawRectangle(0, 0, static_cast<int>(w), static_cast<int>(h),
                   Color{6, 10, 20, static_cast<unsigned char>(150 * a)});
 
-    float size = 46.0f;
-    Vector2 m = MeasureTextEx(font, cardText_.c_str(), size, 4.6f);
+    float size = 46.0f*pop;   // 弹入时字号跟着轻微放大
+    Vector2 m = MeasureTextEx(font, cardText_.c_str(), size, 4.6f*pop);
     float cx = (w - m.x) * 0.5f;
     float cy = h * 0.5f - m.y * 0.5f;
     Color text{255, 255, 255, static_cast<unsigned char>(255 * a)};
@@ -1172,6 +1237,9 @@ void GameScene::debugAuto(int frame)
         if (frame % 40 == 0) engine()->selftestShot("battle");   // 自检留一张战斗画面
         return;
     }
+
+    // 剧情中的一张截图：立绘 + 对话框 + 后处理效果
+    if (frame == 420) engine()->selftestShot("story");
 
     // 存档 / 读档回归：先存档，选项后再读档，验证能继续到结尾
     if (frame == 280)

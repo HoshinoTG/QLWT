@@ -3,7 +3,7 @@
 #include <string>
 #include <vector>
 
-#include <raylib.h>
+#include "gfx/gfx.h"
 
 #include "../core/script.h"
 
@@ -28,10 +28,12 @@ public:
         int hp = 100, hpMax = 100;
         int atk = 12, def = 6, spd = 10;
         int sp = 0, spMax = 6;
-        int guard = 0;             // 防御中（本回合受伤减半）
+        int guard = 0;             // 防御中（只在本回合内有效，回合结束清零）
         int stun = 0;              // 停止行动剩余回合
         int atkBuff = 0;           // 攻击提升剩余回合
-        int vuln = 0;              // 受伤增加剩余回合（被"观测"标记）
+        int chargeRound = 0;       // >0 = 蓄力中，会在这一回合对我方放一次大招
+        int chargeTarget = -1;     // 蓄力锁定的我方下标（预告里会标出来）
+        std::string image;         // 敌人贴图路径（我方为空）
         float flash = 0.0f;        // 受击闪白
         float shake = 0.0f;        // 受击抖动
         bool alive() const { return hp > 0; }
@@ -39,7 +41,10 @@ public:
 
     void setup(const BattleDef& def);
     void update(float dt);
-    void draw(const FontManager& fonts);
+    // renderScale = 离屏画布相对设计分辨率的倍率。引擎把整场戏画进按窗口缩放的
+    // 离屏纹理：BeginScissorMode 的裁剪框是「渲染目标像素」、不吃矩阵缩放，
+    // 所以要自己乘上 renderScale。
+    void draw(const FontManager& fonts, float renderScale);
     bool finished() const { return phase_ == Phase::Result; }
     bool won() const { return won_; }
     void debugAuto(int frame);     // 窗口自检：自动出招
@@ -55,6 +60,7 @@ private:
 
     static const int kPartySize = 3;
     static const int kMaxEnemies = 3;
+    static constexpr int kSkillCost = 3;   // 技能消耗的 SP
 
     void beginRound();
     void nextTurn();
@@ -62,11 +68,14 @@ private:
     void actEnemy(int idx);
     void dealDamage(int targetIdx, int amount, bool crit);
     void healAll(int amount);
-    void applyBuff(int kind, int value);
     void pushLog(const std::string& s);
     void checkEnd();
     int aliveEnemies() const;
     int aliveAllies() const;
+    int liveTargetFrom(int preferred) const;   // 从 preferred 开始找一个还活着的敌人
+    void cycleTarget(int dir);
+    int mostHurtAlly() const;                  // 蓄力大招锁最残血的我方
+    void armCharges();                         // 回合末：预告下一轮的大招
     void enemyRect(int idx, Rectangle& out) const;
     void allyRect(int idx, Rectangle& out) const;
     const char* skillName(int ally) const;
@@ -77,7 +86,7 @@ private:
     std::vector<int> order_;        // 行动顺序（1..n 我方，负数为敌方下标）
     size_t orderPos_ = 0;
     int round_ = 0;
-    int maxRounds_ = 12;
+    int maxRounds_ = 14;            // 观测窗口：超过就算这场没做完
     std::string title_;
     bool won_ = true;
     Phase phase_ = Phase::Intro;
@@ -88,6 +97,8 @@ private:
     float cmdHoverAnim_[3] = {0.0f, 0.0f, 0.0f};
     int autoCmd_ = -1;              // 自检用：指定这一手出什么
     int buffValue_ = 30;            // 当前攻击加成百分比（技能决定）
+    int targetSel_ = 0;             // 当前选中的敌人（攻击 / 单体技能打它）
+    float spHintT_ = 0.0f;          // "SP 不足"提示的剩余显示时间
     std::vector<std::string> log_;
     std::vector<std::pair<Vector2, std::pair<int, float>>> popups_;   // 飘字：位置/数值/剩余时间
     float time_ = 0.0f;

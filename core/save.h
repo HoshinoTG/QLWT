@@ -49,3 +49,7 @@ bool loadSlot(int slot, SaveData& out);
 bool progressIsViewed(const std::string& scriptPath, int chapterId);
 void progressMarkViewed(const std::string& scriptPath, int chapterId);
 void progressEnsureCreated();
+
+// 角色图集：同一个 progress.dat 里以 "char|名字" 记录剧情里登场过的角色
+bool galleryIsSeen(const std::string& name);
+void galleryMarkSeen(const std::string& name);

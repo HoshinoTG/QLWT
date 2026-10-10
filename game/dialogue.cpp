@@ -132,9 +132,9 @@ void DialogueBox::draw(const Font& font, float screenW, float screenH, float tim
     if (renderer::blurBackdropReady())
     {
         Color glassTint = panelFill;
-        glassTint.a = 190;
-        renderer::drawBlurPanel(panel, glassTint, renderer::kCornerRadius, 3, 6.0f);
-        renderer::drawRoundedBorder(panel, renderer::kCornerRadius, 2.0f, borderColor);
+        glassTint.a = 186;   // 折射靠几何位移体现，底色不用太透，保证文字对比度
+        renderer::drawBlurPanel(panel, glassTint, renderer::kCornerRadius, 16.0f,
+                                borderColor, 2.0f);
     }
     else
     {

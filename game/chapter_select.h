@@ -6,7 +6,7 @@
 #include <string>
 #include <vector>
 
-#include <raylib.h>
+#include "gfx/gfx.h"
 
 #include "../core/script.h"
 #include "scene.h"
@@ -48,7 +48,8 @@ private:
     void refreshViewed();
     Texture2D coverTexture(const std::string& path);
     int nextChapterIndex(const BigChapter& bc) const;
-    void startChapter(const BigChapter& bc, int chapterIdx);   // -1 = 整脚本
+    // fromRect：转场从哪张卡片展开（不传就用画面中心）
+    void startChapter(const BigChapter& bc, int chapterIdx, Rectangle fromRect = Rectangle{});   // -1 = 整脚本
     void enterSub(int index);      // 进入小章节列表（带动画）
     void backToBig();              // 返回大章节列表（带动画）
     // 剧情地图：一级界面是一张可以自由缩放/平移的图，
@@ -134,4 +135,5 @@ private:
     int debugEnter_ = -1;   // 自检：模拟"点击卡片"发生在 update 内部的时机
     int debugClickRow_ = -1;  // 自检：模拟点击某一行章节（先按下、再松开的真实序列）
     int debugClickPhase_ = 0;
+    float shineT_ = -0.45f;   // "下一章"卡片高光扫过的进度
 };

@@ -3,7 +3,7 @@
 #include <string>
 #include <vector>
 
-// GIF 解析（自实现，绕开 raylib 对特殊 LZW 码流的兼容问题）
+// GIF 解析（自实现，绕开 stb_image 对特殊 LZW 码流的兼容问题）
 struct GifFrame
 {
     int width = 0;

@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <cmath>
 #include <cstdio>
+#include <cstdlib>
 #include <map>
 
 #include "../core/canvas.h"
@@ -52,6 +53,12 @@ float frand(float a, float b)
 {
     return a + (b - a) * (static_cast<float>(GetRandomValue(0, 1000)) / 1000.0f);
 }
+
+// ---- 敌人蓄力大招 ----
+// 第 1、4、7、10 回合结束时预告，第 3、6、9、12 回合打出：玩家有整整一轮时间应对
+// （守住被锁定的那位 / 治疗 / 用眩晕打断 / 抢在它出手前杀掉）。
+constexpr int kChargeEvery = 4;
+constexpr float kChargeMul = 1.8f;      // 大招伤害 = 攻击 × 该系数（单体）
 
 // 敌人形象分类（名字里带什么就画成什么）
 enum class EnemyLook { Light, Cloud, Noise, Solid };
@@ -109,6 +116,8 @@ void Battle::setup(const BattleDef& def)
     timer_ = 0.0f;
     won_ = true;
     title_ = def.id;
+    targetSel_ = 0;
+    spHintT_ = 0.0f;
 
     for (const auto& name : def.party)
     {
@@ -148,6 +157,7 @@ void Battle::setup(const BattleDef& def)
         u.atk = e.atk;
         u.def = std::max(0, e.atk / 3);
         u.spd = e.spd;
+        u.image = e.image;
         enemies_.push_back(u);
     }
     if (enemies_.empty())
@@ -162,6 +172,62 @@ void Battle::setup(const BattleDef& def)
         enemies_.push_back(u);
     }
     pushLog(lang::tr("battle.start"));
+}
+
+int Battle::mostHurtAlly() const
+{
+    int best = -1;
+    float bestRatio = 2.0f;
+    for (size_t i = 0; i < allies_.size(); ++i)
+    {
+        const Unit& u = allies_[i];
+        if (!u.alive()) continue;
+        const float ratio = u.hpMax > 0 ? static_cast<float>(u.hp) / u.hpMax : 0.0f;
+        if (ratio < bestRatio) { bestRatio = ratio; best = static_cast<int>(i); }
+    }
+    return best;
+}
+
+int Battle::liveTargetFrom(int preferred) const
+{
+    const int n = static_cast<int>(enemies_.size());
+    if (n == 0) return -1;
+    const int start = (preferred >= 0 && preferred < n) ? preferred : 0;
+    for (int k = 0; k < n; ++k)
+    {
+        const int i = (start + k) % n;
+        if (enemies_[i].alive()) return i;
+    }
+    return -1;
+}
+
+void Battle::cycleTarget(int dir)
+{
+    const int n = static_cast<int>(enemies_.size());
+    if (n == 0) return;
+    int i = targetSel_;
+    for (int k = 0; k < n; ++k)
+    {
+        i = (i + dir + n) % n;
+        if (enemies_[i].alive()) { targetSel_ = i; return; }
+    }
+}
+
+void Battle::armCharges()
+{
+    if (round_ % kChargeEvery != 1) return;
+    const int fire = round_ + 2;
+    const int mark = mostHurtAlly();
+    // 只让一个敌人蓄力，别三个一起糊脸；按存活顺序轮着来
+    std::vector<int> alive;
+    for (size_t i = 0; i < enemies_.size(); ++i)
+        if (enemies_[i].alive()) alive.push_back(static_cast<int>(i));
+    if (alive.empty() || mark < 0) return;
+    const int wave = round_ / kChargeEvery;          // 0,1,2,3…
+    Unit& e = enemies_[alive[wave % static_cast<int>(alive.size())]];
+    e.chargeRound = fire;
+    e.chargeTarget = mark;
+    pushLog(e.name + lang::tr("battle.charge_log") + allies_[mark].name);
 }
 
 // ---------------------------------------------------------------- 回合推进
@@ -213,15 +279,30 @@ void Battle::nextTurn()
         }
         Unit& u = enemies_[-who - 1];
         if (!u.alive()) { ++orderPos_; continue; }
-        if (u.stun > 0) { --u.stun; ++orderPos_; continue; }
+        if (u.stun > 0)
+        {
+            --u.stun;
+            if (u.chargeRound > 0)      // 眩晕打断蓄力
+            {
+                u.chargeRound = 0;
+                u.chargeTarget = -1;
+                pushLog(u.name + lang::tr("battle.charge_break"));
+            }
+            ++orderPos_;
+            continue;
+        }
         phase_ = Phase::Acting;
         timer_ = 0.5f;          // 敌人起手时间，玩家能看清是谁要动手
         return;
     }
-    // 一轮打完：结算增益/回复 SP，开下一轮
-    for (auto& u : allies_) if (u.atkBuff > 0) --u.atkBuff;
-    for (auto& u : enemies_) { if (u.vuln > 0) --u.vuln; }
+    // 一轮打完：结算增益与 SP、清掉本回合的防御姿态，再预告下一轮的大招
+    for (auto& u : allies_)
+    {
+        if (u.atkBuff > 0) --u.atkBuff;
+        u.guard = 0;            // 守住只保护"当回合"，不是整场
+    }
     for (auto& u : allies_) if (u.sp < u.spMax) ++u.sp;
+    armCharges();
     beginRound();
     nextTurn();
 }
@@ -233,10 +314,9 @@ void Battle::actAlly(int cmd)
     if (who <= 0) return;
     Unit& me = allies_[who - 1];
     CharStat st = statOf(me.name);
-    int target = -1;
-    for (size_t i = 0; i < enemies_.size(); ++i)
-        if (enemies_[i].alive()) { target = static_cast<int>(i); break; }
+    const int target = liveTargetFrom(targetSel_);
     if (target < 0) { checkEnd(); return; }
+    targetSel_ = target;       // 选中的目标倒了就自动挪到下一个还活着的
 
     if (cmd == 2)                       // 守
     {
@@ -244,9 +324,9 @@ void Battle::actAlly(int cmd)
         if (me.sp < me.spMax) ++me.sp;
         pushLog(me.name + lang::tr("battle.log_guard"));
     }
-    else if (cmd == 1 && me.sp >= 3)    // 技能
+    else if (cmd == 1 && me.sp >= kSkillCost)   // 技能
     {
-        me.sp -= 3;
+        me.sp -= kSkillCost;
         char buf[96];
         std::snprintf(buf, sizeof(buf), lang::tr("battle.log_skill"), st.skill);
         pushLog(me.name + buf);
@@ -299,17 +379,40 @@ void Battle::actEnemy(int idx)
     for (size_t i = 0; i < allies_.size(); ++i)
         if (allies_[i].alive()) alive.push_back(static_cast<int>(i));
     if (alive.empty()) { checkEnd(); return; }
+
+    // 打在一位我方身上（守住减半），顺带出飘字和受击反馈
+    auto hit = [&](int t, float raw, float popTime, float flashTime) {
+        Unit& me2 = allies_[t];
+        int dmg = std::max(1, static_cast<int>(raw - me2.def * 0.5f));
+        if (me2.guard > 0) dmg = std::max(1, dmg / 2);
+        me2.hp = std::max(0, me2.hp - dmg);
+        me2.flash = flashTime;
+        me2.shake = flashTime;
+        Rectangle r{};
+        allyRect(t, r);
+        popups_.push_back({{r.x + r.width * 0.5f, r.y + 10.0f}, {dmg, popTime}});
+    };
+
+    // 蓄力大招：打在预告里标出的那一位身上（他若已经倒了就改成最残血的）
+    if (e.chargeRound > 0 && round_ >= e.chargeRound)
+    {
+        int t = (e.chargeTarget >= 0 && e.chargeTarget < static_cast<int>(allies_.size()) &&
+                 allies_[e.chargeTarget].alive()) ? e.chargeTarget : mostHurtAlly();
+        e.chargeRound = 0;
+        e.chargeTarget = -1;
+        if (t >= 0)
+        {
+            hit(t, e.atk * kChargeMul * frand(0.95f, 1.05f), 1.2f, 0.5f);
+            pushLog(e.name + lang::tr("battle.charge_fire") + allies_[t].name);
+        }
+        ++orderPos_;
+        checkEnd();
+        return;
+    }
+
     const int t = alive[GetRandomValue(0, static_cast<int>(alive.size()) - 1)];
-    Unit& me = allies_[t];
-    int dmg = std::max(1, static_cast<int>(e.atk * frand(0.85f, 1.15f) - me.def * 0.5f));
-    if (me.guard > 0) dmg = std::max(1, dmg / 2);
-    me.hp = std::max(0, me.hp - dmg);
-    me.flash = 0.35f;
-    me.shake = 0.35f;
-    Rectangle r{};
-    allyRect(t, r);
-    popups_.push_back({{r.x + r.width * 0.5f, r.y + 10.0f}, {dmg, 0.9f}});
-    pushLog(e.name + lang::tr("battle.log_enemy_hit") + me.name);
+    hit(t, e.atk * frand(0.85f, 1.15f), 0.9f, 0.35f);
+    pushLog(e.name + lang::tr("battle.log_enemy_hit") + allies_[t].name);
     ++orderPos_;
     checkEnd();
 }
@@ -319,7 +422,6 @@ void Battle::dealDamage(int targetIdx, int amount, bool crit)
     if (targetIdx < 0 || targetIdx >= static_cast<int>(enemies_.size())) return;
     Unit& e = enemies_[targetIdx];
     if (!e.alive()) return;
-    if (e.vuln > 0) amount = static_cast<int>(amount * 1.3f);
     e.hp = std::max(0, e.hp - amount);
     e.flash = 0.35f;
     e.shake = 0.35f;
@@ -424,6 +526,7 @@ bool Battle::isCommandHovered(int cmd, Rectangle& out) const
 void Battle::update(float dt)
 {
     time_ += dt;
+    if (spHintT_ > 0.0f) spHintT_ = std::max(0.0f, spHintT_ - dt);
     for (auto& u : allies_) { u.flash = std::max(0.0f, u.flash - dt * 2.5f);
                               u.shake = std::max(0.0f, u.shake - dt * 2.5f); }
     for (auto& u : enemies_) { u.flash = std::max(0.0f, u.flash - dt * 2.5f);
@@ -461,12 +564,38 @@ void Battle::update(float dt)
         const bool click = IsMouseButtonReleased(MOUSE_BUTTON_LEFT);
         const bool enter = IsKeyPressed(KEY_ENTER) || IsKeyPressed(KEY_SPACE) ||
                            IsKeyPressed(KEY_KP_ENTER);
+
+        // 选目标：点敌人卡片，或左右方向键切换
+        targetSel_ = liveTargetFrom(targetSel_);
+        if (IsKeyPressed(KEY_LEFT)) cycleTarget(-1);
+        if (IsKeyPressed(KEY_RIGHT)) cycleTarget(1);
+        if (click)
+        {
+            for (size_t i = 0; i < enemies_.size(); ++i)
+            {
+                if (!enemies_[i].alive()) continue;
+                Rectangle er{};
+                enemyRect(static_cast<int>(i), er);
+                if (CheckCollisionPointRec(GetMousePosition(), er))
+                {
+                    targetSel_ = static_cast<int>(i);
+                    break;
+                }
+            }
+        }
+
         int cmd = -1;
         if (click && cmdHover_ >= 0) cmd = cmdHover_;
         else if (enter) cmd = 0;
         else if (IsKeyPressed(KEY_ONE)) cmd = 0;
         else if (IsKeyPressed(KEY_TWO)) cmd = 1;
         else if (IsKeyPressed(KEY_THREE)) cmd = 2;
+        // SP 不够就只提示、不吃掉这一手，让玩家重新选
+        if (cmd == 1 && allies_[std::abs(order_[orderPos_]) - 1].sp < kSkillCost)
+        {
+            spHintT_ = 1.4f;
+            cmd = -1;
+        }
         if (cmd >= 0)
         {
             actAlly(cmd);
@@ -498,8 +627,8 @@ void Battle::debugAuto(int frame)
     // 自检：轮到玩家就照一个固定策略出招，整场战斗不用人手
     if (phase_ != Phase::Command) return;
     Unit& me = allies_[std::abs(order_[orderPos_]) - 1];
-    if (me.hp * 3 < me.hpMax && me.sp >= 3) autoCmd_ = 1;
-    else if (me.sp >= 3) autoCmd_ = 1;
+    if (me.hp * 3 < me.hpMax && me.sp >= kSkillCost) autoCmd_ = 1;
+    else if (me.sp >= kSkillCost) autoCmd_ = 1;
     else autoCmd_ = 0;
     actAlly(autoCmd_);
     nextTurn();
@@ -516,7 +645,7 @@ bool Battle::runHeadless(int maxSteps)
         {
             // 固定策略：有 SP 就放技能，否则普攻（走的是和玩家一样的 actAlly）
             Unit& me = allies_[std::abs(order_[orderPos_]) - 1];
-            actAlly(me.sp >= 3 ? 1 : 0);
+            actAlly(me.sp >= kSkillCost ? 1 : 0);
             nextTurn();
             continue;
         }
@@ -529,6 +658,14 @@ bool Battle::runHeadless(int maxSteps)
             continue;
         }
         if (phase_ == Phase::Result) break;
+    }
+    if (std::getenv("QLWT_BATTLE_DEBUG"))
+    {
+        std::printf("[battle-dbg] %s round=%d won=%d | 我方", title_.c_str(), round_, won_ ? 1 : 0);
+        for (const auto& a : allies_) std::printf(" %s=%d/%d", a.name.c_str(), a.hp, a.hpMax);
+        std::printf(" | 敌方");
+        for (const auto& e2 : enemies_) std::printf(" %s=%d/%d", e2.name.c_str(), e2.hp, e2.hpMax);
+        std::printf("\n");
     }
     return finished();
 }
@@ -570,6 +707,70 @@ Texture2D bodyTexture(const std::string& name)
     }
     cache[name] = tex;
     return tex;
+}
+
+// 敌人贴图：优先用剧本里指定的那张，否则按形象类别找 assets/enemy/<类别>.png。
+// 都没有就返回空贴图，绘制时退回程序化图形（发光球 / 云团 / 噪点 / 六边形）。
+// 类别目录用 ASCII 文件名，避免中文路径在 Windows 下读不出来的老问题。
+const char* categoryFile(EnemyLook look)
+{
+    switch (look)
+    {
+    case EnemyLook::Light: return "light";
+    case EnemyLook::Cloud: return "cloud";
+    case EnemyLook::Noise: return "noise";
+    default:               return "solid";
+    }
+}
+
+struct EnemyTex
+{
+    Texture2D tex{};
+    bool floating = false;      // 贴图自带透明通道 → 当浮动精灵画
+};
+
+const EnemyTex& enemyTexture(const std::string& explicitPath, const std::string& name)
+{
+    static std::map<std::string, EnemyTex> cache;
+    std::string path = explicitPath;
+    if (path.empty()) path = std::string("assets/enemy/") + categoryFile(lookOf(name)) + ".png";
+    auto it = cache.find(path);
+    if (it != cache.end()) return it->second;
+    EnemyTex rec;
+    if (FileExists(path.c_str()))
+    {
+        Image img = LoadImage(path.c_str());
+        if (img.data)
+        {
+            // 采样看是不是"真有透明底"：AI 出的立绘卡是不透明的，就按卡片画；
+            // 手绘 / 抠好的透明 PNG 则当浮动精灵。
+            if (img.format == PIXELFORMAT_UNCOMPRESSED_R8G8B8A8 ||
+                img.format == PIXELFORMAT_UNCOMPRESSED_GRAY_ALPHA)
+            {
+                Color* px = LoadImageColors(img);
+                const int total = img.width * img.height;
+                int seen = 0, clear = 0;
+                for (int i = 0; i < total; i += 7)
+                {
+                    ++seen;
+                    if (px[i].a < 200) ++clear;
+                }
+                UnloadImageColors(px);
+                rec.floating = seen > 0 && clear > seen / 8;   // >12.5% 透明 = 浮动
+            }
+            rec.tex = LoadTextureFromImage(img);
+            UnloadImage(img);
+            if (rec.tex.id)
+            {
+                GenTextureMipmaps(&rec.tex);
+                SetTextureFilter(rec.tex, TEXTURE_FILTER_TRILINEAR);
+                std::printf("[battle] 敌人贴图：%s（%s）\n", path.c_str(),
+                            rec.floating ? "浮动精灵" : "立绘卡");
+            }
+        }
+    }
+    cache[path] = rec;
+    return cache[path];
 }
 
 // 敌人形象：按名字分类画成不同形状
@@ -633,8 +834,9 @@ void drawEnemyShape(Rectangle r, const std::string& name, float flash, float t)
 }
 }
 
-void Battle::draw(const FontManager& fonts)
+void Battle::draw(const FontManager& fonts, float renderScale)
 {
+    const float rs = renderScale > 0.0f ? renderScale : 1.0f;
     const float w = static_cast<float>(canvas::width());
     const float h = static_cast<float>(canvas::height());
     const Color acc = renderer::accent();
@@ -671,8 +873,103 @@ void Battle::draw(const FontManager& fonts)
         }
         else
         {
-            drawEnemyShape(r, e.name, e.flash, time_);
+            // 脚下一层淡影，别让它飘着
+            DrawEllipse(static_cast<int>(r.x + r.width * 0.5f),
+                        static_cast<int>(r.y + r.height - 26.0f),
+                        r.width * 0.28f, 8.0f, Color{0, 0, 0, 70});
+
+            const EnemyTex& et = enemyTexture(e.image, e.name);
+            if (et.tex.id && et.floating)
+            {
+                // 等比塞进卡片，底部给名字 / 血条留位置
+                const float maxW = r.width - 26.0f;
+                const float maxH = r.height - 32.0f;
+                const float sc = std::min(maxW / static_cast<float>(et.tex.width),
+                                          maxH / static_cast<float>(et.tex.height));
+                const float dw = static_cast<float>(et.tex.width) * sc;
+                const float dh = static_cast<float>(et.tex.height) * sc;
+                Rectangle dst{r.x + (r.width - dw) * 0.5f,
+                              r.y + (r.height - 28.0f - dh) * 0.5f + 2.0f, dw, dh};
+                DrawTexturePro(et.tex,
+                               {0, 0, static_cast<float>(et.tex.width),
+                                static_cast<float>(et.tex.height)},
+                               dst, {0, 0}, 0.0f, WHITE);
+                if (e.flash > 0.0f)     // 受击闪白（贴图是彩色的，只能叠一层白）
+                {
+                    BeginScissorMode(static_cast<int>(r.x * rs), static_cast<int>(r.y * rs),
+                                     static_cast<int>(r.width * rs),
+                                     static_cast<int>(r.height * rs));
+                    DrawRectangle(static_cast<int>(dst.x), static_cast<int>(dst.y),
+                                  static_cast<int>(dst.width), static_cast<int>(dst.height),
+                                  Color{255, 255, 255,
+                                        static_cast<unsigned char>(190.0f * e.flash)});
+                    EndScissorMode();
+                }
+            }
+            else if (et.tex.id)
+            {
+                // 立绘卡：圆角底板 + 内嵌图（cover 裁切，填满卡片）
+                DrawRectangleRounded(r, 12.0f, 10, Color{16, 20, 36, 235});
+                Rectangle inner{r.x + 6.0f, r.y + 6.0f, r.width - 12.0f, r.height - 12.0f};
+                const float sc = std::max(inner.width / static_cast<float>(et.tex.width),
+                                          inner.height / static_cast<float>(et.tex.height));
+                const float dw = static_cast<float>(et.tex.width) * sc;
+                const float dh = static_cast<float>(et.tex.height) * sc;
+                BeginScissorMode(static_cast<int>(inner.x * rs), static_cast<int>(inner.y * rs),
+                                 static_cast<int>(inner.width * rs),
+                                 static_cast<int>(inner.height * rs));
+                Rectangle dst{inner.x + (inner.width - dw) * 0.5f,
+                              inner.y + (inner.height - dh) * 0.5f, dw, dh};
+                DrawTexturePro(et.tex,
+                               {0, 0, static_cast<float>(et.tex.width),
+                                static_cast<float>(et.tex.height)},
+                               dst, {0, 0}, 0.0f, WHITE);
+                if (e.flash > 0.0f)
+                    DrawRectangle(static_cast<int>(inner.x), static_cast<int>(inner.y),
+                                  static_cast<int>(inner.width), static_cast<int>(inner.height),
+                                  Color{255, 255, 255,
+                                        static_cast<unsigned char>(190.0f * e.flash)});
+                EndScissorMode();
+                // 顶部压一层暗渐变，让名字 / 血条和标记读得清
+                DrawRectangleGradientV(static_cast<int>(r.x), static_cast<int>(r.y),
+                                       static_cast<int>(r.width), static_cast<int>(r.height),
+                                       Color{0, 0, 0, 90}, Color{0, 0, 0, 30});
+            }
+            else
+            {
+                drawEnemyShape(r, e.name, e.flash, time_);
+            }
         }
+
+        // 目标高亮：当前选中的敌人（攻击 / 单体技能会打它）
+        if (e.alive() && phase_ == Phase::Command && static_cast<int>(i) == targetSel_)
+        {
+            const float pulse = 0.6f + 0.4f * std::sin(time_ * 5.0f);
+            renderer::drawRoundedBorder(
+                r, 12.0f, 3.0f,
+                withAlpha(pal().highlight, static_cast<unsigned char>(255 * pulse)));
+            const std::string tag = lang::tr("battle.target");
+            Vector2 tm = fonts.measure(tag, 17.0f);
+            fonts.draw(tag, r.x + (r.width - tm.x) * 0.5f, r.y - 22.0f, 17.0f,
+                       withAlpha(pal().highlight, 235), 1.7f);
+        }
+
+        // 蓄力预告：名字上面挂个会呼吸的红色标记，玩家有一整轮时间应对
+        if (e.alive() && e.chargeRound > 0)
+        {
+            const float pulse = 0.55f + 0.45f * std::sin(time_ * 7.0f);
+            const std::string tag = lang::tr("battle.charge");
+            Vector2 tm = fonts.measure(tag, 17.0f);
+            Rectangle badge{r.x + (r.width - tm.x) * 0.5f - 12.0f, r.y + 6.0f,
+                            tm.x + 24.0f, 27.0f};
+            renderer::drawPanel(badge,
+                                withAlpha(Color{140, 44, 44, 255},
+                                          static_cast<unsigned char>(195 + 50 * pulse)),
+                                8.0f, withAlpha(Color{255, 150, 130, 255}, 235), 2.0f);
+            fonts.draw(tag, badge.x + 12.0f, badge.y + 3.0f, 17.0f,
+                       Color{255, 232, 228, 255}, 1.7f);
+        }
+
         Vector2 nm = fonts.measure(e.name, 19.0f);
         fonts.draw(e.name, r.x + (r.width - nm.x) * 0.5f, r.y + r.height + 4.0f, 19.0f,
                    withAlpha(pal().text, 225), 1.8f);
@@ -714,8 +1011,9 @@ void Battle::draw(const FontManager& fonts)
             const float tw = tex.width * (th / tex.height);
             Rectangle dst{card.x + (card.width - tw) * 0.5f, card.y + card.height - th - 62.0f,
                           tw, th};
-            BeginScissorMode(static_cast<int>(card.x), static_cast<int>(card.y),
-                             static_cast<int>(card.width), static_cast<int>(card.height));
+            BeginScissorMode(static_cast<int>(card.x * rs), static_cast<int>(card.y * rs),
+                             static_cast<int>(card.width * rs),
+                             static_cast<int>(card.height * rs));
             DrawTexturePro(tex,
                            {0, 0, static_cast<float>(tex.width), static_cast<float>(tex.height)},
                            dst, {0, 0}, 0.0f,
@@ -747,6 +1045,30 @@ void Battle::draw(const FontManager& fonts)
             fonts.draw(lang::tr("battle.ally_down"),
                        card.x + (card.width - fonts.measure(lang::tr("battle.ally_down"), 17.0f).x) * 0.5f,
                        card.y + card.height - 78.0f, 17.0f, Color{255, 150, 150, 220}, 1.7f);
+
+        // 被敌方大招锁定的那位：红框 + 标记，提醒玩家守住 / 治疗 / 打断
+        bool targeted = false;
+        for (const auto& e : enemies_)
+            if (e.alive() && e.chargeRound > 0 && e.chargeTarget == static_cast<int>(i))
+                targeted = true;
+        if (targeted && u.alive())
+        {
+            const float pulse = 0.55f + 0.45f * std::sin(time_ * 7.0f);
+            renderer::drawRoundedBorder(
+                card, 14.0f, 3.0f,
+                withAlpha(Color{255, 120, 110, 255},
+                          static_cast<unsigned char>(200 + 55 * pulse)));
+            const std::string tag = lang::tr("battle.targeted");
+            Vector2 tm = fonts.measure(tag, 17.0f);
+            Rectangle badge{card.x + (card.width - tm.x) * 0.5f - 12.0f, card.y + 6.0f,
+                            tm.x + 24.0f, 27.0f};
+            renderer::drawPanel(badge,
+                                withAlpha(Color{170, 40, 40, 255},
+                                          static_cast<unsigned char>(195 + 50 * pulse)),
+                                8.0f, withAlpha(Color{255, 150, 130, 255}, 235), 2.0f);
+            fonts.draw(tag, badge.x + 12.0f, badge.y + 3.0f, 17.0f,
+                       Color{255, 232, 228, 255}, 1.7f);
+        }
     }
 
     // ---- 指令菜单 ----
@@ -758,7 +1080,7 @@ void Battle::draw(const FontManager& fonts)
             Rectangle r{};
             isCommandHovered(i, r);
             Unit& me = allies_[std::abs(order_[orderPos_]) - 1];
-            const bool canSkill = (i != 1) || me.sp >= 3;
+            const bool canSkill = (i != 1) || me.sp >= kSkillCost;
             std::string label = lang::tr(keys[i]);
             if (i == 1)
                 label += std::string("（") + skillName(static_cast<int>(std::abs(order_[orderPos_]) - 1)) +
@@ -771,6 +1093,13 @@ void Battle::draw(const FontManager& fonts)
         }
         std::string who = allies_[std::abs(order_[orderPos_]) - 1].name + lang::tr("battle.turn_hint");
         fonts.draw(who, w - 470.0f, h - 330.0f, 20.0f, withAlpha(pal().text, 220), 2.0f);
+        if (spHintT_ > 0.0f)
+        {
+            const float a = std::clamp(spHintT_ / 0.4f, 0.0f, 1.0f);
+            fonts.draw(lang::tr("battle.sp_lack"), w - 470.0f, h - 300.0f, 18.0f,
+                       withAlpha(Color{255, 150, 140, 255},
+                                 static_cast<unsigned char>(235 * a)), 1.8f);
+        }
     }
 
     // ---- 飘字 ----

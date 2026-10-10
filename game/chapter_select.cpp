@@ -8,9 +8,10 @@
 #include <fstream>
 #include <sstream>
 
-#include <rlgl.h>
+
 
 #include "../core/engine.h"
+#include "../gfx/post.h"
 #include "../core/file_util.h"
 #include "../core/gesture.h"
 #include "../core/lang.h"
@@ -602,8 +603,17 @@ float ChapterSelectScene::listMaxScroll() const
     return std::max(0.0f, contentH - (kListBot - kListTop));
 }
 
-void ChapterSelectScene::startChapter(const BigChapter& bc, int chapterIdx)
+void ChapterSelectScene::startChapter(const BigChapter& bc, int chapterIdx, Rectangle fromRect)
 {
+    // 转场：从被点的那张卡片中心径向擦除出去（没给矩形就用画面中心）
+    const float cx = fromRect.width > 0.0f ? fromRect.x + fromRect.width*0.5f
+                                           : static_cast<float>(canvas::width())*0.5f;
+    const float cy = fromRect.height > 0.0f ? fromRect.y + fromRect.height*0.5f
+                                           : static_cast<float>(canvas::height())*0.5f;
+    engine()->setTransition(postfx::TransitionWipe,
+                            cx/static_cast<float>(canvas::width()),
+                            cy/static_cast<float>(canvas::height()));
+
     if (chapterIdx < 0)
     {
         printf("[chapter] start whole script '%s'\n", bc.path.c_str());
@@ -649,7 +659,9 @@ void ChapterSelectScene::backToBig()
 
 void ChapterSelectScene::update(float dt)
 {
-    updateEntryFade(dt);
+    // "下一章"卡片的高光扫过：扫一遍停一会儿再扫
+    shineT_ += dt/2.6f;
+    if (shineT_ > 1.55f) shineT_ = -0.45f;
 
     // ---- 大章节 <-> 小章节 切换动画 ----
     viewT_ = renderer::approach(viewT_, viewTarget_, 9.0f, dt);
@@ -868,15 +880,18 @@ void ChapterSelectScene::update(float dt)
         {
             if (big_[hoverBig_].script->chapters.empty())
             {
-                startChapter(big_[hoverBig_], -1);
+                startChapter(big_[hoverBig_], -1, bigCardRectFor(hoverBig_));
                 return;
             }
             enterSub(hoverBig_);
             return;
         }
         if (back)
+        {
+            engine()->setTransition(postfx::TransitionFade);
             engine()->switchScene(std::make_shared<TitleScene>(
                 engine(), defaultScript_, titleScript_, parseError_));
+        }
     }
     else
     {
@@ -998,7 +1013,9 @@ void ChapterSelectScene::update(float dt)
                 {
                     listDragging_ = false;
                     listPressRow_ = -1;
-                    startChapter(bc, idx);
+                    const Rectangle view = listViewport();
+                    startChapter(bc, idx,
+                                 {kListX, view.y + idx * kStep - subScroll_, kListW, kRowH});
                     return;
                 }
             }
@@ -1085,17 +1102,17 @@ void ChapterSelectScene::draw()
             float dxBig = -w * e;
             if (dxBig > -w)
             {
-                rlPushMatrix();
-                rlTranslatef(dxBig, 0.0f, 0.0f);
+                gfxPushMatrix();
+                gfxTranslatef(dxBig, 0.0f, 0.0f);
                 drawBigList(dxBig, heroIndex_);
-                rlPopMatrix();
+                gfxPopMatrix();
             }
 
             float dxSub = w * (1.0f - renderer::easeOutCubic(t));
-            rlPushMatrix();
-            rlTranslatef(dxSub, 0.0f, 0.0f);
+            gfxPushMatrix();
+            gfxTranslatef(dxSub, 0.0f, 0.0f);
             drawSubList(big_[bigIndex_], dxSub, true);   // 左侧大图交给飞行体
-            rlPopMatrix();
+            gfxPopMatrix();
 
             drawHeroTransition(t);
         }
@@ -1138,11 +1155,7 @@ void ChapterSelectScene::draw()
         engine()->fonts.draw(parseError_, 60.0f, h - 60.0f, 20.0f,
                              Color{255, 140, 140, 255}, 2.0f);
 
-    // 入场淡入遮罩（最后绘制）
-    float fadeA = entryFadeAlpha();
-    if (fadeA > 1.0f)
-        DrawRectangle(0, 0, static_cast<int>(w), static_cast<int>(h),
-                      Color{0, 0, 0, static_cast<unsigned char>(fadeA)});
+    // 入场淡入现在由引擎的转场统一负责
 }
 
 void ChapterSelectScene::drawCardTexture(Rectangle r, const std::string& path,
@@ -1464,6 +1477,10 @@ void ChapterSelectScene::drawSubList(const BigChapter& bc, float dx, bool skipLe
                                              Color{acc.r, acc.g, acc.b, 200}, a);
             renderer::drawRoundedBorder(r, uiCorner(), 1.5f, border);
         }
+
+        // "下一章"这条再加一道扫过的高光，把它从一列卡片里挑出来
+        if (next && engine()->settings.fxQuality > 0)
+            renderer::drawShine(r, uiCorner(), shineT_, 0.42f);
     }
     EndScissorMode();
 

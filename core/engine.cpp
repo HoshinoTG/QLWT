@@ -1,16 +1,22 @@
 #include "engine.h"
 
+#include <algorithm>
 #include <filesystem>
 #include <cstdio>
 #include <cstdlib>
 
-#include <rlgl.h>
-
 #include "canvas.h"
 #include "gesture.h"
+#include "../gfx/post.h"
 
 #include "../game/scene.h"
 #include "../renderer/renderer.h"
+
+namespace
+{
+// 场景切换总时长（前半段退场 + 后半段入场各占一半）
+constexpr float kTransitionSeconds = 0.36f;
+}
 
 bool Engine::init(int screenX, int screenY, const char* windowName,
                   const std::vector<std::string>& texts,
@@ -25,7 +31,7 @@ bool Engine::init(int screenX, int screenY, const char* windowName,
     InitWindow(screenX, screenY, windowName);
     if (!IsWindowReady()) return false;
     SetWindowMinSize(640, 360);
-    // 禁用 raylib 默认的 ESC 退出键，ESC 交给各场景处理（菜单/返回）
+    // 禁用默认的 ESC 退出键，ESC 交给各场景处理（菜单/返回）
     SetExitKey(KEY_NULL);
     SetTargetFPS(60);
     InitAudioDevice();
@@ -62,78 +68,88 @@ void Engine::run()
         if (selftest && scene_) scene_->debugAuto(time.frame());
         scene_->update(time.delta());
 
-        // Scene switch transition: old scene fades out to black, then new scene fades in.
+        // 场景切换：前半段旧画面退场，正中间换场景，后半段新画面入场
+        // （两段都在上屏的合成着色器里做，见 gfx/post.cpp）
         if (transitioning_)
         {
-            transitionT_ += time.delta() / 0.22f;
-            if (transitionT_ >= 1.0f)
+            transitionT_ += time.delta() / kTransitionSeconds;
+            if (transitionT_ >= 0.5f && nextScene_)
             {
                 scene_ = std::move(nextScene_);
                 nextScene_.reset();
-                transitioning_ = false;
-                transitionT_ = 0.0f;
             }
+            if (transitionT_ >= 1.0f)
+            {
+                transitionT_ = 1.0f;
+                transitioning_ = false;
+                transitionStyle_ = postfx::TransitionFade;   // 复位成默认，下次切换不带上一次的花样
+            }
+        }
+        frameSeed_ = frameSeed_ * 1664525u + 1013904223u;
+        if (flashTimer_ > 0.0f)
+        {
+            flashTimer_ -= time.delta();
+            if (flashTimer_ <= 0.0f) flashTimer_ = 0.0f;
         }
 
         BeginDrawing();
         if (rt_.texture.id)
         {
-            // 毛玻璃：需要时先把「背景 + 立绘」渲染到一张低分辨率快照，
-            // 对话框面板再从它做高斯模糊（主渲染里那份不能自我取样）
-            if (scene_ && scene_->needsBackdrop() && backdrop_.texture.id)
-            {
-                // 快照尺寸 = 离屏尺寸/2，画进去时的缩放必须用「快照/设计」这个比例，
-                // 不能写死 0.5：否则场景只填了快照的一角，模糊会取到错位的内容。
-                const float backdropScale =
-                    static_cast<float>(backdrop_.texture.width) / static_cast<float>(designW_);
-                BeginTextureMode(backdrop_);
-                ClearBackground(Color{0, 0, 0, 255});
-                rlPushMatrix();
-                rlScalef(backdropScale, backdropScale, 1.0f);
-                scene_->drawBackdropOnly();
-                rlPopMatrix();
-                EndTextureMode();
-                renderer::setBlurBackdrop(backdrop_.texture, backdropScale);
-            }
-            else
-            {
-                renderer::setBlurBackdrop(Texture2D{}, 1.0f);
-            }
+            // 实时玻璃的折射源不在这里准备：面板绘制时 renderer 会自己把
+            // "当前已经画好的画面"抓一份出来（见 renderer.cpp 的 captureGlassSource），
+            // 所以场景不需要再额外渲一遍背景快照。
 
             // 2x supersampling: render the scene at double resolution into the
             // offscreen target, then scale it down to the window. All geometry
             // edges are naturally anti-aliased by the downsample.
             BeginTextureMode(rt_);
             ClearBackground(Color{0, 0, 0, 255});
-            rlPushMatrix();
+            gfxPushMatrix();
             const float rs = renderScale();   // 离屏分辨率 / 设计分辨率
-            rlScalef(rs, rs, 1.0f);
+            gfxScalef(rs, rs, 1.0f);
             scene_->draw();
-            if (transitioning_)
+            // 特效 / 抗锯齿都关掉时保留老画法：直接在离屏里盖一层黑（转场由别处兜底）
+            const bool usePost = settings.fxQuality > 0 || settings.aaMode > 0;
+            if (transitioning_ && !usePost)
             {
                 float a = renderer::easeInOut(transitionT_) * 255.0f;
                 DrawRectangle(0, 0, designW_, designH_,
                               Color{0, 0, 0, static_cast<unsigned char>(a)});
             }
-            rlPopMatrix();
+            gfxPopMatrix();
             EndTextureMode();
-            // 上屏：先铺黑边，再把画布等比缩放居中贴上去
+
+            // 上屏：先铺黑边，再把画布经过「后处理 + 转场」贴上去
             ClearBackground(Color{0, 0, 0, 255});
             const float sc = canvas::scale();
-            DrawTexturePro(rt_.texture,
-                           {0, 0, static_cast<float>(rt_.texture.width),
-                            -static_cast<float>(rt_.texture.height)},
-                           {canvas::offsetX(), canvas::offsetY(),
-                            static_cast<float>(designW_) * sc,
-                            static_cast<float>(designH_) * sc},
-                           {0, 0}, 0.0f, WHITE);
+            postfx::Frame frame;
+            frame.quality = usePost ? settings.fxQuality : postfx::QualityOff;
+            frame.aa = usePost ? settings.aaMode : postfx::AaOff;
+            frame.transition = (transitioning_ && usePost) ? transitionStyle_
+                                                           : postfx::TransitionNone;
+            frame.progress = transitioning_ ? renderer::easeInOut(transitionT_) : 0.0f;
+            frame.centerX = transitionCenterX_;
+            frame.centerY = transitionCenterY_;
+            frame.aspect = static_cast<float>(designW_) / static_cast<float>(designH_);
+            frame.seed = frameSeed_;
+            // 白闪：开头最亮，然后快速衰减（平方衰减更像真实曝光）
+            if (flashTimer_ > 0.0f && flashDuration_ > 0.0f)
+            {
+                const float k = flashTimer_ / flashDuration_;
+                frame.flash = flashStrength_ * k * k;
+            }
+            postfx::composite(rt_.texture, rt_,
+                              {canvas::offsetX(), canvas::offsetY(),
+                               static_cast<float>(designW_) * sc,
+                               static_cast<float>(designH_) * sc},
+                              frame);
         }
         else
         {
             ClearBackground(Color{0, 0, 0, 255});
-            rlPushMatrix();
-            rlTranslatef(canvas::offsetX(), canvas::offsetY(), 0.0f);
-            rlScalef(canvas::scale(), canvas::scale(), 1.0f);
+            gfxPushMatrix();
+            gfxTranslatef(canvas::offsetX(), canvas::offsetY(), 0.0f);
+            gfxScalef(canvas::scale(), canvas::scale(), 1.0f);
             scene_->draw();
             if (transitioning_)
             {
@@ -141,24 +157,16 @@ void Engine::run()
                 DrawRectangle(0, 0, designW_, designH_,
                               Color{0, 0, 0, static_cast<unsigned char>(a)});
             }
-            rlPopMatrix();
+            gfxPopMatrix();
         }
         // 自检截图：必须在交换缓冲之前把这一帧的像素读走
         if (!shotPending_.empty())
         {
-            rlDrawRenderBatchActive();   // 把 raylib 尚未提交的绘制批次刷出去
-            // 注意：不要用 LoadImageFromScreen()/TakeScreenshot()，它们在 DPI 缩放
-            // 下会按「屏幕尺寸 × 缩放」去读一个没这么大的帧缓冲，多出来的部分是黑的。
-            // 这里直接按真实帧缓冲尺寸取像（帧缓冲 = 本次实际绘制的区域）。
-            const int shotW = GetRenderWidth();
-            const int shotH = GetRenderHeight();
+            gfxFlushBatch();   // 把尚未提交的绘制批次刷出去
+            // LoadImageFromScreen() 按「当前渲染目标」的真实像素尺寸取像
+            // （这里是默认帧缓冲，也就是 HiDPI 下的 1920x1080），并已竖直翻转。
             const std::string name = "shot_" + shotPending_ + ".png";
-            Image shot{};
-            shot.data = rlReadScreenPixels(shotW, shotH);   // 内部已竖直翻转
-            shot.width = shotW;
-            shot.height = shotH;
-            shot.mipmaps = 1;
-            shot.format = PIXELFORMAT_UNCOMPRESSED_R8G8B8A8;
+            Image shot = LoadImageFromScreen();
             ExportImage(shot, name.c_str());
             UnloadImage(shot);
             printf("[engine] screenshot saved: %s (frame %d)\n", name.c_str(), time.frame());
@@ -190,6 +198,7 @@ void Engine::run()
     }
 
     CloseAudioDevice();
+    postfx::shutdown();
     CloseWindow();
 }
 
@@ -200,6 +209,20 @@ void Engine::applyTheme()
                        settings.uiButtonStyle);
 }
 
+void Engine::flash(float strength, float duration)
+{
+    flashStrength_ = std::min(1.0f, std::max(0.0f, strength));
+    flashDuration_ = duration > 0.01f ? duration : 0.01f;
+    flashTimer_ = flashDuration_;
+}
+
+void Engine::setTransition(int style, float centerX, float centerY)
+{
+    transitionStyle_ = style;
+    transitionCenterX_ = centerX;
+    transitionCenterY_ = centerY;
+}
+
 void Engine::switchScene(std::shared_ptr<Scene> scene)
 {
     if (!scene_ || transitioning_)
@@ -207,8 +230,11 @@ void Engine::switchScene(std::shared_ptr<Scene> scene)
         nextScene_ = std::move(scene);
         if (!scene_)
         {
+            // 第一个场景：直接上，但补一段"从黑场进来"的入场
             scene_ = std::move(nextScene_);
             nextScene_.reset();
+            transitioning_ = true;
+            transitionT_ = 0.5f;
         }
         return;
     }
@@ -233,27 +259,30 @@ void Engine::recreateRenderTarget()
     // 整屏再缩回），边缘发虚；1:1 既最清晰，也省掉了整屏重采样的开销。
     const int w = std::max(1, static_cast<int>(screenScale * designW_ + 0.5f));
     const int h = std::max(1, static_cast<int>(screenScale * designH_ + 0.5f));
-    if (w == rtW_ && h == rtH_) return;
+    // 抗锯齿档位会改变离屏目标的类型（多采样 / 普通），变了就得重建
+    const bool wantMsaa = settings.aaMode >= 2;
+    if (w == rtW_ && h == rtH_ && wantMsaa == (rt_.samples > 1)) return;
     if (rt_.texture.id) UnloadRenderTexture(rt_);
-    rt_ = LoadRenderTexture(w, h);
+    rt_ = wantMsaa ? LoadRenderTextureMSAA(w, h, 4) : LoadRenderTexture(w, h);
     SetTextureFilter(rt_.texture, TEXTURE_FILTER_BILINEAR);
 
     // 毛玻璃取样用的场景快照：1/2 设计分辨率。分辨率越低越省、模糊越柔，
     // 边缘用 CLAMP，避免面板靠近画面边缘时高斯采样绕回另一侧。
-    if (backdrop_.texture.id) UnloadRenderTexture(backdrop_);
-    backdrop_ = LoadRenderTexture(w / 2, h / 2);
-    SetTextureFilter(backdrop_.texture, TEXTURE_FILTER_BILINEAR);
-    SetTextureWrap(backdrop_.texture, TEXTURE_WRAP_CLAMP);
 
     rtW_ = w;
     rtH_ = h;
+
+    // 实时玻璃的抓取尺寸按设计分辨率算（HiDPI 下 RT 比设计大，比例不能混）
+    renderer::setDesignSize(designW_, designH_);
+    // 后处理缓冲跟着离屏尺寸走（1/4 分辨率泛光链）
+    postfx::init(w, h);
 }
 
 void Engine::selftestShot(const std::string& tag)
 {
     if (!selftest) return;
     // 真正的取像放到 run() 里、EndDrawing()（交换缓冲）之前做：
-    // raylib 的 TakeScreenshot 在交换之后读像素，大概率只能拿到黑屏。
+    // 交换之后再读帧缓冲，大概率只能拿到黑屏。
     shotPending_ = tag;
 }
 

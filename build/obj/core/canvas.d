@@ -1,4 +1,5 @@
-build/obj/core/canvas.o: core/canvas.cpp core/canvas.h \
- build/raylib-wayland/src/raylib.h
+build/obj/core/canvas.o: core/canvas.cpp core/canvas.h gfx/gfx.h \
+ gfx/types.h
 core/canvas.h:
-build/raylib-wayland/src/raylib.h:
+gfx/gfx.h:
+gfx/types.h:

@@ -1,0 +1,1588 @@
+
+---
+events:
+  -
+    kind: "find-v1"
+    backtrace:
+      - "/usr/share/cmake/Modules/CMakeDetermineSystem.cmake:12 (find_program)"
+      - "CMakeLists.txt:3 (project)"
+    mode: "program"
+    variable: "CMAKE_UNAME"
+    description: "Path to a program."
+    settings:
+      SearchFramework: "NEVER"
+      SearchAppBundle: "NEVER"
+      CMAKE_FIND_USE_CMAKE_PATH: true
+      CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_CMAKE_SYSTEM_PATH: true
+      CMAKE_FIND_USE_INSTALL_PREFIX: true
+    names:
+      - "uname"
+    candidate_directories:
+      - "/home/hoshino/project/.tools/mingw-root/usr/bin/"
+      - "/home/hoshino/.npm/_npx/1e7f6d9597241db0/node_modules/.bin/"
+      - "/home/hoshino/\u4e0b\u8f7d/node-v20.20.2-linux-x64/node_modules/.bin/"
+      - "/home/hoshino/\u4e0b\u8f7d/node_modules/.bin/"
+      - "/home/hoshino/node_modules/.bin/"
+      - "/home/node_modules/.bin/"
+      - "/node_modules/.bin/"
+      - "/usr/lib/node_modules/npm/node_modules/@npmcli/run-script/lib/node-gyp-bin/"
+      - "/home/hoshino/.local/bin/"
+      - "/usr/local/bin/"
+      - "/usr/bin/"
+      - "/bin/"
+      - "/usr/local/sbin/"
+      - "/usr/lib/jvm/default/bin/"
+      - "/usr/bin/site_perl/"
+      - "/usr/bin/vendor_perl/"
+      - "/usr/bin/core_perl/"
+      - "/usr/lib/rustup/bin/"
+    searched_directories:
+      - "/home/hoshino/project/.tools/mingw-root/usr/bin/uname"
+      - "/home/hoshino/.npm/_npx/1e7f6d9597241db0/node_modules/.bin/uname"
+      - "/home/hoshino/\u4e0b\u8f7d/node-v20.20.2-linux-x64/node_modules/.bin/uname"
+      - "/home/hoshino/\u4e0b\u8f7d/node_modules/.bin/uname"
+      - "/home/hoshino/node_modules/.bin/uname"
+      - "/home/node_modules/.bin/uname"
+      - "/node_modules/.bin/uname"
+      - "/usr/lib/node_modules/npm/node_modules/@npmcli/run-script/lib/node-gyp-bin/uname"
+      - "/home/hoshino/.local/bin/uname"
+      - "/usr/local/bin/uname"
+    found: "/usr/bin/uname"
+    search_context:
+      ENV{PATH}:
+        - "/home/hoshino/project/.tools/mingw-root/usr/bin"
+        - "/home/hoshino/.npm/_npx/1e7f6d9597241db0/node_modules/.bin"
+        - "/home/hoshino/\u4e0b\u8f7d/node-v20.20.2-linux-x64/node_modules/.bin"
+        - "/home/hoshino/\u4e0b\u8f7d/node_modules/.bin"
+        - "/home/hoshino/node_modules/.bin"
+        - "/home/node_modules/.bin"
+        - "/node_modules/.bin"
+        - "/usr/lib/node_modules/npm/node_modules/@npmcli/run-script/lib/node-gyp-bin"
+        - "/home/hoshino/.local/bin"
+        - "/usr/local/bin"
+        - "/usr/bin"
+        - "/bin"
+        - "/usr/local/sbin"
+        - "/usr/lib/jvm/default/bin"
+        - "/usr/bin/site_perl"
+        - "/usr/bin/vendor_perl"
+        - "/usr/bin/core_perl"
+        - "/usr/lib/rustup/bin"
+  -
+    kind: "message-v1"
+    backtrace:
+      - "/usr/share/cmake/Modules/CMakeDetermineSystem.cmake:213 (message)"
+      - "CMakeLists.txt:3 (project)"
+    message: |
+      The target system is: Windows -  - 
+      The host system is: Linux - 7.2.9-1-cachyos - x86_64
+  -
+    kind: "find-v1"
+    backtrace:
+      - "/usr/share/cmake/Modules/CMakeUnixFindMake.cmake:5 (find_program)"
+      - "CMakeLists.txt:3 (project)"
+    mode: "program"
+    variable: "CMAKE_MAKE_PROGRAM"
+    description: "Path to a program."
+    settings:
+      SearchFramework: "NEVER"
+      SearchAppBundle: "NEVER"
+      CMAKE_FIND_USE_CMAKE_PATH: true
+      CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_CMAKE_SYSTEM_PATH: true
+      CMAKE_FIND_USE_INSTALL_PREFIX: true
+    names:
+      - "gmake"
+      - "make"
+      - "smake"
+    candidate_directories:
+      - "/home/hoshino/project/.tools/mingw-root/usr/bin/"
+      - "/home/hoshino/.npm/_npx/1e7f6d9597241db0/node_modules/.bin/"
+      - "/home/hoshino/\u4e0b\u8f7d/node-v20.20.2-linux-x64/node_modules/.bin/"
+      - "/home/hoshino/\u4e0b\u8f7d/node_modules/.bin/"
+      - "/home/hoshino/node_modules/.bin/"
+      - "/home/node_modules/.bin/"
+      - "/node_modules/.bin/"
+      - "/usr/lib/node_modules/npm/node_modules/@npmcli/run-script/lib/node-gyp-bin/"
+      - "/home/hoshino/.local/bin/"
+      - "/usr/local/bin/"
+      - "/usr/bin/"
+      - "/bin/"
+      - "/usr/local/sbin/"
+      - "/usr/lib/jvm/default/bin/"
+      - "/usr/bin/site_perl/"
+      - "/usr/bin/vendor_perl/"
+      - "/usr/bin/core_perl/"
+      - "/usr/lib/rustup/bin/"
+    searched_directories:
+      - "/home/hoshino/project/.tools/mingw-root/usr/bin/gmake"
+      - "/home/hoshino/.npm/_npx/1e7f6d9597241db0/node_modules/.bin/gmake"
+      - "/home/hoshino/\u4e0b\u8f7d/node-v20.20.2-linux-x64/node_modules/.bin/gmake"
+      - "/home/hoshino/\u4e0b\u8f7d/node_modules/.bin/gmake"
+      - "/home/hoshino/node_modules/.bin/gmake"
+      - "/home/node_modules/.bin/gmake"
+      - "/node_modules/.bin/gmake"
+      - "/usr/lib/node_modules/npm/node_modules/@npmcli/run-script/lib/node-gyp-bin/gmake"
+      - "/home/hoshino/.local/bin/gmake"
+      - "/usr/local/bin/gmake"
+      - "/usr/bin/gmake"
+      - "/bin/gmake"
+      - "/usr/local/sbin/gmake"
+      - "/usr/lib/jvm/default/bin/gmake"
+      - "/usr/bin/site_perl/gmake"
+      - "/usr/bin/vendor_perl/gmake"
+      - "/usr/bin/core_perl/gmake"
+      - "/usr/lib/rustup/bin/gmake"
+      - "/home/hoshino/project/.tools/mingw-root/usr/bin/make"
+      - "/home/hoshino/.npm/_npx/1e7f6d9597241db0/node_modules/.bin/make"
+      - "/home/hoshino/\u4e0b\u8f7d/node-v20.20.2-linux-x64/node_modules/.bin/make"
+      - "/home/hoshino/\u4e0b\u8f7d/node_modules/.bin/make"
+      - "/home/hoshino/node_modules/.bin/make"
+      - "/home/node_modules/.bin/make"
+      - "/node_modules/.bin/make"
+      - "/usr/lib/node_modules/npm/node_modules/@npmcli/run-script/lib/node-gyp-bin/make"
+      - "/home/hoshino/.local/bin/make"
+      - "/usr/local/bin/make"
+    found: "/usr/bin/make"
+    search_context:
+      ENV{PATH}:
+        - "/home/hoshino/project/.tools/mingw-root/usr/bin"
+        - "/home/hoshino/.npm/_npx/1e7f6d9597241db0/node_modules/.bin"
+        - "/home/hoshino/\u4e0b\u8f7d/node-v20.20.2-linux-x64/node_modules/.bin"
+        - "/home/hoshino/\u4e0b\u8f7d/node_modules/.bin"
+        - "/home/hoshino/node_modules/.bin"
+        - "/home/node_modules/.bin"
+        - "/node_modules/.bin"
+        - "/usr/lib/node_modules/npm/node_modules/@npmcli/run-script/lib/node-gyp-bin"
+        - "/home/hoshino/.local/bin"
+        - "/usr/local/bin"
+        - "/usr/bin"
+        - "/bin"
+        - "/usr/local/sbin"
+        - "/usr/lib/jvm/default/bin"
+        - "/usr/bin/site_perl"
+        - "/usr/bin/vendor_perl"
+        - "/usr/bin/core_perl"
+        - "/usr/lib/rustup/bin"
+  -
+    kind: "find-v1"
+    backtrace:
+      - "/usr/share/cmake/Modules/CMakeDetermineCompiler.cmake:115 (find_program)"
+      - "/usr/share/cmake/Modules/CMakeDetermineCCompiler.cmake:67 (_cmake_find_compiler_path)"
+      - "CMakeLists.txt:3 (project)"
+    mode: "program"
+    variable: "CMAKE_C_COMPILER_WITH_PATH"
+    description: "Path to a program."
+    settings:
+      SearchFramework: "NEVER"
+      SearchAppBundle: "NEVER"
+      CMAKE_FIND_USE_CMAKE_PATH: true
+      CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_CMAKE_SYSTEM_PATH: true
+      CMAKE_FIND_USE_INSTALL_PREFIX: true
+    names:
+      - "x86_64-w64-mingw32-gcc"
+    candidate_directories:
+      - "/home/hoshino/project/.tools/mingw-root/usr/bin/"
+      - "/home/hoshino/.npm/_npx/1e7f6d9597241db0/node_modules/.bin/"
+      - "/home/hoshino/\u4e0b\u8f7d/node-v20.20.2-linux-x64/node_modules/.bin/"
+      - "/home/hoshino/\u4e0b\u8f7d/node_modules/.bin/"
+      - "/home/hoshino/node_modules/.bin/"
+      - "/home/node_modules/.bin/"
+      - "/node_modules/.bin/"
+      - "/usr/lib/node_modules/npm/node_modules/@npmcli/run-script/lib/node-gyp-bin/"
+      - "/home/hoshino/.local/bin/"
+      - "/usr/local/bin/"
+      - "/usr/bin/"
+      - "/bin/"
+      - "/usr/local/sbin/"
+      - "/usr/lib/jvm/default/bin/"
+      - "/usr/bin/site_perl/"
+      - "/usr/bin/vendor_perl/"
+      - "/usr/bin/core_perl/"
+      - "/usr/lib/rustup/bin/"
+    found: "/home/hoshino/project/.tools/mingw-root/usr/bin/x86_64-w64-mingw32-gcc"
+    search_context:
+      ENV{PATH}:
+        - "/home/hoshino/project/.tools/mingw-root/usr/bin"
+        - "/home/hoshino/.npm/_npx/1e7f6d9597241db0/node_modules/.bin"
+        - "/home/hoshino/\u4e0b\u8f7d/node-v20.20.2-linux-x64/node_modules/.bin"
+        - "/home/hoshino/\u4e0b\u8f7d/node_modules/.bin"
+        - "/home/hoshino/node_modules/.bin"
+        - "/home/node_modules/.bin"
+        - "/node_modules/.bin"
+        - "/usr/lib/node_modules/npm/node_modules/@npmcli/run-script/lib/node-gyp-bin"
+        - "/home/hoshino/.local/bin"
+        - "/usr/local/bin"
+        - "/usr/bin"
+        - "/bin"
+        - "/usr/local/sbin"
+        - "/usr/lib/jvm/default/bin"
+        - "/usr/bin/site_perl"
+        - "/usr/bin/vendor_perl"
+        - "/usr/bin/core_perl"
+        - "/usr/lib/rustup/bin"
+  -
+    kind: "find-v1"
+    backtrace:
+      - "/usr/share/cmake/Modules/CMakeDetermineCompilerId.cmake:501 (find_file)"
+      - "/usr/share/cmake/Modules/CMakeDetermineCompilerId.cmake:538 (CMAKE_DETERMINE_COMPILER_ID_WRITE)"
+      - "/usr/share/cmake/Modules/CMakeDetermineCompilerId.cmake:8 (CMAKE_DETERMINE_COMPILER_ID_BUILD)"
+      - "/usr/share/cmake/Modules/CMakeDetermineCompilerId.cmake:64 (__determine_compiler_id_test)"
+      - "/usr/share/cmake/Modules/CMakeDetermineCCompiler.cmake:122 (CMAKE_DETERMINE_COMPILER_ID)"
+      - "CMakeLists.txt:3 (project)"
+    mode: "file"
+    variable: "src_in"
+    description: "Path to a file."
+    settings:
+      SearchFramework: "NEVER"
+      SearchAppBundle: "NEVER"
+      CMAKE_FIND_USE_CMAKE_PATH: true
+      CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_CMAKE_SYSTEM_PATH: true
+      CMAKE_FIND_USE_INSTALL_PREFIX: true
+    names:
+      - "CMakeCCompilerId.c.in"
+    candidate_directories:
+      - "/usr/share/cmake/Modules/"
+    found: "/usr/share/cmake/Modules/CMakeCCompilerId.c.in"
+    search_context:
+      ENV{PATH}:
+        - "/home/hoshino/project/.tools/mingw-root/usr/bin"
+        - "/home/hoshino/.npm/_npx/1e7f6d9597241db0/node_modules/.bin"
+        - "/home/hoshino/\u4e0b\u8f7d/node-v20.20.2-linux-x64/node_modules/.bin"
+        - "/home/hoshino/\u4e0b\u8f7d/node_modules/.bin"
+        - "/home/hoshino/node_modules/.bin"
+        - "/home/node_modules/.bin"
+        - "/node_modules/.bin"
+        - "/usr/lib/node_modules/npm/node_modules/@npmcli/run-script/lib/node-gyp-bin"
+        - "/home/hoshino/.local/bin"
+        - "/usr/local/bin"
+        - "/usr/bin"
+        - "/bin"
+        - "/usr/local/sbin"
+        - "/usr/lib/jvm/default/bin"
+        - "/usr/bin/site_perl"
+        - "/usr/bin/vendor_perl"
+        - "/usr/bin/core_perl"
+        - "/usr/lib/rustup/bin"
+  -
+    kind: "message-v1"
+    backtrace:
+      - "/usr/share/cmake/Modules/CMakeDetermineCompilerId.cmake:17 (message)"
+      - "/usr/share/cmake/Modules/CMakeDetermineCompilerId.cmake:64 (__determine_compiler_id_test)"
+      - "/usr/share/cmake/Modules/CMakeDetermineCCompiler.cmake:122 (CMAKE_DETERMINE_COMPILER_ID)"
+      - "CMakeLists.txt:3 (project)"
+    message: |
+      Compiling the C compiler identification source file "CMakeCCompilerId.c" succeeded.
+      Compiler: /home/hoshino/project/.tools/mingw-root/usr/bin/x86_64-w64-mingw32-gcc 
+      Build flags: 
+      Id flags:  
+      
+      The output was:
+      0
+      
+      
+      Compilation of the C compiler identification source "CMakeCCompilerId.c" produced "a.exe"
+      
+      The C compiler identification is GNU, found in:
+        /home/hoshino/project/GalgameScriptEngine/build/glfw-win/CMakeFiles/4.4.4/CompilerIdC/a.exe
+      
+  -
+    kind: "find-v1"
+    backtrace:
+      - "/usr/share/cmake/Modules/CMakeFindBinUtils.cmake:247 (find_program)"
+      - "/usr/share/cmake/Modules/CMakeDetermineCCompiler.cmake:200 (include)"
+      - "CMakeLists.txt:3 (project)"
+    mode: "program"
+    variable: "CMAKE_AR"
+    description: "Path to a program."
+    settings:
+      SearchFramework: "NEVER"
+      SearchAppBundle: "NEVER"
+      CMAKE_FIND_USE_CMAKE_PATH: false
+      CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH: false
+      CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_CMAKE_SYSTEM_PATH: true
+      CMAKE_FIND_USE_INSTALL_PREFIX: true
+    names:
+      - "x86_64-w64-mingw32-ar"
+      - "ar"
+    candidate_directories:
+      - "/home/hoshino/project/.tools/mingw-root/usr/bin/"
+      - "/home/hoshino/.npm/_npx/1e7f6d9597241db0/node_modules/.bin/"
+      - "/home/hoshino/\u4e0b\u8f7d/node-v20.20.2-linux-x64/node_modules/.bin/"
+      - "/home/hoshino/\u4e0b\u8f7d/node_modules/.bin/"
+      - "/home/hoshino/node_modules/.bin/"
+      - "/home/node_modules/.bin/"
+      - "/node_modules/.bin/"
+      - "/usr/lib/node_modules/npm/node_modules/@npmcli/run-script/lib/node-gyp-bin/"
+      - "/home/hoshino/.local/bin/"
+      - "/usr/local/bin/"
+      - "/usr/bin/"
+      - "/bin/"
+      - "/usr/local/sbin/"
+      - "/usr/lib/jvm/default/bin/"
+      - "/usr/bin/site_perl/"
+      - "/usr/bin/vendor_perl/"
+      - "/usr/bin/core_perl/"
+      - "/usr/lib/rustup/bin/"
+    found: "/home/hoshino/project/.tools/mingw-root/usr/bin/x86_64-w64-mingw32-ar"
+    search_context:
+      ENV{PATH}:
+        - "/home/hoshino/project/.tools/mingw-root/usr/bin"
+        - "/home/hoshino/.npm/_npx/1e7f6d9597241db0/node_modules/.bin"
+        - "/home/hoshino/\u4e0b\u8f7d/node-v20.20.2-linux-x64/node_modules/.bin"
+        - "/home/hoshino/\u4e0b\u8f7d/node_modules/.bin"
+        - "/home/hoshino/node_modules/.bin"
+        - "/home/node_modules/.bin"
+        - "/node_modules/.bin"
+        - "/usr/lib/node_modules/npm/node_modules/@npmcli/run-script/lib/node-gyp-bin"
+        - "/home/hoshino/.local/bin"
+        - "/usr/local/bin"
+        - "/usr/bin"
+        - "/bin"
+        - "/usr/local/sbin"
+        - "/usr/lib/jvm/default/bin"
+        - "/usr/bin/site_perl"
+        - "/usr/bin/vendor_perl"
+        - "/usr/bin/core_perl"
+        - "/usr/lib/rustup/bin"
+  -
+    kind: "find-v1"
+    backtrace:
+      - "/usr/share/cmake/Modules/CMakeFindBinUtils.cmake:247 (find_program)"
+      - "/usr/share/cmake/Modules/CMakeDetermineCCompiler.cmake:200 (include)"
+      - "CMakeLists.txt:3 (project)"
+    mode: "program"
+    variable: "CMAKE_RANLIB"
+    description: "Path to a program."
+    settings:
+      SearchFramework: "NEVER"
+      SearchAppBundle: "NEVER"
+      CMAKE_FIND_USE_CMAKE_PATH: false
+      CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH: false
+      CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_CMAKE_SYSTEM_PATH: true
+      CMAKE_FIND_USE_INSTALL_PREFIX: true
+    names:
+      - "x86_64-w64-mingw32-ranlib"
+      - "ranlib"
+    candidate_directories:
+      - "/home/hoshino/project/.tools/mingw-root/usr/bin/"
+      - "/home/hoshino/.npm/_npx/1e7f6d9597241db0/node_modules/.bin/"
+      - "/home/hoshino/\u4e0b\u8f7d/node-v20.20.2-linux-x64/node_modules/.bin/"
+      - "/home/hoshino/\u4e0b\u8f7d/node_modules/.bin/"
+      - "/home/hoshino/node_modules/.bin/"
+      - "/home/node_modules/.bin/"
+      - "/node_modules/.bin/"
+      - "/usr/lib/node_modules/npm/node_modules/@npmcli/run-script/lib/node-gyp-bin/"
+      - "/home/hoshino/.local/bin/"
+      - "/usr/local/bin/"
+      - "/usr/bin/"
+      - "/bin/"
+      - "/usr/local/sbin/"
+      - "/usr/lib/jvm/default/bin/"
+      - "/usr/bin/site_perl/"
+      - "/usr/bin/vendor_perl/"
+      - "/usr/bin/core_perl/"
+      - "/usr/lib/rustup/bin/"
+    found: "/home/hoshino/project/.tools/mingw-root/usr/bin/x86_64-w64-mingw32-ranlib"
+    search_context:
+      ENV{PATH}:
+        - "/home/hoshino/project/.tools/mingw-root/usr/bin"
+        - "/home/hoshino/.npm/_npx/1e7f6d9597241db0/node_modules/.bin"
+        - "/home/hoshino/\u4e0b\u8f7d/node-v20.20.2-linux-x64/node_modules/.bin"
+        - "/home/hoshino/\u4e0b\u8f7d/node_modules/.bin"
+        - "/home/hoshino/node_modules/.bin"
+        - "/home/node_modules/.bin"
+        - "/node_modules/.bin"
+        - "/usr/lib/node_modules/npm/node_modules/@npmcli/run-script/lib/node-gyp-bin"
+        - "/home/hoshino/.local/bin"
+        - "/usr/local/bin"
+        - "/usr/bin"
+        - "/bin"
+        - "/usr/local/sbin"
+        - "/usr/lib/jvm/default/bin"
+        - "/usr/bin/site_perl"
+        - "/usr/bin/vendor_perl"
+        - "/usr/bin/core_perl"
+        - "/usr/lib/rustup/bin"
+  -
+    kind: "find-v1"
+    backtrace:
+      - "/usr/share/cmake/Modules/CMakeFindBinUtils.cmake:247 (find_program)"
+      - "/usr/share/cmake/Modules/CMakeDetermineCCompiler.cmake:200 (include)"
+      - "CMakeLists.txt:3 (project)"
+    mode: "program"
+    variable: "CMAKE_STRIP"
+    description: "Path to a program."
+    settings:
+      SearchFramework: "NEVER"
+      SearchAppBundle: "NEVER"
+      CMAKE_FIND_USE_CMAKE_PATH: false
+      CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH: false
+      CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_CMAKE_SYSTEM_PATH: true
+      CMAKE_FIND_USE_INSTALL_PREFIX: true
+    names:
+      - "x86_64-w64-mingw32-strip"
+      - "strip"
+    candidate_directories:
+      - "/home/hoshino/project/.tools/mingw-root/usr/bin/"
+      - "/home/hoshino/.npm/_npx/1e7f6d9597241db0/node_modules/.bin/"
+      - "/home/hoshino/\u4e0b\u8f7d/node-v20.20.2-linux-x64/node_modules/.bin/"
+      - "/home/hoshino/\u4e0b\u8f7d/node_modules/.bin/"
+      - "/home/hoshino/node_modules/.bin/"
+      - "/home/node_modules/.bin/"
+      - "/node_modules/.bin/"
+      - "/usr/lib/node_modules/npm/node_modules/@npmcli/run-script/lib/node-gyp-bin/"
+      - "/home/hoshino/.local/bin/"
+      - "/usr/local/bin/"
+      - "/usr/bin/"
+      - "/bin/"
+      - "/usr/local/sbin/"
+      - "/usr/lib/jvm/default/bin/"
+      - "/usr/bin/site_perl/"
+      - "/usr/bin/vendor_perl/"
+      - "/usr/bin/core_perl/"
+      - "/usr/lib/rustup/bin/"
+    found: "/home/hoshino/project/.tools/mingw-root/usr/bin/x86_64-w64-mingw32-strip"
+    search_context:
+      ENV{PATH}:
+        - "/home/hoshino/project/.tools/mingw-root/usr/bin"
+        - "/home/hoshino/.npm/_npx/1e7f6d9597241db0/node_modules/.bin"
+        - "/home/hoshino/\u4e0b\u8f7d/node-v20.20.2-linux-x64/node_modules/.bin"
+        - "/home/hoshino/\u4e0b\u8f7d/node_modules/.bin"
+        - "/home/hoshino/node_modules/.bin"
+        - "/home/node_modules/.bin"
+        - "/node_modules/.bin"
+        - "/usr/lib/node_modules/npm/node_modules/@npmcli/run-script/lib/node-gyp-bin"
+        - "/home/hoshino/.local/bin"
+        - "/usr/local/bin"
+        - "/usr/bin"
+        - "/bin"
+        - "/usr/local/sbin"
+        - "/usr/lib/jvm/default/bin"
+        - "/usr/bin/site_perl"
+        - "/usr/bin/vendor_perl"
+        - "/usr/bin/core_perl"
+        - "/usr/lib/rustup/bin"
+  -
+    kind: "find-v1"
+    backtrace:
+      - "/usr/share/cmake/Modules/CMakeFindBinUtils.cmake:247 (find_program)"
+      - "/usr/share/cmake/Modules/CMakeDetermineCCompiler.cmake:200 (include)"
+      - "CMakeLists.txt:3 (project)"
+    mode: "program"
+    variable: "CMAKE_LINKER"
+    description: "Path to a program."
+    settings:
+      SearchFramework: "NEVER"
+      SearchAppBundle: "NEVER"
+      CMAKE_FIND_USE_CMAKE_PATH: false
+      CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH: false
+      CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_CMAKE_SYSTEM_PATH: true
+      CMAKE_FIND_USE_INSTALL_PREFIX: true
+    names:
+      - "x86_64-w64-mingw32-ld"
+      - "ld"
+    candidate_directories:
+      - "/home/hoshino/project/.tools/mingw-root/usr/bin/"
+      - "/home/hoshino/.npm/_npx/1e7f6d9597241db0/node_modules/.bin/"
+      - "/home/hoshino/\u4e0b\u8f7d/node-v20.20.2-linux-x64/node_modules/.bin/"
+      - "/home/hoshino/\u4e0b\u8f7d/node_modules/.bin/"
+      - "/home/hoshino/node_modules/.bin/"
+      - "/home/node_modules/.bin/"
+      - "/node_modules/.bin/"
+      - "/usr/lib/node_modules/npm/node_modules/@npmcli/run-script/lib/node-gyp-bin/"
+      - "/home/hoshino/.local/bin/"
+      - "/usr/local/bin/"
+      - "/usr/bin/"
+      - "/bin/"
+      - "/usr/local/sbin/"
+      - "/usr/lib/jvm/default/bin/"
+      - "/usr/bin/site_perl/"
+      - "/usr/bin/vendor_perl/"
+      - "/usr/bin/core_perl/"
+      - "/usr/lib/rustup/bin/"
+    found: "/home/hoshino/project/.tools/mingw-root/usr/bin/x86_64-w64-mingw32-ld"
+    search_context:
+      ENV{PATH}:
+        - "/home/hoshino/project/.tools/mingw-root/usr/bin"
+        - "/home/hoshino/.npm/_npx/1e7f6d9597241db0/node_modules/.bin"
+        - "/home/hoshino/\u4e0b\u8f7d/node-v20.20.2-linux-x64/node_modules/.bin"
+        - "/home/hoshino/\u4e0b\u8f7d/node_modules/.bin"
+        - "/home/hoshino/node_modules/.bin"
+        - "/home/node_modules/.bin"
+        - "/node_modules/.bin"
+        - "/usr/lib/node_modules/npm/node_modules/@npmcli/run-script/lib/node-gyp-bin"
+        - "/home/hoshino/.local/bin"
+        - "/usr/local/bin"
+        - "/usr/bin"
+        - "/bin"
+        - "/usr/local/sbin"
+        - "/usr/lib/jvm/default/bin"
+        - "/usr/bin/site_perl"
+        - "/usr/bin/vendor_perl"
+        - "/usr/bin/core_perl"
+        - "/usr/lib/rustup/bin"
+  -
+    kind: "find-v1"
+    backtrace:
+      - "/usr/share/cmake/Modules/CMakeFindBinUtils.cmake:247 (find_program)"
+      - "/usr/share/cmake/Modules/CMakeDetermineCCompiler.cmake:200 (include)"
+      - "CMakeLists.txt:3 (project)"
+    mode: "program"
+    variable: "CMAKE_NM"
+    description: "Path to a program."
+    settings:
+      SearchFramework: "NEVER"
+      SearchAppBundle: "NEVER"
+      CMAKE_FIND_USE_CMAKE_PATH: false
+      CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH: false
+      CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_CMAKE_SYSTEM_PATH: true
+      CMAKE_FIND_USE_INSTALL_PREFIX: true
+    names:
+      - "x86_64-w64-mingw32-nm"
+      - "nm"
+    candidate_directories:
+      - "/home/hoshino/project/.tools/mingw-root/usr/bin/"
+      - "/home/hoshino/.npm/_npx/1e7f6d9597241db0/node_modules/.bin/"
+      - "/home/hoshino/\u4e0b\u8f7d/node-v20.20.2-linux-x64/node_modules/.bin/"
+      - "/home/hoshino/\u4e0b\u8f7d/node_modules/.bin/"
+      - "/home/hoshino/node_modules/.bin/"
+      - "/home/node_modules/.bin/"
+      - "/node_modules/.bin/"
+      - "/usr/lib/node_modules/npm/node_modules/@npmcli/run-script/lib/node-gyp-bin/"
+      - "/home/hoshino/.local/bin/"
+      - "/usr/local/bin/"
+      - "/usr/bin/"
+      - "/bin/"
+      - "/usr/local/sbin/"
+      - "/usr/lib/jvm/default/bin/"
+      - "/usr/bin/site_perl/"
+      - "/usr/bin/vendor_perl/"
+      - "/usr/bin/core_perl/"
+      - "/usr/lib/rustup/bin/"
+    found: "/home/hoshino/project/.tools/mingw-root/usr/bin/x86_64-w64-mingw32-nm"
+    search_context:
+      ENV{PATH}:
+        - "/home/hoshino/project/.tools/mingw-root/usr/bin"
+        - "/home/hoshino/.npm/_npx/1e7f6d9597241db0/node_modules/.bin"
+        - "/home/hoshino/\u4e0b\u8f7d/node-v20.20.2-linux-x64/node_modules/.bin"
+        - "/home/hoshino/\u4e0b\u8f7d/node_modules/.bin"
+        - "/home/hoshino/node_modules/.bin"
+        - "/home/node_modules/.bin"
+        - "/node_modules/.bin"
+        - "/usr/lib/node_modules/npm/node_modules/@npmcli/run-script/lib/node-gyp-bin"
+        - "/home/hoshino/.local/bin"
+        - "/usr/local/bin"
+        - "/usr/bin"
+        - "/bin"
+        - "/usr/local/sbin"
+        - "/usr/lib/jvm/default/bin"
+        - "/usr/bin/site_perl"
+        - "/usr/bin/vendor_perl"
+        - "/usr/bin/core_perl"
+        - "/usr/lib/rustup/bin"
+  -
+    kind: "find-v1"
+    backtrace:
+      - "/usr/share/cmake/Modules/CMakeFindBinUtils.cmake:247 (find_program)"
+      - "/usr/share/cmake/Modules/CMakeDetermineCCompiler.cmake:200 (include)"
+      - "CMakeLists.txt:3 (project)"
+    mode: "program"
+    variable: "CMAKE_OBJDUMP"
+    description: "Path to a program."
+    settings:
+      SearchFramework: "NEVER"
+      SearchAppBundle: "NEVER"
+      CMAKE_FIND_USE_CMAKE_PATH: false
+      CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH: false
+      CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_CMAKE_SYSTEM_PATH: true
+      CMAKE_FIND_USE_INSTALL_PREFIX: true
+    names:
+      - "x86_64-w64-mingw32-objdump"
+      - "objdump"
+    candidate_directories:
+      - "/home/hoshino/project/.tools/mingw-root/usr/bin/"
+      - "/home/hoshino/.npm/_npx/1e7f6d9597241db0/node_modules/.bin/"
+      - "/home/hoshino/\u4e0b\u8f7d/node-v20.20.2-linux-x64/node_modules/.bin/"
+      - "/home/hoshino/\u4e0b\u8f7d/node_modules/.bin/"
+      - "/home/hoshino/node_modules/.bin/"
+      - "/home/node_modules/.bin/"
+      - "/node_modules/.bin/"
+      - "/usr/lib/node_modules/npm/node_modules/@npmcli/run-script/lib/node-gyp-bin/"
+      - "/home/hoshino/.local/bin/"
+      - "/usr/local/bin/"
+      - "/usr/bin/"
+      - "/bin/"
+      - "/usr/local/sbin/"
+      - "/usr/lib/jvm/default/bin/"
+      - "/usr/bin/site_perl/"
+      - "/usr/bin/vendor_perl/"
+      - "/usr/bin/core_perl/"
+      - "/usr/lib/rustup/bin/"
+    found: "/home/hoshino/project/.tools/mingw-root/usr/bin/x86_64-w64-mingw32-objdump"
+    search_context:
+      ENV{PATH}:
+        - "/home/hoshino/project/.tools/mingw-root/usr/bin"
+        - "/home/hoshino/.npm/_npx/1e7f6d9597241db0/node_modules/.bin"
+        - "/home/hoshino/\u4e0b\u8f7d/node-v20.20.2-linux-x64/node_modules/.bin"
+        - "/home/hoshino/\u4e0b\u8f7d/node_modules/.bin"
+        - "/home/hoshino/node_modules/.bin"
+        - "/home/node_modules/.bin"
+        - "/node_modules/.bin"
+        - "/usr/lib/node_modules/npm/node_modules/@npmcli/run-script/lib/node-gyp-bin"
+        - "/home/hoshino/.local/bin"
+        - "/usr/local/bin"
+        - "/usr/bin"
+        - "/bin"
+        - "/usr/local/sbin"
+        - "/usr/lib/jvm/default/bin"
+        - "/usr/bin/site_perl"
+        - "/usr/bin/vendor_perl"
+        - "/usr/bin/core_perl"
+        - "/usr/lib/rustup/bin"
+  -
+    kind: "find-v1"
+    backtrace:
+      - "/usr/share/cmake/Modules/CMakeFindBinUtils.cmake:247 (find_program)"
+      - "/usr/share/cmake/Modules/CMakeDetermineCCompiler.cmake:200 (include)"
+      - "CMakeLists.txt:3 (project)"
+    mode: "program"
+    variable: "CMAKE_OBJCOPY"
+    description: "Path to a program."
+    settings:
+      SearchFramework: "NEVER"
+      SearchAppBundle: "NEVER"
+      CMAKE_FIND_USE_CMAKE_PATH: false
+      CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH: false
+      CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_CMAKE_SYSTEM_PATH: true
+      CMAKE_FIND_USE_INSTALL_PREFIX: true
+    names:
+      - "x86_64-w64-mingw32-objcopy"
+      - "objcopy"
+    candidate_directories:
+      - "/home/hoshino/project/.tools/mingw-root/usr/bin/"
+      - "/home/hoshino/.npm/_npx/1e7f6d9597241db0/node_modules/.bin/"
+      - "/home/hoshino/\u4e0b\u8f7d/node-v20.20.2-linux-x64/node_modules/.bin/"
+      - "/home/hoshino/\u4e0b\u8f7d/node_modules/.bin/"
+      - "/home/hoshino/node_modules/.bin/"
+      - "/home/node_modules/.bin/"
+      - "/node_modules/.bin/"
+      - "/usr/lib/node_modules/npm/node_modules/@npmcli/run-script/lib/node-gyp-bin/"
+      - "/home/hoshino/.local/bin/"
+      - "/usr/local/bin/"
+      - "/usr/bin/"
+      - "/bin/"
+      - "/usr/local/sbin/"
+      - "/usr/lib/jvm/default/bin/"
+      - "/usr/bin/site_perl/"
+      - "/usr/bin/vendor_perl/"
+      - "/usr/bin/core_perl/"
+      - "/usr/lib/rustup/bin/"
+    found: "/home/hoshino/project/.tools/mingw-root/usr/bin/x86_64-w64-mingw32-objcopy"
+    search_context:
+      ENV{PATH}:
+        - "/home/hoshino/project/.tools/mingw-root/usr/bin"
+        - "/home/hoshino/.npm/_npx/1e7f6d9597241db0/node_modules/.bin"
+        - "/home/hoshino/\u4e0b\u8f7d/node-v20.20.2-linux-x64/node_modules/.bin"
+        - "/home/hoshino/\u4e0b\u8f7d/node_modules/.bin"
+        - "/home/hoshino/node_modules/.bin"
+        - "/home/node_modules/.bin"
+        - "/node_modules/.bin"
+        - "/usr/lib/node_modules/npm/node_modules/@npmcli/run-script/lib/node-gyp-bin"
+        - "/home/hoshino/.local/bin"
+        - "/usr/local/bin"
+        - "/usr/bin"
+        - "/bin"
+        - "/usr/local/sbin"
+        - "/usr/lib/jvm/default/bin"
+        - "/usr/bin/site_perl"
+        - "/usr/bin/vendor_perl"
+        - "/usr/bin/core_perl"
+        - "/usr/lib/rustup/bin"
+  -
+    kind: "find-v1"
+    backtrace:
+      - "/usr/share/cmake/Modules/CMakeFindBinUtils.cmake:247 (find_program)"
+      - "/usr/share/cmake/Modules/CMakeDetermineCCompiler.cmake:200 (include)"
+      - "CMakeLists.txt:3 (project)"
+    mode: "program"
+    variable: "CMAKE_READELF"
+    description: "Path to a program."
+    settings:
+      SearchFramework: "NEVER"
+      SearchAppBundle: "NEVER"
+      CMAKE_FIND_USE_CMAKE_PATH: false
+      CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH: false
+      CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_CMAKE_SYSTEM_PATH: true
+      CMAKE_FIND_USE_INSTALL_PREFIX: true
+    names:
+      - "x86_64-w64-mingw32-readelf"
+      - "readelf"
+    candidate_directories:
+      - "/home/hoshino/project/.tools/mingw-root/usr/bin/"
+      - "/home/hoshino/.npm/_npx/1e7f6d9597241db0/node_modules/.bin/"
+      - "/home/hoshino/\u4e0b\u8f7d/node-v20.20.2-linux-x64/node_modules/.bin/"
+      - "/home/hoshino/\u4e0b\u8f7d/node_modules/.bin/"
+      - "/home/hoshino/node_modules/.bin/"
+      - "/home/node_modules/.bin/"
+      - "/node_modules/.bin/"
+      - "/usr/lib/node_modules/npm/node_modules/@npmcli/run-script/lib/node-gyp-bin/"
+      - "/home/hoshino/.local/bin/"
+      - "/usr/local/bin/"
+      - "/usr/bin/"
+      - "/bin/"
+      - "/usr/local/sbin/"
+      - "/usr/lib/jvm/default/bin/"
+      - "/usr/bin/site_perl/"
+      - "/usr/bin/vendor_perl/"
+      - "/usr/bin/core_perl/"
+      - "/usr/lib/rustup/bin/"
+    found: "/home/hoshino/project/.tools/mingw-root/usr/bin/x86_64-w64-mingw32-readelf"
+    search_context:
+      ENV{PATH}:
+        - "/home/hoshino/project/.tools/mingw-root/usr/bin"
+        - "/home/hoshino/.npm/_npx/1e7f6d9597241db0/node_modules/.bin"
+        - "/home/hoshino/\u4e0b\u8f7d/node-v20.20.2-linux-x64/node_modules/.bin"
+        - "/home/hoshino/\u4e0b\u8f7d/node_modules/.bin"
+        - "/home/hoshino/node_modules/.bin"
+        - "/home/node_modules/.bin"
+        - "/node_modules/.bin"
+        - "/usr/lib/node_modules/npm/node_modules/@npmcli/run-script/lib/node-gyp-bin"
+        - "/home/hoshino/.local/bin"
+        - "/usr/local/bin"
+        - "/usr/bin"
+        - "/bin"
+        - "/usr/local/sbin"
+        - "/usr/lib/jvm/default/bin"
+        - "/usr/bin/site_perl"
+        - "/usr/bin/vendor_perl"
+        - "/usr/bin/core_perl"
+        - "/usr/lib/rustup/bin"
+  -
+    kind: "find-v1"
+    backtrace:
+      - "/usr/share/cmake/Modules/CMakeFindBinUtils.cmake:247 (find_program)"
+      - "/usr/share/cmake/Modules/CMakeDetermineCCompiler.cmake:200 (include)"
+      - "CMakeLists.txt:3 (project)"
+    mode: "program"
+    variable: "CMAKE_DLLTOOL"
+    description: "Path to a program."
+    settings:
+      SearchFramework: "NEVER"
+      SearchAppBundle: "NEVER"
+      CMAKE_FIND_USE_CMAKE_PATH: false
+      CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH: false
+      CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_CMAKE_SYSTEM_PATH: true
+      CMAKE_FIND_USE_INSTALL_PREFIX: true
+    names:
+      - "x86_64-w64-mingw32-dlltool"
+      - "dlltool"
+    candidate_directories:
+      - "/home/hoshino/project/.tools/mingw-root/usr/bin/"
+      - "/home/hoshino/.npm/_npx/1e7f6d9597241db0/node_modules/.bin/"
+      - "/home/hoshino/\u4e0b\u8f7d/node-v20.20.2-linux-x64/node_modules/.bin/"
+      - "/home/hoshino/\u4e0b\u8f7d/node_modules/.bin/"
+      - "/home/hoshino/node_modules/.bin/"
+      - "/home/node_modules/.bin/"
+      - "/node_modules/.bin/"
+      - "/usr/lib/node_modules/npm/node_modules/@npmcli/run-script/lib/node-gyp-bin/"
+      - "/home/hoshino/.local/bin/"
+      - "/usr/local/bin/"
+      - "/usr/bin/"
+      - "/bin/"
+      - "/usr/local/sbin/"
+      - "/usr/lib/jvm/default/bin/"
+      - "/usr/bin/site_perl/"
+      - "/usr/bin/vendor_perl/"
+      - "/usr/bin/core_perl/"
+      - "/usr/lib/rustup/bin/"
+    found: "/home/hoshino/project/.tools/mingw-root/usr/bin/x86_64-w64-mingw32-dlltool"
+    search_context:
+      ENV{PATH}:
+        - "/home/hoshino/project/.tools/mingw-root/usr/bin"
+        - "/home/hoshino/.npm/_npx/1e7f6d9597241db0/node_modules/.bin"
+        - "/home/hoshino/\u4e0b\u8f7d/node-v20.20.2-linux-x64/node_modules/.bin"
+        - "/home/hoshino/\u4e0b\u8f7d/node_modules/.bin"
+        - "/home/hoshino/node_modules/.bin"
+        - "/home/node_modules/.bin"
+        - "/node_modules/.bin"
+        - "/usr/lib/node_modules/npm/node_modules/@npmcli/run-script/lib/node-gyp-bin"
+        - "/home/hoshino/.local/bin"
+        - "/usr/local/bin"
+        - "/usr/bin"
+        - "/bin"
+        - "/usr/local/sbin"
+        - "/usr/lib/jvm/default/bin"
+        - "/usr/bin/site_perl"
+        - "/usr/bin/vendor_perl"
+        - "/usr/bin/core_perl"
+        - "/usr/lib/rustup/bin"
+  -
+    kind: "find-v1"
+    backtrace:
+      - "/usr/share/cmake/Modules/CMakeFindBinUtils.cmake:247 (find_program)"
+      - "/usr/share/cmake/Modules/CMakeDetermineCCompiler.cmake:200 (include)"
+      - "CMakeLists.txt:3 (project)"
+    mode: "program"
+    variable: "CMAKE_ADDR2LINE"
+    description: "Path to a program."
+    settings:
+      SearchFramework: "NEVER"
+      SearchAppBundle: "NEVER"
+      CMAKE_FIND_USE_CMAKE_PATH: false
+      CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH: false
+      CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_CMAKE_SYSTEM_PATH: true
+      CMAKE_FIND_USE_INSTALL_PREFIX: true
+    names:
+      - "x86_64-w64-mingw32-addr2line"
+      - "addr2line"
+    candidate_directories:
+      - "/home/hoshino/project/.tools/mingw-root/usr/bin/"
+      - "/home/hoshino/.npm/_npx/1e7f6d9597241db0/node_modules/.bin/"
+      - "/home/hoshino/\u4e0b\u8f7d/node-v20.20.2-linux-x64/node_modules/.bin/"
+      - "/home/hoshino/\u4e0b\u8f7d/node_modules/.bin/"
+      - "/home/hoshino/node_modules/.bin/"
+      - "/home/node_modules/.bin/"
+      - "/node_modules/.bin/"
+      - "/usr/lib/node_modules/npm/node_modules/@npmcli/run-script/lib/node-gyp-bin/"
+      - "/home/hoshino/.local/bin/"
+      - "/usr/local/bin/"
+      - "/usr/bin/"
+      - "/bin/"
+      - "/usr/local/sbin/"
+      - "/usr/lib/jvm/default/bin/"
+      - "/usr/bin/site_perl/"
+      - "/usr/bin/vendor_perl/"
+      - "/usr/bin/core_perl/"
+      - "/usr/lib/rustup/bin/"
+    found: "/home/hoshino/project/.tools/mingw-root/usr/bin/x86_64-w64-mingw32-addr2line"
+    search_context:
+      ENV{PATH}:
+        - "/home/hoshino/project/.tools/mingw-root/usr/bin"
+        - "/home/hoshino/.npm/_npx/1e7f6d9597241db0/node_modules/.bin"
+        - "/home/hoshino/\u4e0b\u8f7d/node-v20.20.2-linux-x64/node_modules/.bin"
+        - "/home/hoshino/\u4e0b\u8f7d/node_modules/.bin"
+        - "/home/hoshino/node_modules/.bin"
+        - "/home/node_modules/.bin"
+        - "/node_modules/.bin"
+        - "/usr/lib/node_modules/npm/node_modules/@npmcli/run-script/lib/node-gyp-bin"
+        - "/home/hoshino/.local/bin"
+        - "/usr/local/bin"
+        - "/usr/bin"
+        - "/bin"
+        - "/usr/local/sbin"
+        - "/usr/lib/jvm/default/bin"
+        - "/usr/bin/site_perl"
+        - "/usr/bin/vendor_perl"
+        - "/usr/bin/core_perl"
+        - "/usr/lib/rustup/bin"
+  -
+    kind: "find-v1"
+    backtrace:
+      - "/usr/share/cmake/Modules/CMakeFindBinUtils.cmake:247 (find_program)"
+      - "/usr/share/cmake/Modules/CMakeDetermineCCompiler.cmake:200 (include)"
+      - "CMakeLists.txt:3 (project)"
+    mode: "program"
+    variable: "CMAKE_TAPI"
+    description: "Path to a program."
+    settings:
+      SearchFramework: "NEVER"
+      SearchAppBundle: "NEVER"
+      CMAKE_FIND_USE_CMAKE_PATH: false
+      CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH: false
+      CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_CMAKE_SYSTEM_PATH: true
+      CMAKE_FIND_USE_INSTALL_PREFIX: true
+    names:
+      - "x86_64-w64-mingw32-tapi"
+      - "tapi"
+    candidate_directories:
+      - "/home/hoshino/project/.tools/mingw-root/usr/bin/"
+      - "/home/hoshino/.npm/_npx/1e7f6d9597241db0/node_modules/.bin/"
+      - "/home/hoshino/\u4e0b\u8f7d/node-v20.20.2-linux-x64/node_modules/.bin/"
+      - "/home/hoshino/\u4e0b\u8f7d/node_modules/.bin/"
+      - "/home/hoshino/node_modules/.bin/"
+      - "/home/node_modules/.bin/"
+      - "/node_modules/.bin/"
+      - "/usr/lib/node_modules/npm/node_modules/@npmcli/run-script/lib/node-gyp-bin/"
+      - "/home/hoshino/.local/bin/"
+      - "/usr/local/bin/"
+      - "/usr/bin/"
+      - "/bin/"
+      - "/usr/local/sbin/"
+      - "/usr/lib/jvm/default/bin/"
+      - "/usr/bin/site_perl/"
+      - "/usr/bin/vendor_perl/"
+      - "/usr/bin/core_perl/"
+      - "/usr/lib/rustup/bin/"
+    searched_directories:
+      - "/home/hoshino/project/.tools/mingw-root/usr/bin/x86_64-w64-mingw32-tapi"
+      - "/home/hoshino/.npm/_npx/1e7f6d9597241db0/node_modules/.bin/x86_64-w64-mingw32-tapi"
+      - "/home/hoshino/\u4e0b\u8f7d/node-v20.20.2-linux-x64/node_modules/.bin/x86_64-w64-mingw32-tapi"
+      - "/home/hoshino/\u4e0b\u8f7d/node_modules/.bin/x86_64-w64-mingw32-tapi"
+      - "/home/hoshino/node_modules/.bin/x86_64-w64-mingw32-tapi"
+      - "/home/node_modules/.bin/x86_64-w64-mingw32-tapi"
+      - "/node_modules/.bin/x86_64-w64-mingw32-tapi"
+      - "/usr/lib/node_modules/npm/node_modules/@npmcli/run-script/lib/node-gyp-bin/x86_64-w64-mingw32-tapi"
+      - "/home/hoshino/.local/bin/x86_64-w64-mingw32-tapi"
+      - "/usr/local/bin/x86_64-w64-mingw32-tapi"
+      - "/usr/bin/x86_64-w64-mingw32-tapi"
+      - "/bin/x86_64-w64-mingw32-tapi"
+      - "/usr/local/sbin/x86_64-w64-mingw32-tapi"
+      - "/usr/lib/jvm/default/bin/x86_64-w64-mingw32-tapi"
+      - "/usr/bin/site_perl/x86_64-w64-mingw32-tapi"
+      - "/usr/bin/vendor_perl/x86_64-w64-mingw32-tapi"
+      - "/usr/bin/core_perl/x86_64-w64-mingw32-tapi"
+      - "/usr/lib/rustup/bin/x86_64-w64-mingw32-tapi"
+      - "/home/hoshino/project/.tools/mingw-root/usr/bin/tapi"
+      - "/home/hoshino/.npm/_npx/1e7f6d9597241db0/node_modules/.bin/tapi"
+      - "/home/hoshino/\u4e0b\u8f7d/node-v20.20.2-linux-x64/node_modules/.bin/tapi"
+      - "/home/hoshino/\u4e0b\u8f7d/node_modules/.bin/tapi"
+      - "/home/hoshino/node_modules/.bin/tapi"
+      - "/home/node_modules/.bin/tapi"
+      - "/node_modules/.bin/tapi"
+      - "/usr/lib/node_modules/npm/node_modules/@npmcli/run-script/lib/node-gyp-bin/tapi"
+      - "/home/hoshino/.local/bin/tapi"
+      - "/usr/local/bin/tapi"
+      - "/usr/bin/tapi"
+      - "/bin/tapi"
+      - "/usr/local/sbin/tapi"
+      - "/usr/lib/jvm/default/bin/tapi"
+      - "/usr/bin/site_perl/tapi"
+      - "/usr/bin/vendor_perl/tapi"
+      - "/usr/bin/core_perl/tapi"
+      - "/usr/lib/rustup/bin/tapi"
+    found: false
+    search_context:
+      ENV{PATH}:
+        - "/home/hoshino/project/.tools/mingw-root/usr/bin"
+        - "/home/hoshino/.npm/_npx/1e7f6d9597241db0/node_modules/.bin"
+        - "/home/hoshino/\u4e0b\u8f7d/node-v20.20.2-linux-x64/node_modules/.bin"
+        - "/home/hoshino/\u4e0b\u8f7d/node_modules/.bin"
+        - "/home/hoshino/node_modules/.bin"
+        - "/home/node_modules/.bin"
+        - "/node_modules/.bin"
+        - "/usr/lib/node_modules/npm/node_modules/@npmcli/run-script/lib/node-gyp-bin"
+        - "/home/hoshino/.local/bin"
+        - "/usr/local/bin"
+        - "/usr/bin"
+        - "/bin"
+        - "/usr/local/sbin"
+        - "/usr/lib/jvm/default/bin"
+        - "/usr/bin/site_perl"
+        - "/usr/bin/vendor_perl"
+        - "/usr/bin/core_perl"
+        - "/usr/lib/rustup/bin"
+  -
+    kind: "find-v1"
+    backtrace:
+      - "/usr/share/cmake/Modules/Compiler/GNU-FindBinUtils.cmake:18 (find_program)"
+      - "/usr/share/cmake/Modules/CMakeDetermineCCompiler.cmake:201 (include)"
+      - "CMakeLists.txt:3 (project)"
+    mode: "program"
+    variable: "CMAKE_C_COMPILER_AR"
+    description: "A wrapper around 'ar' adding the appropriate '--plugin' option for the GCC compiler"
+    settings:
+      SearchFramework: "NEVER"
+      SearchAppBundle: "NEVER"
+      CMAKE_FIND_USE_CMAKE_PATH: false
+      CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH: false
+      CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_CMAKE_SYSTEM_PATH: true
+      CMAKE_FIND_USE_INSTALL_PREFIX: true
+    names:
+      - "x86_64-w64-mingw32-gcc-ar-16.2"
+      - "x86_64-w64-mingw32-gcc-ar-16"
+      - "x86_64-w64-mingw32-gcc-ar16"
+      - "x86_64-w64-mingw32-gcc-ar"
+    candidate_directories:
+      - "/home/hoshino/project/.tools/mingw-root/usr/bin/"
+      - "/home/hoshino/.npm/_npx/1e7f6d9597241db0/node_modules/.bin/"
+      - "/home/hoshino/\u4e0b\u8f7d/node-v20.20.2-linux-x64/node_modules/.bin/"
+      - "/home/hoshino/\u4e0b\u8f7d/node_modules/.bin/"
+      - "/home/hoshino/node_modules/.bin/"
+      - "/home/node_modules/.bin/"
+      - "/node_modules/.bin/"
+      - "/usr/lib/node_modules/npm/node_modules/@npmcli/run-script/lib/node-gyp-bin/"
+      - "/home/hoshino/.local/bin/"
+      - "/usr/local/bin/"
+      - "/usr/bin/"
+      - "/bin/"
+      - "/usr/local/sbin/"
+      - "/usr/lib/jvm/default/bin/"
+      - "/usr/bin/site_perl/"
+      - "/usr/bin/vendor_perl/"
+      - "/usr/bin/core_perl/"
+      - "/usr/lib/rustup/bin/"
+    searched_directories:
+      - "/home/hoshino/project/.tools/mingw-root/usr/bin/x86_64-w64-mingw32-gcc-ar-16.2"
+      - "/home/hoshino/.npm/_npx/1e7f6d9597241db0/node_modules/.bin/x86_64-w64-mingw32-gcc-ar-16.2"
+      - "/home/hoshino/\u4e0b\u8f7d/node-v20.20.2-linux-x64/node_modules/.bin/x86_64-w64-mingw32-gcc-ar-16.2"
+      - "/home/hoshino/\u4e0b\u8f7d/node_modules/.bin/x86_64-w64-mingw32-gcc-ar-16.2"
+      - "/home/hoshino/node_modules/.bin/x86_64-w64-mingw32-gcc-ar-16.2"
+      - "/home/node_modules/.bin/x86_64-w64-mingw32-gcc-ar-16.2"
+      - "/node_modules/.bin/x86_64-w64-mingw32-gcc-ar-16.2"
+      - "/usr/lib/node_modules/npm/node_modules/@npmcli/run-script/lib/node-gyp-bin/x86_64-w64-mingw32-gcc-ar-16.2"
+      - "/home/hoshino/.local/bin/x86_64-w64-mingw32-gcc-ar-16.2"
+      - "/usr/local/bin/x86_64-w64-mingw32-gcc-ar-16.2"
+      - "/usr/bin/x86_64-w64-mingw32-gcc-ar-16.2"
+      - "/bin/x86_64-w64-mingw32-gcc-ar-16.2"
+      - "/usr/local/sbin/x86_64-w64-mingw32-gcc-ar-16.2"
+      - "/usr/lib/jvm/default/bin/x86_64-w64-mingw32-gcc-ar-16.2"
+      - "/usr/bin/site_perl/x86_64-w64-mingw32-gcc-ar-16.2"
+      - "/usr/bin/vendor_perl/x86_64-w64-mingw32-gcc-ar-16.2"
+      - "/usr/bin/core_perl/x86_64-w64-mingw32-gcc-ar-16.2"
+      - "/usr/lib/rustup/bin/x86_64-w64-mingw32-gcc-ar-16.2"
+      - "/home/hoshino/project/.tools/mingw-root/usr/bin/x86_64-w64-mingw32-gcc-ar-16"
+      - "/home/hoshino/.npm/_npx/1e7f6d9597241db0/node_modules/.bin/x86_64-w64-mingw32-gcc-ar-16"
+      - "/home/hoshino/\u4e0b\u8f7d/node-v20.20.2-linux-x64/node_modules/.bin/x86_64-w64-mingw32-gcc-ar-16"
+      - "/home/hoshino/\u4e0b\u8f7d/node_modules/.bin/x86_64-w64-mingw32-gcc-ar-16"
+      - "/home/hoshino/node_modules/.bin/x86_64-w64-mingw32-gcc-ar-16"
+      - "/home/node_modules/.bin/x86_64-w64-mingw32-gcc-ar-16"
+      - "/node_modules/.bin/x86_64-w64-mingw32-gcc-ar-16"
+      - "/usr/lib/node_modules/npm/node_modules/@npmcli/run-script/lib/node-gyp-bin/x86_64-w64-mingw32-gcc-ar-16"
+      - "/home/hoshino/.local/bin/x86_64-w64-mingw32-gcc-ar-16"
+      - "/usr/local/bin/x86_64-w64-mingw32-gcc-ar-16"
+      - "/usr/bin/x86_64-w64-mingw32-gcc-ar-16"
+      - "/bin/x86_64-w64-mingw32-gcc-ar-16"
+      - "/usr/local/sbin/x86_64-w64-mingw32-gcc-ar-16"
+      - "/usr/lib/jvm/default/bin/x86_64-w64-mingw32-gcc-ar-16"
+      - "/usr/bin/site_perl/x86_64-w64-mingw32-gcc-ar-16"
+      - "/usr/bin/vendor_perl/x86_64-w64-mingw32-gcc-ar-16"
+      - "/usr/bin/core_perl/x86_64-w64-mingw32-gcc-ar-16"
+      - "/usr/lib/rustup/bin/x86_64-w64-mingw32-gcc-ar-16"
+      - "/home/hoshino/project/.tools/mingw-root/usr/bin/x86_64-w64-mingw32-gcc-ar16"
+      - "/home/hoshino/.npm/_npx/1e7f6d9597241db0/node_modules/.bin/x86_64-w64-mingw32-gcc-ar16"
+      - "/home/hoshino/\u4e0b\u8f7d/node-v20.20.2-linux-x64/node_modules/.bin/x86_64-w64-mingw32-gcc-ar16"
+      - "/home/hoshino/\u4e0b\u8f7d/node_modules/.bin/x86_64-w64-mingw32-gcc-ar16"
+      - "/home/hoshino/node_modules/.bin/x86_64-w64-mingw32-gcc-ar16"
+      - "/home/node_modules/.bin/x86_64-w64-mingw32-gcc-ar16"
+      - "/node_modules/.bin/x86_64-w64-mingw32-gcc-ar16"
+      - "/usr/lib/node_modules/npm/node_modules/@npmcli/run-script/lib/node-gyp-bin/x86_64-w64-mingw32-gcc-ar16"
+      - "/home/hoshino/.local/bin/x86_64-w64-mingw32-gcc-ar16"
+      - "/usr/local/bin/x86_64-w64-mingw32-gcc-ar16"
+      - "/usr/bin/x86_64-w64-mingw32-gcc-ar16"
+      - "/bin/x86_64-w64-mingw32-gcc-ar16"
+      - "/usr/local/sbin/x86_64-w64-mingw32-gcc-ar16"
+      - "/usr/lib/jvm/default/bin/x86_64-w64-mingw32-gcc-ar16"
+      - "/usr/bin/site_perl/x86_64-w64-mingw32-gcc-ar16"
+      - "/usr/bin/vendor_perl/x86_64-w64-mingw32-gcc-ar16"
+      - "/usr/bin/core_perl/x86_64-w64-mingw32-gcc-ar16"
+      - "/usr/lib/rustup/bin/x86_64-w64-mingw32-gcc-ar16"
+    found: "/home/hoshino/project/.tools/mingw-root/usr/bin/x86_64-w64-mingw32-gcc-ar"
+    search_context:
+      ENV{PATH}:
+        - "/home/hoshino/project/.tools/mingw-root/usr/bin"
+        - "/home/hoshino/.npm/_npx/1e7f6d9597241db0/node_modules/.bin"
+        - "/home/hoshino/\u4e0b\u8f7d/node-v20.20.2-linux-x64/node_modules/.bin"
+        - "/home/hoshino/\u4e0b\u8f7d/node_modules/.bin"
+        - "/home/hoshino/node_modules/.bin"
+        - "/home/node_modules/.bin"
+        - "/node_modules/.bin"
+        - "/usr/lib/node_modules/npm/node_modules/@npmcli/run-script/lib/node-gyp-bin"
+        - "/home/hoshino/.local/bin"
+        - "/usr/local/bin"
+        - "/usr/bin"
+        - "/bin"
+        - "/usr/local/sbin"
+        - "/usr/lib/jvm/default/bin"
+        - "/usr/bin/site_perl"
+        - "/usr/bin/vendor_perl"
+        - "/usr/bin/core_perl"
+        - "/usr/lib/rustup/bin"
+  -
+    kind: "find-v1"
+    backtrace:
+      - "/usr/share/cmake/Modules/Compiler/GNU-FindBinUtils.cmake:30 (find_program)"
+      - "/usr/share/cmake/Modules/CMakeDetermineCCompiler.cmake:201 (include)"
+      - "CMakeLists.txt:3 (project)"
+    mode: "program"
+    variable: "CMAKE_C_COMPILER_RANLIB"
+    description: "A wrapper around 'ranlib' adding the appropriate '--plugin' option for the GCC compiler"
+    settings:
+      SearchFramework: "NEVER"
+      SearchAppBundle: "NEVER"
+      CMAKE_FIND_USE_CMAKE_PATH: false
+      CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH: false
+      CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_CMAKE_SYSTEM_PATH: true
+      CMAKE_FIND_USE_INSTALL_PREFIX: true
+    names:
+      - "x86_64-w64-mingw32-gcc-ranlib-16.2"
+      - "x86_64-w64-mingw32-gcc-ranlib-16"
+      - "x86_64-w64-mingw32-gcc-ranlib16"
+      - "x86_64-w64-mingw32-gcc-ranlib"
+    candidate_directories:
+      - "/home/hoshino/project/.tools/mingw-root/usr/bin/"
+      - "/home/hoshino/.npm/_npx/1e7f6d9597241db0/node_modules/.bin/"
+      - "/home/hoshino/\u4e0b\u8f7d/node-v20.20.2-linux-x64/node_modules/.bin/"
+      - "/home/hoshino/\u4e0b\u8f7d/node_modules/.bin/"
+      - "/home/hoshino/node_modules/.bin/"
+      - "/home/node_modules/.bin/"
+      - "/node_modules/.bin/"
+      - "/usr/lib/node_modules/npm/node_modules/@npmcli/run-script/lib/node-gyp-bin/"
+      - "/home/hoshino/.local/bin/"
+      - "/usr/local/bin/"
+      - "/usr/bin/"
+      - "/bin/"
+      - "/usr/local/sbin/"
+      - "/usr/lib/jvm/default/bin/"
+      - "/usr/bin/site_perl/"
+      - "/usr/bin/vendor_perl/"
+      - "/usr/bin/core_perl/"
+      - "/usr/lib/rustup/bin/"
+    searched_directories:
+      - "/home/hoshino/project/.tools/mingw-root/usr/bin/x86_64-w64-mingw32-gcc-ranlib-16.2"
+      - "/home/hoshino/.npm/_npx/1e7f6d9597241db0/node_modules/.bin/x86_64-w64-mingw32-gcc-ranlib-16.2"
+      - "/home/hoshino/\u4e0b\u8f7d/node-v20.20.2-linux-x64/node_modules/.bin/x86_64-w64-mingw32-gcc-ranlib-16.2"
+      - "/home/hoshino/\u4e0b\u8f7d/node_modules/.bin/x86_64-w64-mingw32-gcc-ranlib-16.2"
+      - "/home/hoshino/node_modules/.bin/x86_64-w64-mingw32-gcc-ranlib-16.2"
+      - "/home/node_modules/.bin/x86_64-w64-mingw32-gcc-ranlib-16.2"
+      - "/node_modules/.bin/x86_64-w64-mingw32-gcc-ranlib-16.2"
+      - "/usr/lib/node_modules/npm/node_modules/@npmcli/run-script/lib/node-gyp-bin/x86_64-w64-mingw32-gcc-ranlib-16.2"
+      - "/home/hoshino/.local/bin/x86_64-w64-mingw32-gcc-ranlib-16.2"
+      - "/usr/local/bin/x86_64-w64-mingw32-gcc-ranlib-16.2"
+      - "/usr/bin/x86_64-w64-mingw32-gcc-ranlib-16.2"
+      - "/bin/x86_64-w64-mingw32-gcc-ranlib-16.2"
+      - "/usr/local/sbin/x86_64-w64-mingw32-gcc-ranlib-16.2"
+      - "/usr/lib/jvm/default/bin/x86_64-w64-mingw32-gcc-ranlib-16.2"
+      - "/usr/bin/site_perl/x86_64-w64-mingw32-gcc-ranlib-16.2"
+      - "/usr/bin/vendor_perl/x86_64-w64-mingw32-gcc-ranlib-16.2"
+      - "/usr/bin/core_perl/x86_64-w64-mingw32-gcc-ranlib-16.2"
+      - "/usr/lib/rustup/bin/x86_64-w64-mingw32-gcc-ranlib-16.2"
+      - "/home/hoshino/project/.tools/mingw-root/usr/bin/x86_64-w64-mingw32-gcc-ranlib-16"
+      - "/home/hoshino/.npm/_npx/1e7f6d9597241db0/node_modules/.bin/x86_64-w64-mingw32-gcc-ranlib-16"
+      - "/home/hoshino/\u4e0b\u8f7d/node-v20.20.2-linux-x64/node_modules/.bin/x86_64-w64-mingw32-gcc-ranlib-16"
+      - "/home/hoshino/\u4e0b\u8f7d/node_modules/.bin/x86_64-w64-mingw32-gcc-ranlib-16"
+      - "/home/hoshino/node_modules/.bin/x86_64-w64-mingw32-gcc-ranlib-16"
+      - "/home/node_modules/.bin/x86_64-w64-mingw32-gcc-ranlib-16"
+      - "/node_modules/.bin/x86_64-w64-mingw32-gcc-ranlib-16"
+      - "/usr/lib/node_modules/npm/node_modules/@npmcli/run-script/lib/node-gyp-bin/x86_64-w64-mingw32-gcc-ranlib-16"
+      - "/home/hoshino/.local/bin/x86_64-w64-mingw32-gcc-ranlib-16"
+      - "/usr/local/bin/x86_64-w64-mingw32-gcc-ranlib-16"
+      - "/usr/bin/x86_64-w64-mingw32-gcc-ranlib-16"
+      - "/bin/x86_64-w64-mingw32-gcc-ranlib-16"
+      - "/usr/local/sbin/x86_64-w64-mingw32-gcc-ranlib-16"
+      - "/usr/lib/jvm/default/bin/x86_64-w64-mingw32-gcc-ranlib-16"
+      - "/usr/bin/site_perl/x86_64-w64-mingw32-gcc-ranlib-16"
+      - "/usr/bin/vendor_perl/x86_64-w64-mingw32-gcc-ranlib-16"
+      - "/usr/bin/core_perl/x86_64-w64-mingw32-gcc-ranlib-16"
+      - "/usr/lib/rustup/bin/x86_64-w64-mingw32-gcc-ranlib-16"
+      - "/home/hoshino/project/.tools/mingw-root/usr/bin/x86_64-w64-mingw32-gcc-ranlib16"
+      - "/home/hoshino/.npm/_npx/1e7f6d9597241db0/node_modules/.bin/x86_64-w64-mingw32-gcc-ranlib16"
+      - "/home/hoshino/\u4e0b\u8f7d/node-v20.20.2-linux-x64/node_modules/.bin/x86_64-w64-mingw32-gcc-ranlib16"
+      - "/home/hoshino/\u4e0b\u8f7d/node_modules/.bin/x86_64-w64-mingw32-gcc-ranlib16"
+      - "/home/hoshino/node_modules/.bin/x86_64-w64-mingw32-gcc-ranlib16"
+      - "/home/node_modules/.bin/x86_64-w64-mingw32-gcc-ranlib16"
+      - "/node_modules/.bin/x86_64-w64-mingw32-gcc-ranlib16"
+      - "/usr/lib/node_modules/npm/node_modules/@npmcli/run-script/lib/node-gyp-bin/x86_64-w64-mingw32-gcc-ranlib16"
+      - "/home/hoshino/.local/bin/x86_64-w64-mingw32-gcc-ranlib16"
+      - "/usr/local/bin/x86_64-w64-mingw32-gcc-ranlib16"
+      - "/usr/bin/x86_64-w64-mingw32-gcc-ranlib16"
+      - "/bin/x86_64-w64-mingw32-gcc-ranlib16"
+      - "/usr/local/sbin/x86_64-w64-mingw32-gcc-ranlib16"
+      - "/usr/lib/jvm/default/bin/x86_64-w64-mingw32-gcc-ranlib16"
+      - "/usr/bin/site_perl/x86_64-w64-mingw32-gcc-ranlib16"
+      - "/usr/bin/vendor_perl/x86_64-w64-mingw32-gcc-ranlib16"
+      - "/usr/bin/core_perl/x86_64-w64-mingw32-gcc-ranlib16"
+      - "/usr/lib/rustup/bin/x86_64-w64-mingw32-gcc-ranlib16"
+    found: "/home/hoshino/project/.tools/mingw-root/usr/bin/x86_64-w64-mingw32-gcc-ranlib"
+    search_context:
+      ENV{PATH}:
+        - "/home/hoshino/project/.tools/mingw-root/usr/bin"
+        - "/home/hoshino/.npm/_npx/1e7f6d9597241db0/node_modules/.bin"
+        - "/home/hoshino/\u4e0b\u8f7d/node-v20.20.2-linux-x64/node_modules/.bin"
+        - "/home/hoshino/\u4e0b\u8f7d/node_modules/.bin"
+        - "/home/hoshino/node_modules/.bin"
+        - "/home/node_modules/.bin"
+        - "/node_modules/.bin"
+        - "/usr/lib/node_modules/npm/node_modules/@npmcli/run-script/lib/node-gyp-bin"
+        - "/home/hoshino/.local/bin"
+        - "/usr/local/bin"
+        - "/usr/bin"
+        - "/bin"
+        - "/usr/local/sbin"
+        - "/usr/lib/jvm/default/bin"
+        - "/usr/bin/site_perl"
+        - "/usr/bin/vendor_perl"
+        - "/usr/bin/core_perl"
+        - "/usr/lib/rustup/bin"
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/share/cmake/Modules/CMakeDetermineCompilerABI.cmake:123 (try_compile)"
+      - "/usr/share/cmake/Modules/CMakeTestCCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "CMakeLists.txt:3 (project)"
+    checks:
+      - "Detecting C compiler ABI info"
+    directories:
+      source: "/home/hoshino/project/GalgameScriptEngine/build/glfw-win/CMakeFiles/CMakeScratch/TryCompile-IsK42p"
+      binary: "/home/hoshino/project/GalgameScriptEngine/build/glfw-win/CMakeFiles/CMakeScratch/TryCompile-IsK42p"
+    cmakeVariables:
+      CMAKE_C_FLAGS: ""
+      CMAKE_C_FLAGS_DEBUG: "-g"
+      CMAKE_EXE_LINKER_FLAGS: ""
+    buildResult:
+      variable: "CMAKE_C_ABI_COMPILED"
+      cached: false
+      stdout: |
+        Change Dir: '/home/hoshino/project/GalgameScriptEngine/build/glfw-win/CMakeFiles/CMakeScratch/TryCompile-IsK42p'
+        
+        Run Build Command(s): /usr/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_b202e/fast
+        /usr/bin/make  -f CMakeFiles/cmTC_b202e.dir/build.make CMakeFiles/cmTC_b202e.dir/build
+        make[1]: Entering directory '/home/hoshino/project/GalgameScriptEngine/build/glfw-win/CMakeFiles/CMakeScratch/TryCompile-IsK42p'
+        Building C object CMakeFiles/cmTC_b202e.dir/CMakeCCompilerABI.c.obj
+        /home/hoshino/project/.tools/mingw-root/usr/bin/x86_64-w64-mingw32-gcc   -v -o CMakeFiles/cmTC_b202e.dir/CMakeCCompilerABI.c.obj -c /usr/share/cmake/Modules/CMakeCCompilerABI.c
+        Using built-in specs.
+        COLLECT_GCC=/home/hoshino/project/.tools/mingw-root/usr/bin/x86_64-w64-mingw32-gcc
+        Target: x86_64-w64-mingw32
+        Configured with: /startdir/src/gcc/configure --prefix=/usr --libexecdir=/usr/lib --target=x86_64-w64-mingw32 --with-bugurl=https://bugs.archlinux.org/ --enable-languages=ada,c,c++,fortran,lto,objc,obj-c++ --enable-shared --enable-static --enable-threads=posix --enable-fully-dynamic-string --enable-libstdcxx-time=yes --enable-libstdcxx-filesystem-ts=yes --with-system-zlib --enable-cloog-backend=isl --enable-lto --enable-libgomp --disable-multilib --enable-checking=release --disable-sjlj-exceptions --with-dwarf2 --enable-tls
+        Thread model: posix
+        Supported LTO compression algorithms: zlib zstd
+        gcc version 16.2.0 (GCC) 
+        COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_b202e.dir/CMakeCCompilerABI.c.obj' '-c' '-mtune=generic' '-march=x86-64' '-dumpdir' 'CMakeFiles/cmTC_b202e.dir/'
+         /home/hoshino/project/.tools/mingw-root/usr/bin/../lib/gcc/x86_64-w64-mingw32/16.2.0/cc1 -quiet -v -iprefix /home/hoshino/project/.tools/mingw-root/usr/bin/../lib/gcc/x86_64-w64-mingw32/16.2.0/ -D_REENTRANT /usr/share/cmake/Modules/CMakeCCompilerABI.c -quiet -dumpdir CMakeFiles/cmTC_b202e.dir/ -dumpbase CMakeCCompilerABI.c.c -dumpbase-ext .c -mtune=generic -march=x86-64 -version -o /tmp/cc2zBSpx.s
+        GNU C23 (GCC) version 16.2.0 (x86_64-w64-mingw32)
+        	compiled by GNU C version 16.2.1 20260810, GMP version 6.3.0, MPFR version 4.2.2, MPC version 1.4.1, isl version isl-0.28-GMP
+        
+        GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072
+        ignoring nonexistent directory "/home/hoshino/project/.tools/mingw-root/usr/bin/../lib/gcc/x86_64-w64-mingw32/16.2.0/../../../../x86_64-w64-mingw32/sys-include"
+        ignoring duplicate directory "/home/hoshino/project/.tools/mingw-root/usr/bin/../lib/gcc/../../lib/gcc/x86_64-w64-mingw32/16.2.0/include"
+        ignoring duplicate directory "/home/hoshino/project/.tools/mingw-root/usr/bin/../lib/gcc/../../lib/gcc/x86_64-w64-mingw32/16.2.0/include-fixed"
+        ignoring nonexistent directory "/home/hoshino/project/.tools/mingw-root/usr/bin/../lib/gcc/../../lib/gcc/x86_64-w64-mingw32/16.2.0/../../../../x86_64-w64-mingw32/sys-include"
+        ignoring duplicate directory "/home/hoshino/project/.tools/mingw-root/usr/bin/../lib/gcc/../../lib/gcc/x86_64-w64-mingw32/16.2.0/../../../../x86_64-w64-mingw32/include"
+        #include "..." search starts here:
+        #include <...> search starts here:
+         /home/hoshino/project/.tools/mingw-root/usr/bin/../lib/gcc/x86_64-w64-mingw32/16.2.0/include
+         /home/hoshino/project/.tools/mingw-root/usr/bin/../lib/gcc/x86_64-w64-mingw32/16.2.0/include-fixed
+         /home/hoshino/project/.tools/mingw-root/usr/bin/../lib/gcc/x86_64-w64-mingw32/16.2.0/../../../../x86_64-w64-mingw32/include
+        End of search list.
+        Compiler executable checksum: d99c81ee14d4098fad26b45c55a8f7e4
+        COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_b202e.dir/CMakeCCompilerABI.c.obj' '-c' '-mtune=generic' '-march=x86-64' '-dumpdir' 'CMakeFiles/cmTC_b202e.dir/'
+         /home/hoshino/project/.tools/mingw-root/usr/bin/../lib/gcc/x86_64-w64-mingw32/16.2.0/../../../../x86_64-w64-mingw32/bin/as -v -o CMakeFiles/cmTC_b202e.dir/CMakeCCompilerABI.c.obj /tmp/cc2zBSpx.s
+        GNU assembler version 2.47 (x86_64-w64-mingw32) using BFD version (GNU Binutils) 2.47.20260726
+        COMPILER_PATH=/home/hoshino/project/.tools/mingw-root/usr/bin/../lib/gcc/x86_64-w64-mingw32/16.2.0/:/home/hoshino/project/.tools/mingw-root/usr/bin/../lib/gcc/:/home/hoshino/project/.tools/mingw-root/usr/bin/../lib/gcc/x86_64-w64-mingw32/16.2.0/../../../../x86_64-w64-mingw32/bin/
+        LIBRARY_PATH=/home/hoshino/project/.tools/mingw-root/usr/bin/../lib/gcc/x86_64-w64-mingw32/16.2.0/:/home/hoshino/project/.tools/mingw-root/usr/bin/../lib/gcc/:/home/hoshino/project/.tools/mingw-root/usr/bin/../lib/gcc/x86_64-w64-mingw32/16.2.0/../../../../x86_64-w64-mingw32/lib/../lib/:/home/hoshino/project/.tools/mingw-root/usr/bin/../lib/gcc/x86_64-w64-mingw32/16.2.0/../../../../x86_64-w64-mingw32/lib/
+        COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_b202e.dir/CMakeCCompilerABI.c.obj' '-c' '-mtune=generic' '-march=x86-64' '-dumpdir' 'CMakeFiles/cmTC_b202e.dir/CMakeCCompilerABI.c.'
+        Linking C executable cmTC_b202e.exe
+        /usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_b202e.dir/link.txt --verbose=1
+        Using built-in specs.
+        COLLECT_GCC=/home/hoshino/project/.tools/mingw-root/usr/bin/x86_64-w64-mingw32-gcc
+        COLLECT_LTO_WRAPPER=/home/hoshino/project/.tools/mingw-root/usr/bin/../lib/gcc/x86_64-w64-mingw32/16.2.0/lto-wrapper
+        Target: x86_64-w64-mingw32
+        Configured with: /startdir/src/gcc/configure --prefix=/usr --libexecdir=/usr/lib --target=x86_64-w64-mingw32 --with-bugurl=https://bugs.archlinux.org/ --enable-languages=ada,c,c++,fortran,lto,objc,obj-c++ --enable-shared --enable-static --enable-threads=posix --enable-fully-dynamic-string --enable-libstdcxx-time=yes --enable-libstdcxx-filesystem-ts=yes --with-system-zlib --enable-cloog-backend=isl --enable-lto --enable-libgomp --disable-multilib --enable-checking=release --disable-sjlj-exceptions --with-dwarf2 --enable-tls
+        Thread model: posix
+        Supported LTO compression algorithms: zlib zstd
+        gcc version 16.2.0 (GCC) 
+        COMPILER_PATH=/home/hoshino/project/.tools/mingw-root/usr/bin/../lib/gcc/x86_64-w64-mingw32/16.2.0/:/home/hoshino/project/.tools/mingw-root/usr/bin/../lib/gcc/:/home/hoshino/project/.tools/mingw-root/usr/bin/../lib/gcc/x86_64-w64-mingw32/16.2.0/../../../../x86_64-w64-mingw32/bin/
+        LIBRARY_PATH=/home/hoshino/project/.tools/mingw-root/usr/bin/../lib/gcc/x86_64-w64-mingw32/16.2.0/:/home/hoshino/project/.tools/mingw-root/usr/bin/../lib/gcc/:/home/hoshino/project/.tools/mingw-root/usr/bin/../lib/gcc/x86_64-w64-mingw32/16.2.0/../../../../x86_64-w64-mingw32/lib/../lib/:/home/hoshino/project/.tools/mingw-root/usr/bin/../lib/gcc/x86_64-w64-mingw32/16.2.0/../../../../x86_64-w64-mingw32/lib/
+        COLLECT_GCC_OPTIONS='-v' '-o' 'cmTC_b202e.exe' '-mtune=generic' '-march=x86-64' '-dumpdir' 'cmTC_b202e.'
+         /home/hoshino/project/.tools/mingw-root/usr/bin/../lib/gcc/x86_64-w64-mingw32/16.2.0/collect2 -plugin /home/hoshino/project/.tools/mingw-root/usr/bin/../lib/gcc/x86_64-w64-mingw32/16.2.0/liblto_plugin.so -plugin-opt=/home/hoshino/project/.tools/mingw-root/usr/bin/../lib/gcc/x86_64-w64-mingw32/16.2.0/lto-wrapper -plugin-opt=-fresolution=/tmp/ccFenc39.res -plugin-opt=-pass-through=-lmingw32 -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_eh -plugin-opt=-pass-through=-lmingwex -plugin-opt=-pass-through=-lmsvcrt -plugin-opt=-pass-through=-lkernel32 -plugin-opt=-pass-through=-lpthread -plugin-opt=-pass-through=-ladvapi32 -plugin-opt=-pass-through=-lshell32 -plugin-opt=-pass-through=-luser32 -plugin-opt=-pass-through=-lkernel32 -plugin-opt=-pass-through=-lmingw32 -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_eh -plugin-opt=-pass-through=-lmingwex -plugin-opt=-pass-through=-lmsvcrt -plugin-opt=-pass-through=-lkernel32 -m i386pep -Bdynamic -o cmTC_b202e.exe /home/hoshino/project/.tools/mingw-root/usr/bin/../lib/gcc/x86_64-w64-mingw32/16.2.0/../../../../x86_64-w64-mingw32/lib/../lib/crt2.o /home/hoshino/project/.tools/mingw-root/usr/bin/../lib/gcc/x86_64-w64-mingw32/16.2.0/crtbegin.o -L/home/hoshino/project/.tools/mingw-root/usr/bin/../lib/gcc/x86_64-w64-mingw32/16.2.0 -L/home/hoshino/project/.tools/mingw-root/usr/bin/../lib/gcc -L/home/hoshino/project/.tools/mingw-root/usr/bin/../lib/gcc/x86_64-w64-mingw32/16.2.0/../../../../x86_64-w64-mingw32/lib/../lib -L/home/hoshino/project/.tools/mingw-root/usr/bin/../lib/gcc/x86_64-w64-mingw32/16.2.0/../../../../x86_64-w64-mingw32/lib -v --whole-archive CMakeFiles/cmTC_b202e.dir/objects.a --no-whole-archive --out-implib libcmTC_b202e.dll.a --major-image-version 0 --minor-image-version 0 -lmingw32 -lgcc -lgcc_eh -lmingwex -lmsvcrt -lkernel32 -lpthread -ladvapi32 -lshell32 -luser32 -lkernel32 -lmingw32 -lgcc -lgcc_eh -lmingwex -lmsvcrt -lkernel32 /home/hoshino/project/.tools/mingw-root/usr/bin/../lib/gcc/x86_64-w64-mingw32/16.2.0/crtend.o
+        collect2 version 16.2.0
+        /home/hoshino/project/.tools/mingw-root/usr/bin/../lib/gcc/x86_64-w64-mingw32/16.2.0/../../../../x86_64-w64-mingw32/bin/ld -plugin /home/hoshino/project/.tools/mingw-root/usr/bin/../lib/gcc/x86_64-w64-mingw32/16.2.0/liblto_plugin.so -plugin-opt=/home/hoshino/project/.tools/mingw-root/usr/bin/../lib/gcc/x86_64-w64-mingw32/16.2.0/lto-wrapper -plugin-opt=-fresolution=/tmp/ccFenc39.res -plugin-opt=-pass-through=-lmingw32 -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_eh -plugin-opt=-pass-through=-lmingwex -plugin-opt=-pass-through=-lmsvcrt -plugin-opt=-pass-through=-lkernel32 -plugin-opt=-pass-through=-lpthread -plugin-opt=-pass-through=-ladvapi32 -plugin-opt=-pass-through=-lshell32 -plugin-opt=-pass-through=-luser32 -plugin-opt=-pass-through=-lkernel32 -plugin-opt=-pass-through=-lmingw32 -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_eh -plugin-opt=-pass-through=-lmingwex -plugin-opt=-pass-through=-lmsvcrt -plugin-opt=-pass-through=-lkernel32 -m i386pep -Bdynamic -o cmTC_b202e.exe /home/hoshino/project/.tools/mingw-root/usr/bin/../lib/gcc/x86_64-w64-mingw32/16.2.0/../../../../x86_64-w64-mingw32/lib/../lib/crt2.o /home/hoshino/project/.tools/mingw-root/usr/bin/../lib/gcc/x86_64-w64-mingw32/16.2.0/crtbegin.o -L/home/hoshino/project/.tools/mingw-root/usr/bin/../lib/gcc/x86_64-w64-mingw32/16.2.0 -L/home/hoshino/project/.tools/mingw-root/usr/bin/../lib/gcc -L/home/hoshino/project/.tools/mingw-root/usr/bin/../lib/gcc/x86_64-w64-mingw32/16.2.0/../../../../x86_64-w64-mingw32/lib/../lib -L/home/hoshino/project/.tools/mingw-root/usr/bin/../lib/gcc/x86_64-w64-mingw32/16.2.0/../../../../x86_64-w64-mingw32/lib -v --whole-archive CMakeFiles/cmTC_b202e.dir/objects.a --no-whole-archive --out-implib libcmTC_b202e.dll.a --major-image-version 0 --minor-image-version 0 -lmingw32 -lgcc -lgcc_eh -lmingwex -lmsvcrt -lkernel32 -lpthread -ladvapi32 -lshell32 -luser32 -lkernel32 -lmingw32 -lgcc -lgcc_eh -lmingwex -lmsvcrt -lkernel32 /home/hoshino/project/.tools/mingw-root/usr/bin/../lib/gcc/x86_64-w64-mingw32/16.2.0/crtend.o
+        GNU ld (GNU Binutils) 2.47.20260726
+        COLLECT_GCC_OPTIONS='-v' '-o' 'cmTC_b202e.exe' '-mtune=generic' '-march=x86-64' '-dumpdir' 'cmTC_b202e.'
+        /usr/bin/cmake -E rm -f CMakeFiles/cmTC_b202e.dir/objects.a
+        /home/hoshino/project/.tools/mingw-root/usr/bin/x86_64-w64-mingw32-ar qc CMakeFiles/cmTC_b202e.dir/objects.a @CMakeFiles/cmTC_b202e.dir/objects1.rsp
+        /home/hoshino/project/.tools/mingw-root/usr/bin/x86_64-w64-mingw32-gcc  -v -Wl,-v -Wl,--whole-archive CMakeFiles/cmTC_b202e.dir/objects.a -Wl,--no-whole-archive -o cmTC_b202e.exe -Wl,--out-implib,libcmTC_b202e.dll.a -Wl,--major-image-version,0,--minor-image-version,0
+        make[1]: Leaving directory '/home/hoshino/project/GalgameScriptEngine/build/glfw-win/CMakeFiles/CMakeScratch/TryCompile-IsK42p'
+        
+      exitCode: 0
+  -
+    kind: "message-v1"
+    backtrace:
+      - "/usr/share/cmake/Modules/CMakeDetermineCompilerABI.cmake:255 (message)"
+      - "/usr/share/cmake/Modules/CMakeTestCCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "CMakeLists.txt:3 (project)"
+    message: |
+      Parsed C implicit include dir info: rv=done
+        found start of include info
+        found start of implicit include info
+          add: [/home/hoshino/project/.tools/mingw-root/usr/bin/../lib/gcc/x86_64-w64-mingw32/16.2.0/include]
+          add: [/home/hoshino/project/.tools/mingw-root/usr/bin/../lib/gcc/x86_64-w64-mingw32/16.2.0/include-fixed]
+          add: [/home/hoshino/project/.tools/mingw-root/usr/bin/../lib/gcc/x86_64-w64-mingw32/16.2.0/../../../../x86_64-w64-mingw32/include]
+        end of search list found
+        collapse include dir [/home/hoshino/project/.tools/mingw-root/usr/bin/../lib/gcc/x86_64-w64-mingw32/16.2.0/include] ==> [/home/hoshino/project/.tools/mingw-root/usr/lib/gcc/x86_64-w64-mingw32/16.2.0/include]
+        collapse include dir [/home/hoshino/project/.tools/mingw-root/usr/bin/../lib/gcc/x86_64-w64-mingw32/16.2.0/include-fixed] ==> [/home/hoshino/project/.tools/mingw-root/usr/lib/gcc/x86_64-w64-mingw32/16.2.0/include-fixed]
+        collapse include dir [/home/hoshino/project/.tools/mingw-root/usr/bin/../lib/gcc/x86_64-w64-mingw32/16.2.0/../../../../x86_64-w64-mingw32/include] ==> [/home/hoshino/project/.tools/mingw-root/usr/x86_64-w64-mingw32/include]
+        implicit include dirs: [/home/hoshino/project/.tools/mingw-root/usr/lib/gcc/x86_64-w64-mingw32/16.2.0/include;/home/hoshino/project/.tools/mingw-root/usr/lib/gcc/x86_64-w64-mingw32/16.2.0/include-fixed;/home/hoshino/project/.tools/mingw-root/usr/x86_64-w64-mingw32/include]
+      
+      
+  -
+    kind: "message-v1"
+    backtrace:
+      - "/usr/share/cmake/Modules/CMakeDetermineCompilerABI.cmake:291 (message)"
+      - "/usr/share/cmake/Modules/CMakeTestCCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "CMakeLists.txt:3 (project)"
+    message: |
+      Parsed C implicit link information:
+        link line regex: [^( *|.*[/\\])(ld[0-9]*(|\\.[a-rt-z][a-z]*|\\.s[a-np-z][a-z]*|\\.so[a-z]+)|wild|CMAKE_LINK_STARTFILE-NOTFOUND|([^/\\]+-)?ld|collect2)[^/\\]*( |$)]
+        linker tool regex: [^[ 	]*(->|"|[0-9]+>[ 	-]*Build:[ 	0-9]+ ms[ 	]*)?[ 	]*(([^"]*[/\\])?(ld[0-9]*(|\\.[a-rt-z][a-z]*|\\.s[a-np-z][a-z]*|\\.so[a-z]+)|wild))("|,| |$)]
+        ignore line: [Change Dir: '/home/hoshino/project/GalgameScriptEngine/build/glfw-win/CMakeFiles/CMakeScratch/TryCompile-IsK42p']
+        ignore line: []
+        ignore line: [Run Build Command(s): /usr/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_b202e/fast]
+        ignore line: [/usr/bin/make  -f CMakeFiles/cmTC_b202e.dir/build.make CMakeFiles/cmTC_b202e.dir/build]
+        ignore line: [make[1]: Entering directory '/home/hoshino/project/GalgameScriptEngine/build/glfw-win/CMakeFiles/CMakeScratch/TryCompile-IsK42p']
+        ignore line: [Building C object CMakeFiles/cmTC_b202e.dir/CMakeCCompilerABI.c.obj]
+        ignore line: [/home/hoshino/project/.tools/mingw-root/usr/bin/x86_64-w64-mingw32-gcc   -v -o CMakeFiles/cmTC_b202e.dir/CMakeCCompilerABI.c.obj -c /usr/share/cmake/Modules/CMakeCCompilerABI.c]
+        ignore line: [Using built-in specs.]
+        ignore line: [COLLECT_GCC=/home/hoshino/project/.tools/mingw-root/usr/bin/x86_64-w64-mingw32-gcc]
+        ignore line: [Target: x86_64-w64-mingw32]
+        ignore line: [Configured with: /startdir/src/gcc/configure --prefix=/usr --libexecdir=/usr/lib --target=x86_64-w64-mingw32 --with-bugurl=https://bugs.archlinux.org/ --enable-languages=ada c c++ fortran lto objc obj-c++ --enable-shared --enable-static --enable-threads=posix --enable-fully-dynamic-string --enable-libstdcxx-time=yes --enable-libstdcxx-filesystem-ts=yes --with-system-zlib --enable-cloog-backend=isl --enable-lto --enable-libgomp --disable-multilib --enable-checking=release --disable-sjlj-exceptions --with-dwarf2 --enable-tls]
+        ignore line: [Thread model: posix]
+        ignore line: [Supported LTO compression algorithms: zlib zstd]
+        ignore line: [gcc version 16.2.0 (GCC) ]
+        ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_b202e.dir/CMakeCCompilerABI.c.obj' '-c' '-mtune=generic' '-march=x86-64' '-dumpdir' 'CMakeFiles/cmTC_b202e.dir/']
+        ignore line: [ /home/hoshino/project/.tools/mingw-root/usr/bin/../lib/gcc/x86_64-w64-mingw32/16.2.0/cc1 -quiet -v -iprefix /home/hoshino/project/.tools/mingw-root/usr/bin/../lib/gcc/x86_64-w64-mingw32/16.2.0/ -D_REENTRANT /usr/share/cmake/Modules/CMakeCCompilerABI.c -quiet -dumpdir CMakeFiles/cmTC_b202e.dir/ -dumpbase CMakeCCompilerABI.c.c -dumpbase-ext .c -mtune=generic -march=x86-64 -version -o /tmp/cc2zBSpx.s]
+        ignore line: [GNU C23 (GCC) version 16.2.0 (x86_64-w64-mingw32)]
+        ignore line: [	compiled by GNU C version 16.2.1 20260810  GMP version 6.3.0  MPFR version 4.2.2  MPC version 1.4.1  isl version isl-0.28-GMP]
+        ignore line: []
+        ignore line: [GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072]
+        ignore line: [ignoring nonexistent directory "/home/hoshino/project/.tools/mingw-root/usr/bin/../lib/gcc/x86_64-w64-mingw32/16.2.0/../../../../x86_64-w64-mingw32/sys-include"]
+        ignore line: [ignoring duplicate directory "/home/hoshino/project/.tools/mingw-root/usr/bin/../lib/gcc/../../lib/gcc/x86_64-w64-mingw32/16.2.0/include"]
+        ignore line: [ignoring duplicate directory "/home/hoshino/project/.tools/mingw-root/usr/bin/../lib/gcc/../../lib/gcc/x86_64-w64-mingw32/16.2.0/include-fixed"]
+        ignore line: [ignoring nonexistent directory "/home/hoshino/project/.tools/mingw-root/usr/bin/../lib/gcc/../../lib/gcc/x86_64-w64-mingw32/16.2.0/../../../../x86_64-w64-mingw32/sys-include"]
+        ignore line: [ignoring duplicate directory "/home/hoshino/project/.tools/mingw-root/usr/bin/../lib/gcc/../../lib/gcc/x86_64-w64-mingw32/16.2.0/../../../../x86_64-w64-mingw32/include"]
+        ignore line: [#include "..." search starts here:]
+        ignore line: [#include <...> search starts here:]
+        ignore line: [ /home/hoshino/project/.tools/mingw-root/usr/bin/../lib/gcc/x86_64-w64-mingw32/16.2.0/include]
+        ignore line: [ /home/hoshino/project/.tools/mingw-root/usr/bin/../lib/gcc/x86_64-w64-mingw32/16.2.0/include-fixed]
+        ignore line: [ /home/hoshino/project/.tools/mingw-root/usr/bin/../lib/gcc/x86_64-w64-mingw32/16.2.0/../../../../x86_64-w64-mingw32/include]
+        ignore line: [End of search list.]
+        ignore line: [Compiler executable checksum: d99c81ee14d4098fad26b45c55a8f7e4]
+        ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_b202e.dir/CMakeCCompilerABI.c.obj' '-c' '-mtune=generic' '-march=x86-64' '-dumpdir' 'CMakeFiles/cmTC_b202e.dir/']
+        ignore line: [ /home/hoshino/project/.tools/mingw-root/usr/bin/../lib/gcc/x86_64-w64-mingw32/16.2.0/../../../../x86_64-w64-mingw32/bin/as -v -o CMakeFiles/cmTC_b202e.dir/CMakeCCompilerABI.c.obj /tmp/cc2zBSpx.s]
+        ignore line: [GNU assembler version 2.47 (x86_64-w64-mingw32) using BFD version (GNU Binutils) 2.47.20260726]
+        ignore line: [COMPILER_PATH=/home/hoshino/project/.tools/mingw-root/usr/bin/../lib/gcc/x86_64-w64-mingw32/16.2.0/:/home/hoshino/project/.tools/mingw-root/usr/bin/../lib/gcc/:/home/hoshino/project/.tools/mingw-root/usr/bin/../lib/gcc/x86_64-w64-mingw32/16.2.0/../../../../x86_64-w64-mingw32/bin/]
+        ignore line: [LIBRARY_PATH=/home/hoshino/project/.tools/mingw-root/usr/bin/../lib/gcc/x86_64-w64-mingw32/16.2.0/:/home/hoshino/project/.tools/mingw-root/usr/bin/../lib/gcc/:/home/hoshino/project/.tools/mingw-root/usr/bin/../lib/gcc/x86_64-w64-mingw32/16.2.0/../../../../x86_64-w64-mingw32/lib/../lib/:/home/hoshino/project/.tools/mingw-root/usr/bin/../lib/gcc/x86_64-w64-mingw32/16.2.0/../../../../x86_64-w64-mingw32/lib/]
+        ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_b202e.dir/CMakeCCompilerABI.c.obj' '-c' '-mtune=generic' '-march=x86-64' '-dumpdir' 'CMakeFiles/cmTC_b202e.dir/CMakeCCompilerABI.c.']
+        ignore line: [Linking C executable cmTC_b202e.exe]
+        ignore line: [/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_b202e.dir/link.txt --verbose=1]
+        ignore line: [Using built-in specs.]
+        ignore line: [COLLECT_GCC=/home/hoshino/project/.tools/mingw-root/usr/bin/x86_64-w64-mingw32-gcc]
+        ignore line: [COLLECT_LTO_WRAPPER=/home/hoshino/project/.tools/mingw-root/usr/bin/../lib/gcc/x86_64-w64-mingw32/16.2.0/lto-wrapper]
+        ignore line: [Target: x86_64-w64-mingw32]
+        ignore line: [Configured with: /startdir/src/gcc/configure --prefix=/usr --libexecdir=/usr/lib --target=x86_64-w64-mingw32 --with-bugurl=https://bugs.archlinux.org/ --enable-languages=ada c c++ fortran lto objc obj-c++ --enable-shared --enable-static --enable-threads=posix --enable-fully-dynamic-string --enable-libstdcxx-time=yes --enable-libstdcxx-filesystem-ts=yes --with-system-zlib --enable-cloog-backend=isl --enable-lto --enable-libgomp --disable-multilib --enable-checking=release --disable-sjlj-exceptions --with-dwarf2 --enable-tls]
+        ignore line: [Thread model: posix]
+        ignore line: [Supported LTO compression algorithms: zlib zstd]
+        ignore line: [gcc version 16.2.0 (GCC) ]
+        ignore line: [COMPILER_PATH=/home/hoshino/project/.tools/mingw-root/usr/bin/../lib/gcc/x86_64-w64-mingw32/16.2.0/:/home/hoshino/project/.tools/mingw-root/usr/bin/../lib/gcc/:/home/hoshino/project/.tools/mingw-root/usr/bin/../lib/gcc/x86_64-w64-mingw32/16.2.0/../../../../x86_64-w64-mingw32/bin/]
+        ignore line: [LIBRARY_PATH=/home/hoshino/project/.tools/mingw-root/usr/bin/../lib/gcc/x86_64-w64-mingw32/16.2.0/:/home/hoshino/project/.tools/mingw-root/usr/bin/../lib/gcc/:/home/hoshino/project/.tools/mingw-root/usr/bin/../lib/gcc/x86_64-w64-mingw32/16.2.0/../../../../x86_64-w64-mingw32/lib/../lib/:/home/hoshino/project/.tools/mingw-root/usr/bin/../lib/gcc/x86_64-w64-mingw32/16.2.0/../../../../x86_64-w64-mingw32/lib/]
+        ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'cmTC_b202e.exe' '-mtune=generic' '-march=x86-64' '-dumpdir' 'cmTC_b202e.']
+        link line: [ /home/hoshino/project/.tools/mingw-root/usr/bin/../lib/gcc/x86_64-w64-mingw32/16.2.0/collect2 -plugin /home/hoshino/project/.tools/mingw-root/usr/bin/../lib/gcc/x86_64-w64-mingw32/16.2.0/liblto_plugin.so -plugin-opt=/home/hoshino/project/.tools/mingw-root/usr/bin/../lib/gcc/x86_64-w64-mingw32/16.2.0/lto-wrapper -plugin-opt=-fresolution=/tmp/ccFenc39.res -plugin-opt=-pass-through=-lmingw32 -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_eh -plugin-opt=-pass-through=-lmingwex -plugin-opt=-pass-through=-lmsvcrt -plugin-opt=-pass-through=-lkernel32 -plugin-opt=-pass-through=-lpthread -plugin-opt=-pass-through=-ladvapi32 -plugin-opt=-pass-through=-lshell32 -plugin-opt=-pass-through=-luser32 -plugin-opt=-pass-through=-lkernel32 -plugin-opt=-pass-through=-lmingw32 -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_eh -plugin-opt=-pass-through=-lmingwex -plugin-opt=-pass-through=-lmsvcrt -plugin-opt=-pass-through=-lkernel32 -m i386pep -Bdynamic -o cmTC_b202e.exe /home/hoshino/project/.tools/mingw-root/usr/bin/../lib/gcc/x86_64-w64-mingw32/16.2.0/../../../../x86_64-w64-mingw32/lib/../lib/crt2.o /home/hoshino/project/.tools/mingw-root/usr/bin/../lib/gcc/x86_64-w64-mingw32/16.2.0/crtbegin.o -L/home/hoshino/project/.tools/mingw-root/usr/bin/../lib/gcc/x86_64-w64-mingw32/16.2.0 -L/home/hoshino/project/.tools/mingw-root/usr/bin/../lib/gcc -L/home/hoshino/project/.tools/mingw-root/usr/bin/../lib/gcc/x86_64-w64-mingw32/16.2.0/../../../../x86_64-w64-mingw32/lib/../lib -L/home/hoshino/project/.tools/mingw-root/usr/bin/../lib/gcc/x86_64-w64-mingw32/16.2.0/../../../../x86_64-w64-mingw32/lib -v --whole-archive CMakeFiles/cmTC_b202e.dir/objects.a --no-whole-archive --out-implib libcmTC_b202e.dll.a --major-image-version 0 --minor-image-version 0 -lmingw32 -lgcc -lgcc_eh -lmingwex -lmsvcrt -lkernel32 -lpthread -ladvapi32 -lshell32 -luser32 -lkernel32 -lmingw32 -lgcc -lgcc_eh -lmingwex -lmsvcrt -lkernel32 /home/hoshino/project/.tools/mingw-root/usr/bin/../lib/gcc/x86_64-w64-mingw32/16.2.0/crtend.o]
+          arg [/home/hoshino/project/.tools/mingw-root/usr/bin/../lib/gcc/x86_64-w64-mingw32/16.2.0/collect2] ==> ignore
+          arg [-plugin] ==> ignore
+          arg [/home/hoshino/project/.tools/mingw-root/usr/bin/../lib/gcc/x86_64-w64-mingw32/16.2.0/liblto_plugin.so] ==> ignore
+          arg [-plugin-opt=/home/hoshino/project/.tools/mingw-root/usr/bin/../lib/gcc/x86_64-w64-mingw32/16.2.0/lto-wrapper] ==> ignore
+          arg [-plugin-opt=-fresolution=/tmp/ccFenc39.res] ==> ignore
+          arg [-plugin-opt=-pass-through=-lmingw32] ==> ignore
+          arg [-plugin-opt=-pass-through=-lgcc] ==> ignore
+          arg [-plugin-opt=-pass-through=-lgcc_eh] ==> ignore
+          arg [-plugin-opt=-pass-through=-lmingwex] ==> ignore
+          arg [-plugin-opt=-pass-through=-lmsvcrt] ==> ignore
+          arg [-plugin-opt=-pass-through=-lkernel32] ==> ignore
+          arg [-plugin-opt=-pass-through=-lpthread] ==> ignore
+          arg [-plugin-opt=-pass-through=-ladvapi32] ==> ignore
+          arg [-plugin-opt=-pass-through=-lshell32] ==> ignore
+          arg [-plugin-opt=-pass-through=-luser32] ==> ignore
+          arg [-plugin-opt=-pass-through=-lkernel32] ==> ignore
+          arg [-plugin-opt=-pass-through=-lmingw32] ==> ignore
+          arg [-plugin-opt=-pass-through=-lgcc] ==> ignore
+          arg [-plugin-opt=-pass-through=-lgcc_eh] ==> ignore
+          arg [-plugin-opt=-pass-through=-lmingwex] ==> ignore
+          arg [-plugin-opt=-pass-through=-lmsvcrt] ==> ignore
+          arg [-plugin-opt=-pass-through=-lkernel32] ==> ignore
+          arg [-m] ==> ignore
+          arg [i386pep] ==> ignore
+          arg [-Bdynamic] ==> search dynamic
+          arg [-o] ==> ignore
+          arg [cmTC_b202e.exe] ==> ignore
+          arg [/home/hoshino/project/.tools/mingw-root/usr/bin/../lib/gcc/x86_64-w64-mingw32/16.2.0/../../../../x86_64-w64-mingw32/lib/../lib/crt2.o] ==> obj [/home/hoshino/project/.tools/mingw-root/usr/bin/../lib/gcc/x86_64-w64-mingw32/16.2.0/../../../../x86_64-w64-mingw32/lib/../lib/crt2.o]
+          arg [/home/hoshino/project/.tools/mingw-root/usr/bin/../lib/gcc/x86_64-w64-mingw32/16.2.0/crtbegin.o] ==> obj [/home/hoshino/project/.tools/mingw-root/usr/bin/../lib/gcc/x86_64-w64-mingw32/16.2.0/crtbegin.o]
+          arg [-L/home/hoshino/project/.tools/mingw-root/usr/bin/../lib/gcc/x86_64-w64-mingw32/16.2.0] ==> dir [/home/hoshino/project/.tools/mingw-root/usr/bin/../lib/gcc/x86_64-w64-mingw32/16.2.0]
+          arg [-L/home/hoshino/project/.tools/mingw-root/usr/bin/../lib/gcc] ==> dir [/home/hoshino/project/.tools/mingw-root/usr/bin/../lib/gcc]
+          arg [-L/home/hoshino/project/.tools/mingw-root/usr/bin/../lib/gcc/x86_64-w64-mingw32/16.2.0/../../../../x86_64-w64-mingw32/lib/../lib] ==> dir [/home/hoshino/project/.tools/mingw-root/usr/bin/../lib/gcc/x86_64-w64-mingw32/16.2.0/../../../../x86_64-w64-mingw32/lib/../lib]
+          arg [-L/home/hoshino/project/.tools/mingw-root/usr/bin/../lib/gcc/x86_64-w64-mingw32/16.2.0/../../../../x86_64-w64-mingw32/lib] ==> dir [/home/hoshino/project/.tools/mingw-root/usr/bin/../lib/gcc/x86_64-w64-mingw32/16.2.0/../../../../x86_64-w64-mingw32/lib]
+          arg [-v] ==> ignore
+          arg [--whole-archive] ==> ignore
+          arg [CMakeFiles/cmTC_b202e.dir/objects.a] ==> ignore
+          arg [--no-whole-archive] ==> ignore
+          arg [--out-implib] ==> ignore
+          arg [libcmTC_b202e.dll.a] ==> ignore
+          arg [--major-image-version] ==> ignore
+          arg [0] ==> ignore
+          arg [--minor-image-version] ==> ignore
+          arg [0] ==> ignore
+          arg [-lmingw32] ==> lib [mingw32]
+          arg [-lgcc] ==> lib [gcc]
+          arg [-lgcc_eh] ==> lib [gcc_eh]
+          arg [-lmingwex] ==> lib [mingwex]
+          arg [-lmsvcrt] ==> lib [msvcrt]
+          arg [-lkernel32] ==> lib [kernel32]
+          arg [-lpthread] ==> lib [pthread]
+          arg [-ladvapi32] ==> lib [advapi32]
+          arg [-lshell32] ==> lib [shell32]
+          arg [-luser32] ==> lib [user32]
+          arg [-lkernel32] ==> lib [kernel32]
+          arg [-lmingw32] ==> lib [mingw32]
+          arg [-lgcc] ==> lib [gcc]
+          arg [-lgcc_eh] ==> lib [gcc_eh]
+          arg [-lmingwex] ==> lib [mingwex]
+          arg [-lmsvcrt] ==> lib [msvcrt]
+          arg [-lkernel32] ==> lib [kernel32]
+          arg [/home/hoshino/project/.tools/mingw-root/usr/bin/../lib/gcc/x86_64-w64-mingw32/16.2.0/crtend.o] ==> obj [/home/hoshino/project/.tools/mingw-root/usr/bin/../lib/gcc/x86_64-w64-mingw32/16.2.0/crtend.o]
+        ignore line: [collect2 version 16.2.0]
+        link line: [/home/hoshino/project/.tools/mingw-root/usr/bin/../lib/gcc/x86_64-w64-mingw32/16.2.0/../../../../x86_64-w64-mingw32/bin/ld -plugin /home/hoshino/project/.tools/mingw-root/usr/bin/../lib/gcc/x86_64-w64-mingw32/16.2.0/liblto_plugin.so -plugin-opt=/home/hoshino/project/.tools/mingw-root/usr/bin/../lib/gcc/x86_64-w64-mingw32/16.2.0/lto-wrapper -plugin-opt=-fresolution=/tmp/ccFenc39.res -plugin-opt=-pass-through=-lmingw32 -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_eh -plugin-opt=-pass-through=-lmingwex -plugin-opt=-pass-through=-lmsvcrt -plugin-opt=-pass-through=-lkernel32 -plugin-opt=-pass-through=-lpthread -plugin-opt=-pass-through=-ladvapi32 -plugin-opt=-pass-through=-lshell32 -plugin-opt=-pass-through=-luser32 -plugin-opt=-pass-through=-lkernel32 -plugin-opt=-pass-through=-lmingw32 -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_eh -plugin-opt=-pass-through=-lmingwex -plugin-opt=-pass-through=-lmsvcrt -plugin-opt=-pass-through=-lkernel32 -m i386pep -Bdynamic -o cmTC_b202e.exe /home/hoshino/project/.tools/mingw-root/usr/bin/../lib/gcc/x86_64-w64-mingw32/16.2.0/../../../../x86_64-w64-mingw32/lib/../lib/crt2.o /home/hoshino/project/.tools/mingw-root/usr/bin/../lib/gcc/x86_64-w64-mingw32/16.2.0/crtbegin.o -L/home/hoshino/project/.tools/mingw-root/usr/bin/../lib/gcc/x86_64-w64-mingw32/16.2.0 -L/home/hoshino/project/.tools/mingw-root/usr/bin/../lib/gcc -L/home/hoshino/project/.tools/mingw-root/usr/bin/../lib/gcc/x86_64-w64-mingw32/16.2.0/../../../../x86_64-w64-mingw32/lib/../lib -L/home/hoshino/project/.tools/mingw-root/usr/bin/../lib/gcc/x86_64-w64-mingw32/16.2.0/../../../../x86_64-w64-mingw32/lib -v --whole-archive CMakeFiles/cmTC_b202e.dir/objects.a --no-whole-archive --out-implib libcmTC_b202e.dll.a --major-image-version 0 --minor-image-version 0 -lmingw32 -lgcc -lgcc_eh -lmingwex -lmsvcrt -lkernel32 -lpthread -ladvapi32 -lshell32 -luser32 -lkernel32 -lmingw32 -lgcc -lgcc_eh -lmingwex -lmsvcrt -lkernel32 /home/hoshino/project/.tools/mingw-root/usr/bin/../lib/gcc/x86_64-w64-mingw32/16.2.0/crtend.o] ==> linker [/home/hoshino/project/.tools/mingw-root/usr/bin/../lib/gcc/x86_64-w64-mingw32/16.2.0/../../../../x86_64-w64-mingw32/bin/ld]
+        link line: [/home/hoshino/project/.tools/mingw-root/usr/bin/../lib/gcc/x86_64-w64-mingw32/16.2.0/../../../../x86_64-w64-mingw32/bin/ld -plugin /home/hoshino/project/.tools/mingw-root/usr/bin/../lib/gcc/x86_64-w64-mingw32/16.2.0/liblto_plugin.so -plugin-opt=/home/hoshino/project/.tools/mingw-root/usr/bin/../lib/gcc/x86_64-w64-mingw32/16.2.0/lto-wrapper -plugin-opt=-fresolution=/tmp/ccFenc39.res -plugin-opt=-pass-through=-lmingw32 -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_eh -plugin-opt=-pass-through=-lmingwex -plugin-opt=-pass-through=-lmsvcrt -plugin-opt=-pass-through=-lkernel32 -plugin-opt=-pass-through=-lpthread -plugin-opt=-pass-through=-ladvapi32 -plugin-opt=-pass-through=-lshell32 -plugin-opt=-pass-through=-luser32 -plugin-opt=-pass-through=-lkernel32 -plugin-opt=-pass-through=-lmingw32 -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_eh -plugin-opt=-pass-through=-lmingwex -plugin-opt=-pass-through=-lmsvcrt -plugin-opt=-pass-through=-lkernel32 -m i386pep -Bdynamic -o cmTC_b202e.exe /home/hoshino/project/.tools/mingw-root/usr/bin/../lib/gcc/x86_64-w64-mingw32/16.2.0/../../../../x86_64-w64-mingw32/lib/../lib/crt2.o /home/hoshino/project/.tools/mingw-root/usr/bin/../lib/gcc/x86_64-w64-mingw32/16.2.0/crtbegin.o -L/home/hoshino/project/.tools/mingw-root/usr/bin/../lib/gcc/x86_64-w64-mingw32/16.2.0 -L/home/hoshino/project/.tools/mingw-root/usr/bin/../lib/gcc -L/home/hoshino/project/.tools/mingw-root/usr/bin/../lib/gcc/x86_64-w64-mingw32/16.2.0/../../../../x86_64-w64-mingw32/lib/../lib -L/home/hoshino/project/.tools/mingw-root/usr/bin/../lib/gcc/x86_64-w64-mingw32/16.2.0/../../../../x86_64-w64-mingw32/lib -v --whole-archive CMakeFiles/cmTC_b202e.dir/objects.a --no-whole-archive --out-implib libcmTC_b202e.dll.a --major-image-version 0 --minor-image-version 0 -lmingw32 -lgcc -lgcc_eh -lmingwex -lmsvcrt -lkernel32 -lpthread -ladvapi32 -lshell32 -luser32 -lkernel32 -lmingw32 -lgcc -lgcc_eh -lmingwex -lmsvcrt -lkernel32 /home/hoshino/project/.tools/mingw-root/usr/bin/../lib/gcc/x86_64-w64-mingw32/16.2.0/crtend.o] ==> linker architecture flags [-m;i386pep]
+        ignore line: [/home/hoshino/project/.tools/mingw-root/usr/bin/../lib/gcc/x86_64-w64-mingw32/16.2.0/../../../../x86_64-w64-mingw32/bin/ld -plugin /home/hoshino/project/.tools/mingw-root/usr/bin/../lib/gcc/x86_64-w64-mingw32/16.2.0/liblto_plugin.so -plugin-opt=/home/hoshino/project/.tools/mingw-root/usr/bin/../lib/gcc/x86_64-w64-mingw32/16.2.0/lto-wrapper -plugin-opt=-fresolution=/tmp/ccFenc39.res -plugin-opt=-pass-through=-lmingw32 -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_eh -plugin-opt=-pass-through=-lmingwex -plugin-opt=-pass-through=-lmsvcrt -plugin-opt=-pass-through=-lkernel32 -plugin-opt=-pass-through=-lpthread -plugin-opt=-pass-through=-ladvapi32 -plugin-opt=-pass-through=-lshell32 -plugin-opt=-pass-through=-luser32 -plugin-opt=-pass-through=-lkernel32 -plugin-opt=-pass-through=-lmingw32 -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_eh -plugin-opt=-pass-through=-lmingwex -plugin-opt=-pass-through=-lmsvcrt -plugin-opt=-pass-through=-lkernel32 -m i386pep -Bdynamic -o cmTC_b202e.exe /home/hoshino/project/.tools/mingw-root/usr/bin/../lib/gcc/x86_64-w64-mingw32/16.2.0/../../../../x86_64-w64-mingw32/lib/../lib/crt2.o /home/hoshino/project/.tools/mingw-root/usr/bin/../lib/gcc/x86_64-w64-mingw32/16.2.0/crtbegin.o -L/home/hoshino/project/.tools/mingw-root/usr/bin/../lib/gcc/x86_64-w64-mingw32/16.2.0 -L/home/hoshino/project/.tools/mingw-root/usr/bin/../lib/gcc -L/home/hoshino/project/.tools/mingw-root/usr/bin/../lib/gcc/x86_64-w64-mingw32/16.2.0/../../../../x86_64-w64-mingw32/lib/../lib -L/home/hoshino/project/.tools/mingw-root/usr/bin/../lib/gcc/x86_64-w64-mingw32/16.2.0/../../../../x86_64-w64-mingw32/lib -v --whole-archive CMakeFiles/cmTC_b202e.dir/objects.a --no-whole-archive --out-implib libcmTC_b202e.dll.a --major-image-version 0 --minor-image-version 0 -lmingw32 -lgcc -lgcc_eh -lmingwex -lmsvcrt -lkernel32 -lpthread -ladvapi32 -lshell32 -luser32 -lkernel32 -lmingw32 -lgcc -lgcc_eh -lmingwex -lmsvcrt -lkernel32 /home/hoshino/project/.tools/mingw-root/usr/bin/../lib/gcc/x86_64-w64-mingw32/16.2.0/crtend.o]
+        linker tool for 'C': /home/hoshino/project/.tools/mingw-root/usr/bin/../lib/gcc/x86_64-w64-mingw32/16.2.0/../../../../x86_64-w64-mingw32/bin/ld -m;i386pep
+        remove lib [gcc_eh]
+        remove lib [msvcrt]
+        remove lib [gcc_eh]
+        remove lib [msvcrt]
+        collapse obj [/home/hoshino/project/.tools/mingw-root/usr/bin/../lib/gcc/x86_64-w64-mingw32/16.2.0/../../../../x86_64-w64-mingw32/lib/../lib/crt2.o] ==> [/home/hoshino/project/.tools/mingw-root/usr/x86_64-w64-mingw32/lib/crt2.o]
+        collapse obj [/home/hoshino/project/.tools/mingw-root/usr/bin/../lib/gcc/x86_64-w64-mingw32/16.2.0/crtbegin.o] ==> [/home/hoshino/project/.tools/mingw-root/usr/lib/gcc/x86_64-w64-mingw32/16.2.0/crtbegin.o]
+        collapse obj [/home/hoshino/project/.tools/mingw-root/usr/bin/../lib/gcc/x86_64-w64-mingw32/16.2.0/crtend.o] ==> [/home/hoshino/project/.tools/mingw-root/usr/lib/gcc/x86_64-w64-mingw32/16.2.0/crtend.o]
+        collapse library dir [/home/hoshino/project/.tools/mingw-root/usr/bin/../lib/gcc/x86_64-w64-mingw32/16.2.0] ==> [/home/hoshino/project/.tools/mingw-root/usr/lib/gcc/x86_64-w64-mingw32/16.2.0]
+        collapse library dir [/home/hoshino/project/.tools/mingw-root/usr/bin/../lib/gcc] ==> [/home/hoshino/project/.tools/mingw-root/usr/lib/gcc]
+        collapse library dir [/home/hoshino/project/.tools/mingw-root/usr/bin/../lib/gcc/x86_64-w64-mingw32/16.2.0/../../../../x86_64-w64-mingw32/lib/../lib] ==> [/home/hoshino/project/.tools/mingw-root/usr/x86_64-w64-mingw32/lib]
+        collapse library dir [/home/hoshino/project/.tools/mingw-root/usr/bin/../lib/gcc/x86_64-w64-mingw32/16.2.0/../../../../x86_64-w64-mingw32/lib] ==> [/home/hoshino/project/.tools/mingw-root/usr/x86_64-w64-mingw32/lib]
+        implicit libs: [mingw32;gcc;mingwex;kernel32;pthread;advapi32;shell32;user32;kernel32;mingw32;gcc;mingwex;kernel32]
+        implicit objs: [/home/hoshino/project/.tools/mingw-root/usr/x86_64-w64-mingw32/lib/crt2.o;/home/hoshino/project/.tools/mingw-root/usr/lib/gcc/x86_64-w64-mingw32/16.2.0/crtbegin.o;/home/hoshino/project/.tools/mingw-root/usr/lib/gcc/x86_64-w64-mingw32/16.2.0/crtend.o]
+        implicit dirs: [/home/hoshino/project/.tools/mingw-root/usr/lib/gcc/x86_64-w64-mingw32/16.2.0;/home/hoshino/project/.tools/mingw-root/usr/lib/gcc;/home/hoshino/project/.tools/mingw-root/usr/x86_64-w64-mingw32/lib]
+        implicit fwks: []
+      
+      
+  -
+    kind: "message-v1"
+    backtrace:
+      - "/usr/share/cmake/Modules/Internal/CMakeDetermineLinkerId.cmake:41 (message)"
+      - "/usr/share/cmake/Modules/CMakeDetermineCompilerABI.cmake:337 (cmake_determine_linker_id)"
+      - "/usr/share/cmake/Modules/CMakeTestCCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "CMakeLists.txt:3 (project)"
+    message: |
+      Running the C compiler's linker: "/home/hoshino/project/.tools/mingw-root/usr/bin/../lib/gcc/x86_64-w64-mingw32/16.2.0/../../../../x86_64-w64-mingw32/bin/ld" "-v"
+      GNU ld (GNU Binutils) 2.47.20260726
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/share/cmake/Modules/Internal/CheckSourceCompiles.cmake:81 (try_compile)"
+      - "/usr/share/cmake/Modules/CheckCSourceCompiles.cmake:103 (cmake_check_source_compiles)"
+      - "/usr/share/cmake/Modules/FindThreads.cmake:160 (check_c_source_compiles)"
+      - "/usr/share/cmake/Modules/FindThreads.cmake:226 (_threads_check_libc)"
+      - "CMakeLists.txt:60 (find_package)"
+    checks:
+      - "Performing Test CMAKE_HAVE_LIBC_PTHREAD"
+    directories:
+      source: "/home/hoshino/project/GalgameScriptEngine/build/glfw-win/CMakeFiles/CMakeScratch/TryCompile-qV6YQn"
+      binary: "/home/hoshino/project/GalgameScriptEngine/build/glfw-win/CMakeFiles/CMakeScratch/TryCompile-qV6YQn"
+    cmakeVariables:
+      CMAKE_C_FLAGS: ""
+      CMAKE_C_FLAGS_DEBUG: "-g"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "/home/hoshino/project/GalgameScriptEngine/third_party/glfw/CMake/modules"
+    buildResult:
+      variable: "CMAKE_HAVE_LIBC_PTHREAD"
+      cached: true
+      stdout: |
+        Change Dir: '/home/hoshino/project/GalgameScriptEngine/build/glfw-win/CMakeFiles/CMakeScratch/TryCompile-qV6YQn'
+        
+        Run Build Command(s): /usr/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_3ab45/fast
+        /usr/bin/make  -f CMakeFiles/cmTC_3ab45.dir/build.make CMakeFiles/cmTC_3ab45.dir/build
+        make[1]: 进入目录“/home/hoshino/project/GalgameScriptEngine/build/glfw-win/CMakeFiles/CMakeScratch/TryCompile-qV6YQn”
+        Building C object CMakeFiles/cmTC_3ab45.dir/src.c.obj
+        /home/hoshino/project/.tools/mingw-root/usr/bin/x86_64-w64-mingw32-gcc -DCMAKE_HAVE_LIBC_PTHREAD   -o CMakeFiles/cmTC_3ab45.dir/src.c.obj -c /home/hoshino/project/GalgameScriptEngine/build/glfw-win/CMakeFiles/CMakeScratch/TryCompile-qV6YQn/src.c
+        Linking C executable cmTC_3ab45.exe
+        /usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_3ab45.dir/link.txt --verbose=1
+        /usr/bin/cmake -E rm -f CMakeFiles/cmTC_3ab45.dir/objects.a
+        /home/hoshino/project/.tools/mingw-root/usr/bin/x86_64-w64-mingw32-ar qc CMakeFiles/cmTC_3ab45.dir/objects.a @CMakeFiles/cmTC_3ab45.dir/objects1.rsp
+        /home/hoshino/project/.tools/mingw-root/usr/bin/x86_64-w64-mingw32-gcc -Wl,--whole-archive CMakeFiles/cmTC_3ab45.dir/objects.a -Wl,--no-whole-archive -o cmTC_3ab45.exe -Wl,--out-implib,libcmTC_3ab45.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles/cmTC_3ab45.dir/linkLibs.rsp
+        make[1]: 离开目录“/home/hoshino/project/GalgameScriptEngine/build/glfw-win/CMakeFiles/CMakeScratch/TryCompile-qV6YQn”
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/share/cmake/Modules/CheckIncludeFile.cmake:157 (try_compile)"
+      - "src/CMakeLists.txt:274 (check_include_file)"
+    checks:
+      - "Looking for dinput.h"
+    directories:
+      source: "/home/hoshino/project/GalgameScriptEngine/build/glfw-win/CMakeFiles/CMakeScratch/TryCompile-Y80ooW"
+      binary: "/home/hoshino/project/GalgameScriptEngine/build/glfw-win/CMakeFiles/CMakeScratch/TryCompile-Y80ooW"
+    cmakeVariables:
+      CMAKE_C_FLAGS: ""
+      CMAKE_C_FLAGS_DEBUG: "-g"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "/home/hoshino/project/GalgameScriptEngine/third_party/glfw/CMake/modules"
+    buildResult:
+      variable: "DINPUT_H_FOUND"
+      cached: true
+      stdout: |
+        Change Dir: '/home/hoshino/project/GalgameScriptEngine/build/glfw-win/CMakeFiles/CMakeScratch/TryCompile-Y80ooW'
+        
+        Run Build Command(s): /usr/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_a77b6/fast
+        /usr/bin/make  -f CMakeFiles/cmTC_a77b6.dir/build.make CMakeFiles/cmTC_a77b6.dir/build
+        make[1]: 进入目录“/home/hoshino/project/GalgameScriptEngine/build/glfw-win/CMakeFiles/CMakeScratch/TryCompile-Y80ooW”
+        Building C object CMakeFiles/cmTC_a77b6.dir/CheckIncludeFile.c.obj
+        /home/hoshino/project/.tools/mingw-root/usr/bin/x86_64-w64-mingw32-gcc    -o CMakeFiles/cmTC_a77b6.dir/CheckIncludeFile.c.obj -c /home/hoshino/project/GalgameScriptEngine/build/glfw-win/CMakeFiles/CMakeScratch/TryCompile-Y80ooW/CheckIncludeFile.c
+        Linking C executable cmTC_a77b6.exe
+        /usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_a77b6.dir/link.txt --verbose=1
+        /usr/bin/cmake -E rm -f CMakeFiles/cmTC_a77b6.dir/objects.a
+        /home/hoshino/project/.tools/mingw-root/usr/bin/x86_64-w64-mingw32-ar qc CMakeFiles/cmTC_a77b6.dir/objects.a @CMakeFiles/cmTC_a77b6.dir/objects1.rsp
+        /home/hoshino/project/.tools/mingw-root/usr/bin/x86_64-w64-mingw32-gcc -Wl,--whole-archive CMakeFiles/cmTC_a77b6.dir/objects.a -Wl,--no-whole-archive -o cmTC_a77b6.exe -Wl,--out-implib,libcmTC_a77b6.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles/cmTC_a77b6.dir/linkLibs.rsp
+        make[1]: 离开目录“/home/hoshino/project/GalgameScriptEngine/build/glfw-win/CMakeFiles/CMakeScratch/TryCompile-Y80ooW”
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/share/cmake/Modules/CheckIncludeFile.cmake:157 (try_compile)"
+      - "src/CMakeLists.txt:275 (check_include_file)"
+    checks:
+      - "Looking for xinput.h"
+    directories:
+      source: "/home/hoshino/project/GalgameScriptEngine/build/glfw-win/CMakeFiles/CMakeScratch/TryCompile-LTs8CR"
+      binary: "/home/hoshino/project/GalgameScriptEngine/build/glfw-win/CMakeFiles/CMakeScratch/TryCompile-LTs8CR"
+    cmakeVariables:
+      CMAKE_C_FLAGS: ""
+      CMAKE_C_FLAGS_DEBUG: "-g"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "/home/hoshino/project/GalgameScriptEngine/third_party/glfw/CMake/modules"
+    buildResult:
+      variable: "XINPUT_H_FOUND"
+      cached: true
+      stdout: |
+        Change Dir: '/home/hoshino/project/GalgameScriptEngine/build/glfw-win/CMakeFiles/CMakeScratch/TryCompile-LTs8CR'
+        
+        Run Build Command(s): /usr/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_765af/fast
+        /usr/bin/make  -f CMakeFiles/cmTC_765af.dir/build.make CMakeFiles/cmTC_765af.dir/build
+        make[1]: 进入目录“/home/hoshino/project/GalgameScriptEngine/build/glfw-win/CMakeFiles/CMakeScratch/TryCompile-LTs8CR”
+        Building C object CMakeFiles/cmTC_765af.dir/CheckIncludeFile.c.obj
+        /home/hoshino/project/.tools/mingw-root/usr/bin/x86_64-w64-mingw32-gcc    -o CMakeFiles/cmTC_765af.dir/CheckIncludeFile.c.obj -c /home/hoshino/project/GalgameScriptEngine/build/glfw-win/CMakeFiles/CMakeScratch/TryCompile-LTs8CR/CheckIncludeFile.c
+        Linking C executable cmTC_765af.exe
+        /usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_765af.dir/link.txt --verbose=1
+        /usr/bin/cmake -E rm -f CMakeFiles/cmTC_765af.dir/objects.a
+        /home/hoshino/project/.tools/mingw-root/usr/bin/x86_64-w64-mingw32-ar qc CMakeFiles/cmTC_765af.dir/objects.a @CMakeFiles/cmTC_765af.dir/objects1.rsp
+        /home/hoshino/project/.tools/mingw-root/usr/bin/x86_64-w64-mingw32-gcc -Wl,--whole-archive CMakeFiles/cmTC_765af.dir/objects.a -Wl,--no-whole-archive -o cmTC_765af.exe -Wl,--out-implib,libcmTC_765af.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles/cmTC_765af.dir/linkLibs.rsp
+        make[1]: 离开目录“/home/hoshino/project/GalgameScriptEngine/build/glfw-win/CMakeFiles/CMakeScratch/TryCompile-LTs8CR”
+        
+      exitCode: 0
+...

@@ -22,6 +22,14 @@ title.start=开始游戏
 title.settings=设置
 title.quit=退出
 title.version=v1.2  ·  QLWT ENGINE
+title.gallery=角色图集
+
+# ---- 角色图集 ----
+gallery.title=角色图集
+gallery.count=已登场 %d / %d
+gallery.hint=点击角色看大图 · ↑↓←→ 选择 · Esc 返回
+gallery.locked=未登场
+gallery.detail_hint=Esc / 右键 返回
 
 # ---- 设置抽屉 ----
 settings.title=设置
@@ -40,6 +48,14 @@ settings.style_dark=深色
 settings.style_light=浅色
 settings.style_outline=描边
 settings.fullscreen=全屏模式
+settings.fx_quality=画面特效
+settings.fx_off=关闭
+settings.fx_low=标准
+settings.fx_high=增强
+settings.aa_mode=抗锯齿
+settings.aa_off=关闭
+settings.aa_fxaa=FXAA
+settings.aa_msaa=MSAA 4x
 
 # ---- 章节选择 ----
 chapter.title=章节选择
@@ -101,6 +117,13 @@ battle.log_heal=记录整理完毕，大家缓过来了
 battle.log_buff=全队观测精度提升
 battle.log_stun=对方一时看不清了
 battle.log_enemy_hit= 打向了 
+battle.target=目标
+battle.targeted=被锁定
+battle.charge=蓄力中
+battle.charge_log=开始蓄力，锁定
+battle.charge_fire=的蓄力打向了
+battle.charge_break=的蓄力被打断了
+battle.sp_lack=SP 不足：技能需要 3 点
 
 # ---- 存读档 ----
 save.title=存档

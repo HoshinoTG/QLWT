@@ -2,7 +2,7 @@
 
 #include <algorithm>
 
-#include <raylib.h>
+#include "gfx/gfx.h"
 
 namespace
 {
@@ -40,7 +40,7 @@ void update()
     gOffsetX = (static_cast<float>(winW) - static_cast<float>(gDesignW) * gScale) * 0.5f;
     gOffsetY = (static_cast<float>(winH) - static_cast<float>(gDesignH) * gScale) * 0.5f;
 
-    // raylib 取鼠标的公式是 (raw + offset) * scale，这里反解成设计坐标：
+    // GetMousePosition 的映射公式是 (raw + offset) * scale，这里反解成设计坐标：
     // design = (raw - offsetPx) / scale
     SetMouseOffset(-static_cast<int>(gOffsetX), -static_cast<int>(gOffsetY));
     SetMouseScale(1.0f / gScale, 1.0f / gScale);

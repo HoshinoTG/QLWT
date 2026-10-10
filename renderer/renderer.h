@@ -1,6 +1,6 @@
 #pragma once
 
-#include <raylib.h>
+#include "gfx/gfx.h"
 
 #include <string>
 
@@ -26,7 +26,7 @@ int buttonStyle();
 Texture2D blurredImage(const std::string& path, int blurSize, float downscale = 0.5f);
 
 // 载入贴图并设置平滑采样（mipmap + 三线性）。
-// raylib 的 LoadTexture 默认是最近邻，只要贴图不是 1:1 绘制就会出锯齿——
+// LoadTexture 默认是最近邻，只要贴图不是 1:1 绘制就会出锯齿——
 // 角色立绘（480x900 → 缩到约 0.7 倍）、章节封面、标题背景都走这个函数。
 // 设 QLWT_NO_SMOOTH=1 可以退回默认采样，用于对照排查。
 Texture2D loadSmoothTexture(const std::string& path);
@@ -64,7 +64,39 @@ float frameDelta();
 // 线性步进在目标附近反复跨越）。
 float approach(float current, float target, float speed, float dt);
 
-// raylib 圆角参数为 0..1 比例，此函数把像素半径换算为比例
+// ---- 弹簧 ---------------------------------------------------------------
+// 面板/抽屉的进出场用弹簧，而不是"线性推进 + 缓动曲线"：弹簧会带一点点过冲
+// 再收住，收尾也更快 —— 这是 Apple 那套动效的手感来源。
+// 半隐式欧拉积分；stiffness 越大越快，damping 越接近 2*sqrt(stiffness) 越不振荡。
+struct Spring
+{
+    float value = 0.0f;
+    float velocity = 0.0f;      // 单位：目标值/秒（对 0..1 的进度来说就是"每秒走完几倍"）
+    float stiffness = 320.0f;
+    float damping = 26.0f;      // ≈ 0.73 倍临界阻尼：约 4% 过冲
+
+    void reset(float v) { value = v; velocity = 0.0f; }
+    void update(float target, float dt);
+    // 弹簧算出来的值离目标足够近时会被吸附到目标，方便当作 0..1 的进度用
+    bool settled() const { return value == 0.0f || value == 1.0f; }
+};
+
+// ---- 形变（"玻璃是软的"）------------------------------------------------
+// 按运动速度做"沿运动方向拉伸、垂直方向压扁"，近似保持面积。
+// 只拉伸不收缩横轴，避免面板比内容还窄。
+struct Deform
+{
+    float sx = 1.0f;
+    float sy = 1.0f;
+};
+
+// vx/vy 是设计像素/秒；reference 是"形变拉满"的参考速度
+Deform deformFromVelocity(float vx, float vy, float reference = 2600.0f,
+                          float maxSquash = 0.045f);
+// 以 (anchorX, anchorY) 为不动点缩放矩形（0=左/上，1=右/下，0.5=中心）
+Rectangle deformRect(Rectangle rect, Deform d, float anchorX = 0.5f, float anchorY = 0.5f);
+
+// 圆角参数为 0..1 比例，此函数把像素半径换算为比例
 float roundness(float radiusPx, Rectangle rect);
 
 // 缓动曲线：smoothstep（两头平滑，先快后慢）
@@ -87,7 +119,7 @@ inline float easeOutCubic(float t)
 void drawPanel(Rectangle rect, Color fill, float radius,
                Color border = Color{255, 255, 255, 40}, float borderWidth = 2.0f);
 
-// 内描边：raylib 的 DrawRectangleRoundedLinesEx 把描边画在矩形【外侧】
+// 内描边：DrawRectangleRoundedLinesEx 把描边画在矩形【外侧】
 // （外缘 = rect 再外扩 lineThick），于是控件会比布局大一圈，
 // 处在裁剪区里时还会被切掉半边边框。这个包装把描边改成"贴着外缘向内 lineThick 像素"，
 // 保证控件的可见尺寸 == 布局尺寸，边框永远完整。
@@ -105,8 +137,15 @@ bool blurBackdropReady();
 // drawPanel 一致；调用方自己再画边框即可（边框保持原有样式不变）。
 //   tint.a 越大颜色越实（0 = 纯模糊，1 = 完全被颜色盖住）
 //   blurSamples：单边采样数（3 -> 7x7 次采样），blurStep：采样间隔（设计像素）
-void drawBlurPanel(Rectangle rect, Color tint, float radiusPx,
-                   int blurSamples = 3, float blurStep = 3.0f);
+// 告诉渲染器"设计分辨率"（场景绘制坐标的范围）。实时玻璃的抓取尺寸按它算 ——
+// 不能用渲染目标的像素宽：HiDPI 下 RT 是设计尺寸的 1.5 倍，比例算错会让玻璃
+// 采到偏移/放大的画面（面板在平滑背景上看不出来，小按钮上就会暴露）。
+void setDesignSize(float width, float height);
+
+// 液态玻璃面板：bevelPx = 边缘斜面宽度；border/borderWidth 给一条看得见的描边
+void drawBlurPanel(Rectangle rect, Color tint, float radiusPx, float bevelPx = 15.0f,
+                   Color border = Color{0, 0, 0, 0}, float borderWidth = 0.0f,
+                   bool allowRecapture = true);
 
 // 按钮：圆角矩形，hover 时平滑过渡变色（hoverAnim 保存动画进度 0..1）
 // accent 传透明色表示"使用当前主题色"
@@ -121,6 +160,10 @@ float drawSlider(Rectangle rect, float value01, bool drag,
 
 // 开关：返回新状态；accent 传透明色 = 主题色
 bool drawToggle(Rectangle rect, bool on, bool clicked, Color accent = Color{0, 0, 0, 0});
+
+// 卡片高光扫过：一条斜向光带（progress 从 -0.35 到 1.35 扫一遍，加色混合）
+// 用在"下一章"这类需要吸引注意的卡片上
+void drawShine(Rectangle rect, float radiusPx, float progress, float strength = 0.5f);
 
 // 顶部细高亮线（现代面板装饰）
 void drawAccentLine(Rectangle rect, Color color, float width = 3.0f);

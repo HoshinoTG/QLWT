@@ -7,12 +7,13 @@
 #include <cstdlib>
 
 #include "../core/gif.h"
+#include "../core/save.h"
 #include "../renderer/renderer.h"
 
 namespace
 {
 // 贴图统一走 renderer::loadSmoothTexture（见 renderer.cpp）：
-// raylib 的 LoadTexture 默认是最近邻采样，而角色立绘是 480x900 画到 720*0.88 ≈ 634 高，
+// gfx 的 LoadTexture 默认是最近邻采样，而角色立绘是 480x900 画到 720*0.88 ≈ 634 高，
 // 每边都缩到 0.7 倍——不设过滤就会掉像素，边缘出现硬阶梯（"人物没有抗锯齿"）。
 // GIF / 视频这类逐帧贴图不是从磁盘读的，单独在这里补一次同样的设置。
 void applySmoothFilter(Texture2D& tex)
@@ -291,6 +292,8 @@ void Game::showCharacter(const std::string& name)
     }
     c->targetAlpha = 255.0f;
     if (c->alpha <= 0.01f) c->fadeT = 0.0f;   // 从完全隐藏开始淡入
+    // 登场过的角色自动进图集（无头自检不算，别污染进度文件）
+    if (loadAssets_) galleryMarkSeen(name);
 }
 
 void Game::hideCharacter(const std::string& name)
@@ -316,6 +319,7 @@ void Game::forceHideCharacter(const std::string& name)
 void Game::setSpeaking(const std::string& name)
 {
     speakingName = name;
+    if (loadAssets_) galleryMarkSeen(name);   // 只有台词、没立绘的角色也算登场
 }
 
 void Game::moveCharacter(const std::string& name, const std::string& position)
@@ -471,9 +475,9 @@ void Game::updateBattle(float dt)
     if (battle_) battle_->update(dt);
 }
 
-void Game::drawBattle(const FontManager& fonts)
+void Game::drawBattle(const FontManager& fonts, float renderScale)
 {
-    if (battle_) battle_->draw(fonts);
+    if (battle_) battle_->draw(fonts, renderScale);
 }
 
 void Game::battleDebugAuto(int frame)

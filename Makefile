@@ -7,13 +7,14 @@
 #   make run        编译并启动游戏
 #   make check      无头自检：脚本能跑完 / 每个 chapter 能跑完 / 存读档
 #   make font       从系统字体抽取一个中文 .ttf 到 assets/fonts/（Linux/macOS 首次需要）
-#   make wayland    自己编一个带 Wayland 的 raylib 并链接（Wayland 会话下原生运行）
-#   make clean-wayland  丢掉本地那份 Wayland raylib，回到系统 raylib
+#   make release    打包发行版：dist/qlwt-<系统>-<架构>/ 与 .tar.gz（可整目录拷走）
+#   make release-windows  交叉编译 Windows 版：dist/qlwt-windows-x86_64(.zip)
 #
-# 依赖：g++（C++20）+ raylib。
-#   Debian/Ubuntu: sudo apt install g++ libraylib-dev
-#   Arch:          sudo pacman -S gcc raylib
-#   macOS:         brew install raylib
+# 依赖：g++（C++20）+ GLFW3 + 系统 OpenGL。音频由自带的 miniaudio 提供，
+#       图片 / 字体由自带的 stb 提供，都不需要额外装库。
+#   Debian/Ubuntu: sudo apt install g++ libglfw3-dev libgl1-mesa-dev
+#   Arch:          sudo pacman -S gcc glfw mesa
+#   macOS:         brew install glfw
 #
 # 注意：引擎启动时会把工作目录切到可执行文件所在目录，而素材是按
 # assets/... 相对路径读取的，所以 qlwt 必须和 assets/ 放在同一层
@@ -25,47 +26,83 @@ CXXFLAGS ?= -std=c++20 -O2 -Wall -Wextra -I.
 LDFLAGS  ?=
 
 UNAME_S  := $(shell uname -s)
-RAYLIB_WL_DIR := build/raylib-wayland
-RAYLIB_INC :=
 
+# GLFW / OpenGL：优先用 pkg-config，拿不到就退回手工链接
+GFX_CFLAGS := $(shell pkg-config --cflags glfw3 2>/dev/null)
 ifeq ($(UNAME_S),Darwin)
-  RAYLIB_LIBS := -lraylib -framework OpenGL -framework Cocoa -framework IOKit \
-                 -framework CoreVideo -lm -lpthread
-else
-  # 优先用 raylib 自己的 pkg-config（会带上 GL / X11 等传递依赖）
-  RAYLIB_LIBS := $(shell pkg-config --libs raylib 2>/dev/null)
-  ifeq ($(strip $(RAYLIB_LIBS)),)
-    RAYLIB_LIBS := -lraylib -lGL -lm -lpthread -ldl -lrt -lX11
+  GFX_LIBS := $(shell pkg-config --libs glfw3 2>/dev/null)
+  ifeq ($(strip $(GFX_LIBS)),)
+    GFX_LIBS := -lglfw -framework OpenGL -framework Cocoa -framework IOKit -framework CoreVideo
   endif
+else
+  GFX_LIBS := $(shell pkg-config --libs glfw3 gl 2>/dev/null)
+  ifeq ($(strip $(GFX_LIBS)),)
+    GFX_LIBS := -lglfw -lGL
+  endif
+  GFX_LIBS += -lpthread -ldl -lm
 endif
 
-# 跑过 `make wayland` 之后，本地这份带 Wayland 的 raylib 自动优先生效
-ifneq ($(wildcard $(RAYLIB_WL_DIR)/lib/libraylib.so),)
-  RAYLIB_INC  := -I$(RAYLIB_WL_DIR)/src
-  RAYLIB_LIBS := -L$(RAYLIB_WL_DIR)/lib -lraylib \
-                 -Wl,-rpath,$(CURDIR)/$(RAYLIB_WL_DIR)/lib \
-                 -lGL -lm -lpthread -ldl -lrt -lX11
-endif
-
-SRCS    := $(wildcard core/*.cpp) $(wildcard game/*.cpp) $(wildcard renderer/*.cpp) main.cpp
+SRCS    := $(wildcard core/*.cpp) $(wildcard game/*.cpp) $(wildcard renderer/*.cpp) \
+           $(wildcard gfx/*.cpp) main.cpp
 OBJDIR  := build/obj
 OBJS    := $(patsubst %.cpp,$(OBJDIR)/%.o,$(SRCS))
 DEPS    := $(OBJS:.o=.d)
 TARGET  := qlwt
 
-.PHONY: all clean clean-wayland run check font wayland help
+.PHONY: all clean run check font release release-windows help
 
-NPROC := $(shell nproc 2>/dev/null || echo 4)
+NPROC := $(shell nproc 2>/dev/null || sysctl -n hw.ncpu 2>/dev/null || echo 4)
 
 all: $(TARGET)
 
 $(TARGET): $(OBJS)
-	$(CXX) $(CXXFLAGS) $(LDFLAGS) -o $@ $^ $(RAYLIB_LIBS)
+	$(CXX) $(CXXFLAGS) $(LDFLAGS) -o $@ $^ $(GFX_LIBS)
 	@echo "build OK -> ./$(TARGET)"
+
+# ---------------------------------------------------------------------------
+# 发行版打包
+#
+#   make release     生成 dist/qlwt-<系统>-<架构>/（整个目录拷哪都能跑）
+#                    以及 dist/qlwt-<系统>-<架构>.tar.gz
+#
+# 和开发用的 ./qlwt 区别：
+#   * rpath 改成 $ORIGIN/lib，跟着可执行文件走，不再写死到本仓库路径
+#   * 把 libglfw.so.3 一起打进包（GLFW 是 zlib 许可，可以随包分发），
+#     目标机器只要有 OpenGL / X11 / Wayland 这些系统库就能跑，
+#     不需要装 glfw 开发包
+#   * strip 掉符号，体积更小
+#   * 连 assets/ 一起打包（引擎按可执行文件所在目录找素材）
+# ---------------------------------------------------------------------------
+DIST_NAME ?= qlwt-$(shell uname -s | tr 'A-Z' 'a-z')-$(shell uname -m)
+DIST_DIR  := dist/$(DIST_NAME)
+
+release: $(OBJS)
+	@rm -rf $(DIST_DIR)
+	@mkdir -p $(DIST_DIR)/lib
+	$(CXX) $(CXXFLAGS) $(LDFLAGS) -o $(DIST_DIR)/qlwt $(OBJS) $(GFX_LIBS) \
+	    -Wl,-rpath,'$$ORIGIN/lib'
+	@strip $(DIST_DIR)/qlwt 2>/dev/null || true
+	@libdir=$$(pkg-config --variable=libdir glfw3 2>/dev/null || echo /usr/lib); \
+	 copied=0; \
+	 for f in $$libdir/libglfw.so.3 $$libdir/libglfw.so.3.*; do \
+	     if [ -e "$$f" ]; then cp -P "$$f" $(DIST_DIR)/lib/; copied=1; fi; \
+	 done; \
+	 if [ "$$copied" = "1" ]; then echo "  随包带上 libglfw.so.3"; \
+	 else echo "  ！没找到系统 libglfw.so.3：目标机器需要自行安装 glfw"; fi
+	@cp -a assets $(DIST_DIR)/assets
+	@cp -a docs $(DIST_DIR)/docs
+	@cp README.md $(DIST_DIR)/README.md
+	@tar -C dist -czf dist/$(DIST_NAME).tar.gz $(DIST_NAME)
+	@echo "发行版就绪：$(DIST_DIR)/qlwt"
+	@du -sh $(DIST_DIR) dist/$(DIST_NAME).tar.gz
+
+# Windows 版交叉编译（自带 GLFW 源码，详见 tools/build_windows.sh）
+release-windows:
+	@bash tools/build_windows.sh
 
 $(OBJDIR)/%.o: %.cpp
 	@mkdir -p $(dir $@)
-	$(CXX) $(CXXFLAGS) $(RAYLIB_INC) -MMD -MP -c $< -o $@
+	$(CXX) $(CXXFLAGS) $(GFX_CFLAGS) -MMD -MP -c $< -o $@
 
 run: $(TARGET)
 	./$(TARGET)
@@ -87,66 +124,17 @@ check: $(TARGET)
 	@echo "== 触摸板手势 =="
 	@./$(TARGET) --check-gesture
 
-# 系统里的中文字体基本都是 .ttc，而 raylib 只认 .ttf/.otf，所以抽一份出来。
+# 系统里的中文字体基本都是 .ttc，而引擎只认 .ttf/.otf，所以抽一份出来。
 font:
 	@mkdir -p assets/fonts
 	python3 tools/ttc2ttf.py "$$(fc-match -f '%{file}' :lang=zh-cn)" \
 	    assets/fonts/NotoSansSC-Regular.ttf SC
-
-# ---------------------------------------------------------------------------
-# Wayland
-#
-# 发行版预编译的 raylib 在 Linux 上通常只编了 X11（GLFW 默认只要 X11），
-# 于是 Wayland 会话里其实是跑在 XWayland 上。要原生 Wayland 就得自己编一份
-# 带 Wayland 的 raylib：GLFW 3.4 会读 XDG_SESSION_TYPE 自动选平台，
-# X11 仍然保留作兜底。
-#
-# 需要 raylib 源码。用 RAYLIB_SRC 指定，或放在下面几个常见位置之一：
-#   make wayland
-#   make wayland RAYLIB_SRC=~/src/raylib/src
-# ---------------------------------------------------------------------------
-RAYLIB_SRC ?= $(firstword $(wildcard \
-    $(HOME)/project/sea_of_stars/third_party/raylib/src \
-    $(HOME)/raylib/src \
-    /usr/local/src/raylib/src \
-    external/raylib/src))
-
-wayland:
-	@test -f "$(RAYLIB_SRC)/Makefile" || { \
-	    echo "找不到 raylib 源码（RAYLIB_SRC=$(RAYLIB_SRC)）"; \
-	    echo "用法: make wayland RAYLIB_SRC=/path/to/raylib/src"; \
-	    exit 1; }
-	@echo "== 1/2 编译带 Wayland 的 raylib（源码复制到 $(RAYLIB_WL_DIR)/src，不动原目录）=="
-	rm -rf $(RAYLIB_WL_DIR)
-	mkdir -p $(RAYLIB_WL_DIR)
-	cp -a "$(RAYLIB_SRC)" $(RAYLIB_WL_DIR)/src
-	-$(MAKE) -C $(RAYLIB_WL_DIR)/src clean >/dev/null 2>&1
-	@# raylib 5.5 在 Wayland + 显示缩放下有毛病：不启用 GLFW_SCALE_FRAMEBUFFER
-	@# （帧缓冲不跟随缩放 → 被合成器放大后发虚），而且只在建窗口时同步一次 HiDPI
-	@# 状态（运行时改窗口大小内容会画不满）。这里给它的平台层打补丁。
-	python3 tools/patch_raylib_wayland.py $(RAYLIB_WL_DIR)/src
-	$(MAKE) -C $(RAYLIB_WL_DIR)/src -j$(NPROC) PLATFORM=PLATFORM_DESKTOP \
-	    GLFW_LINUX_ENABLE_WAYLAND=TRUE RAYLIB_LIBTYPE=SHARED \
-	    CUSTOM_LDFLAGS="$$(pkg-config --libs wayland-client wayland-cursor wayland-egl xkbcommon)"
-	mkdir -p $(RAYLIB_WL_DIR)/lib
-	cp -P $(RAYLIB_WL_DIR)/src/libraylib.so* $(RAYLIB_WL_DIR)/lib/
-	-$(MAKE) -C $(RAYLIB_WL_DIR)/src clean >/dev/null 2>&1
-	@echo "== 2/2 用它重新编译游戏 =="
-	$(MAKE) clean
-	$(MAKE)
-	@echo "完成：./qlwt 现在跑原生 Wayland（非 Wayland 会话会自动退回 X11）"
-
-clean-wayland:
-	rm -rf $(RAYLIB_WL_DIR)
-	$(MAKE) clean
-	$(MAKE)
-	@echo "已回到系统 raylib"
 
 clean:
 	rm -rf $(OBJDIR) $(TARGET)
 	@echo "clean OK"
 
 help:
-	@sed -n '2,14p' Makefile
+	@sed -n '2,17p' Makefile
 
 -include $(DEPS)

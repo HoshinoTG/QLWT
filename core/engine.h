@@ -8,6 +8,7 @@
 #include "input.h"
 #include "settings.h"
 #include "time.h"
+#include "../gfx/post.h"
 
 class Scene;
 
@@ -26,6 +27,13 @@ public:
 
     void quit() { running_ = false; }
     void switchScene(std::shared_ptr<Scene> scene);
+    // 白闪：strength 0..1，duration 秒。CG 揭示 / 战斗开始这类瞬间提一下"曝光感"。
+    // 特效质量档为「关」时不生效（走老画法）。
+    void flash(float strength = 0.85f, float duration = 0.45f);
+    // 下一次场景切换用什么转场（在 switchScene 之前调用）。
+    // style 用 postfx::Transition 的值；centerX/centerY 是画布 uv（左上原点），
+    // 径向擦除用得上（例如从被点的卡片中心展开）。
+    void setTransition(int style, float centerX = 0.5f, float centerY = 0.5f);
     // 把 settings 里的外观项同步到渲染器（主题色 / 圆角 / 按钮样式）
     void applyTheme();
     float renderScale() const
@@ -55,8 +63,14 @@ private:
     std::shared_ptr<Scene> nextScene_;
     bool transitioning_ = false;
     float transitionT_ = 0.0f;
+    int transitionStyle_ = postfx::TransitionFade;   // postfx::Transition
+    float transitionCenterX_ = 0.5f;
+    float transitionCenterY_ = 0.5f;
+    unsigned int frameSeed_ = 1;     // 每帧变化（胶片颗粒用）
+    float flashTimer_ = 0.0f;        // 白闪剩余时间
+    float flashDuration_ = 0.0f;
+    float flashStrength_ = 0.0f;
     RenderTexture2D rt_{};
-    RenderTexture2D backdrop_{};   // 1/2 设计分辨率的场景快照（毛玻璃用）
     int designW_ = 0;
     int designH_ = 0;
     int rtW_ = 0;

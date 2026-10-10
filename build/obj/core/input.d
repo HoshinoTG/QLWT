@@ -1,4 +1,4 @@
-build/obj/core/input.o: core/input.cpp core/input.h \
- build/raylib-wayland/src/raylib.h
+build/obj/core/input.o: core/input.cpp core/input.h gfx/gfx.h gfx/types.h
 core/input.h:
-build/raylib-wayland/src/raylib.h:
+gfx/gfx.h:
+gfx/types.h:
